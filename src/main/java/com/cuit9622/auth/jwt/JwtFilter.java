@@ -53,7 +53,7 @@ public class JwtFilter extends AccessControlFilter {
             subject.login(jwtToken);
         } catch (Exception e) {
             log.info("令牌错误" + e.getMessage());
-            String json = JSON.toJSONString(R.error(401, "token异常", e.getMessage()));
+            String json = JSON.toJSONString(R.error(401, e.getMessage(), "token异常"));
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().write(json);
             return false;

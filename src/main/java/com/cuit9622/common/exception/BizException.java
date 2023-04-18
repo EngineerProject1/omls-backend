@@ -13,7 +13,7 @@ public class BizException extends RuntimeException {
         super(message);
     }
 
-    public BizException(String message, Integer code) {
+    public BizException( Integer code, String message) {
         super(message);
         this.code = code;
     }

@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableCaching
 public class OLMSApplication {
 
-
     public static void main(String[] args) {
         SpringApplication.run(OLMSApplication.class, args);
     }

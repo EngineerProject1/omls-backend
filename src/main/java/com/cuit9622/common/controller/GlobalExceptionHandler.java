@@ -24,9 +24,9 @@ public class GlobalExceptionHandler {
      * @Date 17:46 2023/4/10
      */
     @ExceptionHandler(BizException.class)
-    public R handlerBizException(BizException e) {
-        log.error("操作失败，请联系系统管理员", e);
-        return R.error(e.getCode(), "操作失败，请联系系统管理员", e.getMessage());
+    public R<String> handlerBizException(BizException e) {
+        log.error(e.getMessage());
+        return R.error(e.getCode(), "操作失败", e.getMessage());
     }
 
     /**
@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
      * @Date 17:47 2023/4/10
      */
     @ExceptionHandler(Throwable.class)
-    public R handlerException(Throwable e) {
+    public R<String> handlerException(Throwable e) {
         log.error("服务器内部错误,{}", e.getMessage());
         return R.error(500, "服务器内部错误", e.getMessage());
     }
