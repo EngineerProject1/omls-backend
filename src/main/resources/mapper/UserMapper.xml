@@ -10,5 +10,6 @@
         where id in (select role_id
                      from sys_user_role
                      where user_id in (select id from sys_user where username = #{username}))
+        order by sys_role.id
     </select>
 </mapper>
