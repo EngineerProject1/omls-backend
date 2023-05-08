@@ -1,5 +1,6 @@
 package com.cuit9622.auth.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.cuit9622.auth.util.JWTUtils;
 import com.cuit9622.common.exception.BizException;
 import com.cuit9622.common.model.R;
@@ -11,11 +12,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -73,4 +76,27 @@ public class AuthController {
         return R.ok("登录成功", data);
     }
 
+    /**
+     * @Description 根据请求头中token信息获取用户信息
+     * @return 用户信息
+     * @Date 19:51 2023/5/8
+     */
+    @GetMapping("/token")
+    @ApiOperation("根据token获取用户信息")
+    public R<User> getUserInfoByToken(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        String username = null;
+        try {
+            username = JWTUtils.verify(token).getSubject();
+        } catch (Exception e) {
+            throw new BizException(401, "token异常");
+        }
+        // 条件构造器，根据用户名查询用户信息
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.select(User::getUsername, User::getRealName, User::getSex, User::getAvatar, User::getPhone, User::getEmail);
+        wrapper.eq(username != null, User::getUsername, username);
+        
+        User one = userService.getOne(wrapper);
+        return R.ok("获取用户信息成功", one);
+    }
 }
