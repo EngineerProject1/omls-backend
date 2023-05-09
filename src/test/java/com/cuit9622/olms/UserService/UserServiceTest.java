@@ -1,14 +1,11 @@
 package com.cuit9622.olms.UserService;
 
-import com.cuit9622.auth.util.JWTUtils;
 import com.cuit9622.common.utils.DigestsUtils;
 import com.cuit9622.olms.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
-import java.util.Calendar;
-import java.util.Map;
 
 /**
  * Author: lsh

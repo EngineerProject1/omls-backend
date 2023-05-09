@@ -3,15 +3,14 @@ package com.cuit9622.olms.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.common.model.R;
 import com.cuit9622.olms.entity.Notice;
+import com.cuit9622.olms.model.DeleteModel;
 import com.cuit9622.olms.service.NoticeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -49,5 +48,36 @@ public class NoticeController {
         log.info(info.getMsg());
         return info;
     }
+
+    /**
+     * @Description 根据id删除信息
+     * @param id 需要删除的id
+     * @return
+     * @Date 21:07 2023/5/9
+     */
+    @DeleteMapping("/auth/delete/{id}")
+    @ApiOperation("根据id删除公告信息")
+    @ApiImplicitParam(name = "id", value = "要删除的id", required = true)
+    public R<String> deleteNoticeById(@PathVariable("id") Integer id) {
+        noticeService.removeById(id);
+        log.info("删除id为{}的公告成功", id);
+        return R.ok("删除成功");
+    }
+
+    /**
+     * @Description 根据ids删除公告
+     * @param ids
+     * @return
+     * @Date 21:07 2023/5/9
+     */
+    @DeleteMapping("/auth/delete")
+    @ApiOperation("根据ids删除公告信息")
+    @ApiImplicitParam(name = "model", value = "要删除的id数组", required = true)
+    public R<String> deleteNoticeByIds(@RequestBody DeleteModel model) {
+        noticeService.removeBatchByIds(model.getIds());
+        log.info("删除id为{}的公告成功", model.getIds().toString());
+        return R.ok("删除成功");
+    }
+
 
 }
