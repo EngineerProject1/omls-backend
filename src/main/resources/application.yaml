@@ -12,6 +12,9 @@ spring:
     host: 101.43.182.254
     port: 6379
     password: wL2002s26H.q
+  servlet:
+    multipart:
+      max-file-size: 4MB
 
 # mybatis-plus配置
 mybatis-plus:
@@ -27,3 +30,5 @@ mybatis-plus:
       id-type: assign_id
       # 指定表的前缀
       table-prefix: sys_
+# 文件上传的保存路径
+filePath: C:/olms_files/img/
