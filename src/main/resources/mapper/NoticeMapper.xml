@@ -19,7 +19,7 @@
         create_time,update_time,user_id,
         level
     </sql>
-    <select id="page" resultType="com.cuit9622.olms.entity.Notice">
+    <select id="page" resultType="com.cuit9622.olms.entity.dto.NoticeDto">
         select id,
                title,
                content,
