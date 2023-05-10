@@ -27,7 +27,7 @@ mybatis-plus:
   global-config:
     db-config:
       # 雪花算法
-      id-type: assign_id
+      id-type: auto
       # 指定表的前缀
       table-prefix: sys_
 # 文件上传的保存路径
