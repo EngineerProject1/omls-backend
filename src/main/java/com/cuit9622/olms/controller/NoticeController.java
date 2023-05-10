@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -57,6 +58,7 @@ public class NoticeController {
      */
     @DeleteMapping("/auth/notice/{id}")
     @ApiOperation("根据id删除公告信息")
+    @RequiresRoles("admin")
     @ApiImplicitParam(name = "id", value = "要删除的id", required = true)
     public R<String> deleteNoticeById(@PathVariable("id") Integer id) {
         noticeService.removeById(id);
@@ -72,12 +74,12 @@ public class NoticeController {
      */
     @DeleteMapping("/auth/notice")
     @ApiOperation("根据ids删除公告信息")
+    @RequiresRoles("admin")
     @ApiImplicitParam(name = "model", value = "要删除的id数组", required = true)
     public R<String> deleteNoticeByIds(@RequestBody DeleteModel model) {
         noticeService.removeBatchByIds(model.getIds());
         log.info("删除id为{}的公告成功", model.getIds().toString());
         return R.ok("删除成功");
     }
-
 
 }
