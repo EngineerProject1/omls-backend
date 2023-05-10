@@ -37,7 +37,7 @@ public class Notice implements Serializable {
     private LocalDateTime updateTime;
 
     @ApiModelProperty("发布人的id")
-    private Long userId;
+    private Long creator;
 
     @NotNull(message="[公告的等级，按照公告从小到大排序]不能为空")
     @ApiModelProperty("公告的等级，按照公告从小到大排序")

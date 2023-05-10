@@ -26,7 +26,7 @@
                create_time,
                update_time,
                `level`,
-               (select real_name from sys_user user where user.id = sys_notice.user_id) name
+               (select real_name from sys_user user where user.id = sys_notice.creator) name
         from sys_notice
         order by `level`
     </select>
