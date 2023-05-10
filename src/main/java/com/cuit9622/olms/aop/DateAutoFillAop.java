@@ -1,6 +1,7 @@
 package com.cuit9622.olms.aop;
 
 import com.cuit9622.olms.annotation.DateAutoFill;
+import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -73,11 +74,9 @@ public class DateAutoFillAop {
 
             // 设置创建人
             if (beanWrapper.isWritableProperty(CREATOR)){
-                // 得到用户名
-                String username = (String) SecurityUtils.getSubject().getPrincipal();
-                // 得到用户id
-                Long id = userService.getUserInfoByName(username).getId();
-                beanWrapper.setPropertyValue(CREATOR, id);
+                // 得到用户信息
+                User user = (User) SecurityUtils.getSubject().getPrincipal();
+                beanWrapper.setPropertyValue(CREATOR, user.getId());
             }
             log.info("完成时间和创建人的注入");
         }
