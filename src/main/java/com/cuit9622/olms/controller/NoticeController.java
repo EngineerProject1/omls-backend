@@ -1,5 +1,6 @@
 package com.cuit9622.olms.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.common.model.R;
 import com.cuit9622.olms.annotation.DateAutoFill;
@@ -7,7 +8,6 @@ import com.cuit9622.olms.entity.Notice;
 import com.cuit9622.olms.entity.dto.NoticeDto;
 import com.cuit9622.olms.model.DeleteModel;
 import com.cuit9622.olms.service.NoticeService;
-import com.cuit9622.olms.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -99,5 +99,36 @@ public class NoticeController {
         noticeService.save(notice);
         log.info("新增的公告为{}",notice);
         return R.ok("新增公告成功");
+    }
+
+    /**
+     * @Description 通过id获取公告信息
+     * @param id 公告的id
+     * @return
+     * @Date 15:30 2023/5/10
+     */
+    @GetMapping("/notice/{id}")
+    @ApiOperation("通过id获取某个公告")
+    public R<Notice> getNotice(@PathVariable Long id){
+        LambdaQueryWrapper<Notice> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Notice::getId,id);
+        Notice notice = noticeService.getOne(wrapper);
+        log.info("获取的公告信息:{}",notice);
+        return R.ok("获取公告信息成功", notice);
+    }
+
+    /**
+     * @Description 根据id修改公告信息
+     * @param notice 需要修改的公告信息
+     * @return
+     * @Date 15:36 2023/5/10
+     */
+    @PutMapping("/auth/notice")
+    @ApiOperation("修改某个公告")
+    @DateAutoFill(DateAutoFill.Type.UPDATE)
+    public R<String> updateNotice(@RequestBody Notice notice){
+        log.info("将要修改的公告信息为:{}",notice);
+        noticeService.updateById(notice);
+        return R.ok("修改成功");
     }
 }
