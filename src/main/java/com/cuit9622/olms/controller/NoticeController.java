@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,7 +72,7 @@ public class NoticeController {
 
     /**
      * @Description 根据ids删除公告
-     * @param ids
+     * @param model
      * @return
      * @Date 21:07 2023/5/9
      */
@@ -125,6 +126,7 @@ public class NoticeController {
      */
     @PutMapping("/auth/notice")
     @ApiOperation("修改某个公告")
+    @RequiresRoles("admin")
     @DateAutoFill(DateAutoFill.Type.UPDATE)
     public R<String> updateNotice(@RequestBody Notice notice){
         log.info("将要修改的公告信息为:{}",notice);
