@@ -17,5 +17,4 @@ public @interface DateAutoFill {
     }
     // 操作类型
     Type value();
-
 }
