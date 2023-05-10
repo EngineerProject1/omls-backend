@@ -27,4 +27,16 @@
         from sys_device, sys_lab where sys_lab.id = sys_device.lab_id
     </select>
 
+    <select id="getOne" resultType="com.cuit9622.olms.vo.DeviceVo">
+        select sys_device.id id,
+               sys_device.name name,
+               lab_id,
+               sys_lab.name labName,
+               price,
+               model,
+               sys_device.images images,
+               status
+        from sys_device, sys_lab where sys_lab.id = sys_device.lab_id and sys_device.id = #{id};
+    </select>
+
 </mapper>

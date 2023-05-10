@@ -24,4 +24,11 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         pageInfo = deviceMapper.page(pageInfo);
         return R.ok("查询设备信息成功", pageInfo);
     }
+
+    @Override
+    public DeviceVo getById(Long id) {
+        DeviceVo deviceVo;
+        deviceVo = deviceMapper.getOne(id);
+        return deviceVo;
+    }
 }

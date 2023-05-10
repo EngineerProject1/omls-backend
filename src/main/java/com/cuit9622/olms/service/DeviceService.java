@@ -11,4 +11,6 @@ import com.cuit9622.olms.vo.DeviceVo;
  */
 public interface DeviceService extends IService<Device> {
     R<Page<DeviceVo>> selectDevice(Integer pageSize, Integer page);
+
+    DeviceVo getById(Long id);
 }
