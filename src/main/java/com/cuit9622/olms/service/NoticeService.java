@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.common.model.R;
 import com.cuit9622.olms.entity.Notice;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cuit9622.olms.entity.dto.NoticeDto;
+import com.cuit9622.olms.vo.NoticeVo;
 
 /**
  * @Description 公告接口
@@ -19,5 +19,5 @@ public interface NoticeService extends IService<Notice> {
      * @return
      * @Date 17:21 2023/4/28
      */
-    R<Page<NoticeDto>> selectNotice(Integer pageSize, Integer page);
+    R<Page<NoticeVo>> selectNotice(Integer pageSize, Integer page);
 }

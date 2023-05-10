@@ -3,7 +3,7 @@ package com.cuit9622.olms.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.olms.entity.Device;
-import com.cuit9622.olms.entity.dto.DeviceDto;
+import com.cuit9622.olms.vo.DeviceVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,5 +13,5 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface DeviceMapper extends BaseMapper<Device> {
-    Page<DeviceDto> page(@Param("page") Page<DeviceDto> page);
+    Page<DeviceVo> page(@Param("page") Page<DeviceVo> page);
 }

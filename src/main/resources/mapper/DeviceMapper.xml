@@ -15,7 +15,7 @@
     </resultMap>
 
 
-    <select id="page" resultType="com.cuit9622.olms.entity.dto.DeviceDto">
+    <select id="page" resultType="com.cuit9622.olms.vo.DeviceVo">
         select sys_device.id id,
                sys_device.name name,
                lab_id,

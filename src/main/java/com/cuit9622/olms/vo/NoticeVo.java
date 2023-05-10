@@ -1,4 +1,4 @@
-package com.cuit9622.olms.entity.dto;
+package com.cuit9622.olms.vo;
 
 import com.cuit9622.olms.entity.Notice;
 import io.swagger.annotations.ApiModel;
@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel("公告Dto")
-public class NoticeDto extends Notice {
+public class NoticeVo extends Notice {
 
     @ApiModelProperty("发布公告的人(管理员)")
     private String name;
