@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@ApiModel("公告Dto")
+@ApiModel("公告Vo")
 public class NoticeVo extends Notice {
 
     @ApiModelProperty("发布公告的人(管理员)")

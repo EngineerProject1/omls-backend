@@ -14,18 +14,20 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,sid,student_name,
+        sid,student_name,
         major_id,grade,class_number
     </sql>
     <select id="page" resultType="com.cuit9622.olms.vo.StudentVo">
-        select id,
-               sid,
+        select sid,
                student_name,
                grade,
                class_number,
                (select major_name from sys_major where sys_major.id = sys_user_student.major_id) major_name,
-               (select college_name from sys_college, sys_major where sys_major.id = sys_user_student.major_id and sys_college.id = sys_major.college_id
-               ) college_name
+               (select college_name
+                from sys_college,
+                     sys_major
+                where sys_major.id = sys_user_student.major_id
+                  and sys_college.id = sys_major.college_id) college_name
         from sys_user_student
 
     </select>

@@ -16,6 +16,12 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface StudentMapper extends BaseMapper<Student> {
 
+    /**
+     * @Description 学生的分页查找
+     * @param page
+     * @return
+     * @Date 16:44 2023/5/11
+     */
     Page<StudentVo> page(@Param("page") Page<StudentVo> page);
 }
 
