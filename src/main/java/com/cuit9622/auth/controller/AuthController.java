@@ -7,6 +7,8 @@ import com.cuit9622.common.model.R;
 import com.cuit9622.common.utils.DigestsUtils;
 import com.cuit9622.common.utils.RedisUtils;
 import com.cuit9622.olms.entity.User;
+import com.cuit9622.olms.service.StudentService;
+import com.cuit9622.olms.service.TeacherService;
 import com.cuit9622.olms.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,6 +40,12 @@ public class AuthController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private TeacherService teacherService;
+
+    @Resource
+    private StudentService studentService;
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
@@ -91,12 +99,25 @@ public class AuthController {
         } catch (Exception e) {
             throw new BizException(401, "token异常");
         }
+
+
+        // 查询用户的角色信息
+        List<String> roles = userService.getUserRoleByName(username);
+        for (String role : roles) {
+            if ("teacher".equals(role)) {
+                return R.ok("获取用户信息成功", teacherService.getTeacherInfoByUsername(username));
+            }
+            if ("student".equals(role)) {
+                return R.ok("获取用户信息成功", studentService.getStudentInfoByUsername(username));
+            }
+        }
         // 条件构造器，根据用户名查询用户信息
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.select(User::getUsername, User::getRealName, User::getSex, User::getAvatar, User::getPhone, User::getEmail);
+        wrapper.select(User::getId, User::getUsername, User::getRealName,
+                User::getSex, User::getAvatar, User::getPhone,
+                User::getEmail, User::getCreateTime, User::getUpdateTime);
         wrapper.eq(username != null, User::getUsername, username);
-        
-        User one = userService.getOne(wrapper);
-        return R.ok("获取用户信息成功", one);
+
+        return R.ok("获取用户信息成功", userService.getOne(wrapper));
     }
 }

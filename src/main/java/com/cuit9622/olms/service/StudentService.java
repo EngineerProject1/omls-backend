@@ -21,4 +21,12 @@ public interface StudentService extends IService<Student> {
      * @Date
      */
     R<Page<StudentVo>> selectStudents(Integer pageSize, Integer page);
+
+    /**
+     * @Description 得到学生的信息
+     * @param username
+     * @return
+     * @Date 18:21 2023/5/11
+     */
+    StudentVo getStudentInfoByUsername(String username);
 }
