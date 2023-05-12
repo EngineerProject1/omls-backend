@@ -21,13 +21,23 @@
     </sql>
     <select id="page" resultType="com.cuit9622.olms.vo.NoticeVo">
         select id,
-               title,
-               content,
-               create_time,
-               update_time,
-               `level`,
-               (select real_name from sys_user user where user.id = sys_notice.creator) name
+        title,
+        content,
+        create_time,
+        update_time,
+        `level`,
+        (select real_name from sys_user user where user.id = sys_notice.creator) name
         from sys_notice
-        order by `level`
+        <where>
+            <if test="model.title != null and model.title !='' ">
+                title like concat('%',#{model.title},'%')
+            </if>
+        </where>
+        <if test="(model.level != null and model.level != '') and (model.level == 'asc' or model.level =='desc' )">
+            order by level ${model.level}
+        </if>
+        <if test="(model.createTime != null and model.createTime != '') and (model.createTime = 'asc' or model.createTime ='desc' )">
+            order by create_time ${model.createTime}
+        </if>
     </select>
 </mapper>
