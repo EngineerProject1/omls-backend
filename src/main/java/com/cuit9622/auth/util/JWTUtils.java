@@ -54,7 +54,8 @@ public class JWTUtils {
         builder.withJWTId(UUID.randomUUID().toString())// 设置token唯一标识
                 .withSubject(username) // 设置token的主体
                 .withIssuer("9622")// 签发者
-                .withIssuedAt(new Date()); //签发时间
+                .withIssuedAt(new Date()) //签发时间
+                .withPayload(map); // 存入动态数据
         // 设置过期时间
         builder.withExpiresAt(expire);
         //签发
