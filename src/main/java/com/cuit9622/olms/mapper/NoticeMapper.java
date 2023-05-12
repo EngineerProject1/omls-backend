@@ -24,6 +24,7 @@ public interface NoticeMapper extends BaseMapper<Notice> {
      */
     Page<NoticeVo> page(@Param("page") Page<NoticeVo> page);
 
+
 }
 
 

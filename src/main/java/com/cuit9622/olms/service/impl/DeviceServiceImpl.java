@@ -19,10 +19,10 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     private DeviceMapper deviceMapper;
 
     @Override
-    public R<Page<DeviceVo>> selectDevice(Integer pageSize, Integer page) {
+    public Page<DeviceVo> selectDevice(Integer pageSize, Integer page) {
         Page<DeviceVo> pageInfo = new Page<>(page, pageSize);
         pageInfo = deviceMapper.page(pageInfo);
-        return R.ok("查询设备信息成功", pageInfo);
+        return pageInfo;
     }
 
     @Override
@@ -31,4 +31,16 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         deviceVo = deviceMapper.getOne(id);
         return deviceVo;
     }
+
+    @Override
+    public Integer updateById(DeviceVo deviceVo) {
+        return deviceMapper.updateById(deviceVo);
+    }
+
+    @Override
+    public Integer insertOne(DeviceVo deviceVo) {
+        return deviceMapper.insertOne(deviceVo);
+    }
+
+
 }

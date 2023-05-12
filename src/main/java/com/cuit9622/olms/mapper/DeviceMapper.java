@@ -28,4 +28,18 @@ public interface DeviceMapper extends BaseMapper<Device> {
      * @Date 16:46 2023/5/11
      */
     DeviceVo getOne(@Param("id") Long id);
+
+    /**
+     * @Description 通过id更新设备信息
+     * @param deviceVo
+     * @return
+     */
+    Integer updateById(@Param("deviceVo") DeviceVo deviceVo);
+
+    /**
+     * @Description 新增设备信息
+     * @param deviceVo
+     * @return
+     */
+    Integer insertOne(@Param("deviceVo") DeviceVo deviceVo);
 }
