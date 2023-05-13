@@ -17,6 +17,9 @@
         sid,student_name,
         major_id,grade,class_number
     </sql>
+    <insert id="saveStudent" >
+        insert into sys_user_student(sid, student_name, major_id, grade, class_number) values(#{studentVo.sid},#{studentVo.studentName},#{studentVo.majorId},#{studentVo.grade},#{studentVo.classNumber})
+    </insert>
     <select id="page" resultType="com.cuit9622.olms.vo.StudentVo">
         select sid,
                student_name,

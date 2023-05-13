@@ -31,6 +31,8 @@ public interface StudentMapper extends BaseMapper<Student> {
      * @Date 16:44 2023/5/11
      */
     StudentVo getStudentInfoByUsername(String username);
+
+    void saveStudent(@Param("studentVo") StudentVo studentVo);
 }
 
 

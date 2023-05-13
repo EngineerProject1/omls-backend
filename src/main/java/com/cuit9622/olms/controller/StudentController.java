@@ -97,7 +97,7 @@ public class StudentController {
     @PostMapping("/student")
     @DateAutoFill(DateAutoFill.Type.INSERT)
     public R<String> addStudent(@RequestBody StudentVo studentVo) {
-        log.info(studentVo.toString());
+        studentService.saveWithUserAndRole(studentVo);
         return R.ok("添加学生信息成功");
     }
 }

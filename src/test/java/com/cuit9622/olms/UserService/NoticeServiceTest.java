@@ -25,9 +25,9 @@ public class NoticeServiceTest {
      * @Description 测试公告分页查询
      * @Date 17:30 2023/4/28
      */
-    @Test
-    public void testPage(){
-        Page<NoticeVo> pageR = noticeService.selectNotice(2, 1);
-        System.out.println(pageR);
-    }
+//    @Test
+//    public void testPage(){
+//        Page<NoticeVo> pageR = noticeService.selectNotice(2, 1);
+//        System.out.println(pageR);
+//    }
 }

@@ -20,7 +20,7 @@ public interface StudentService extends IService<Student> {
      * @return
      * @Date
      */
-    R<Page<StudentVo>> selectStudents(Integer pageSize, Integer page);
+     R<Page<StudentVo>> selectStudents(Integer pageSize, Integer page);
 
     /**
      * @Description 得到学生的信息
@@ -28,5 +28,7 @@ public interface StudentService extends IService<Student> {
      * @return
      * @Date 18:21 2023/5/11
      */
-    StudentVo getStudentInfoByUsername(String username);
+     StudentVo getStudentInfoByUsername(String username);
+
+     void saveWithUserAndRole(StudentVo studentVo);
 }
