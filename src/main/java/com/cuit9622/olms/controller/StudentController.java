@@ -1,19 +1,24 @@
 package com.cuit9622.olms.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cuit9622.auth.util.JWTUtils;
 import com.cuit9622.common.model.R;
+import com.cuit9622.olms.annotation.DateAutoFill;
+import com.cuit9622.olms.entity.*;
+import com.cuit9622.olms.service.CollegeService;
+import com.cuit9622.olms.service.MajorService;
 import com.cuit9622.olms.service.StudentService;
+import com.cuit9622.olms.service.UserService;
 import com.cuit9622.olms.vo.StudentVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @Slf4j(topic = "StudentController")
@@ -21,8 +26,19 @@ import javax.annotation.Resource;
 public class StudentController {
     @Resource
     private StudentService studentService;
+
+    @Resource
+    private CollegeService collegeService;
+
+    @Resource
+    private MajorService majorService;
+
+    @Resource
+    private UserService userService;
+
+
     @GetMapping("/student")
-    @ApiOperation("公告信息分页查询的接口")
+    @ApiOperation("学生信息分页查询的接口")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageSize", value = "每页的条数", defaultValue = "5", required = true),
             @ApiImplicitParam(name = "page", value = "页码", defaultValue = "1", required = true)
@@ -33,5 +49,55 @@ public class StudentController {
         R<Page<StudentVo>> info = studentService.selectStudents(pageSize,page);
         log.info(info.getMsg());
         return info;
+    }
+
+    /**
+     * 查询指定id学生信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/student/{id}")
+    @ApiOperation("通过id获取学生信息")
+    public R<Student> getStudent(@PathVariable String id) {
+        StudentVo student = studentService.getStudentInfoByUsername(id);
+        if(student == null) {
+            return R.ok("未查找到对应学号学生信息");
+        }
+        return R.ok("查询学生信息成功",student);
+    }
+
+    /**
+     * 查询学院信息
+     * @return
+     */
+    @GetMapping("/student/college")
+    @ApiOperation("获取学院信息")
+    public R<List<College>> getColleges(){
+        return R.ok("学院信息查询成功",collegeService.list());
+    }
+
+    /**
+     * 查询所选学院对应的专业信息
+     * @return
+     */
+    @GetMapping("/student/major/{id}")
+    @ApiOperation("通过id获取学院所对应的专业信息")
+    public R<List<Major>> getMajors(@PathVariable Long id) {
+        List<Major> majors = majorService.selectMajorsByCollegeId(id);
+        if(majors == null) {
+            return R.error(404,"查询专业信息失败");
+        }
+        return R.ok("查询专业信息成功",majors);
+    }
+    @GetMapping("/student/role/{id}")
+    public R<List<String>> getRoleId(@PathVariable Long id) {
+        List<String> roles = userService.getUserRoleByName(id.toString());
+        return R.ok("查询角色信息成功",roles);
+    }
+    @PostMapping("/student")
+    @DateAutoFill(DateAutoFill.Type.INSERT)
+    public R<String> addStudent(@RequestBody StudentVo studentVo) {
+        log.info(studentVo.toString());
+        return R.ok("添加学生信息成功");
     }
 }

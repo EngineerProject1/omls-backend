@@ -13,4 +13,7 @@ public class StudentVo extends Student{
     private String majorName;
     @ApiModelProperty("学院名称")
     private String collegeName;
+
+    @ApiModelProperty("是否设置为管理员")
+    private int isSetManager;
 }
