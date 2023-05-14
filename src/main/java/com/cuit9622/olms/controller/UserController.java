@@ -1,14 +1,24 @@
 package com.cuit9622.olms.controller;
 
+import com.cuit9622.common.model.R;
+import com.cuit9622.olms.entity.User;
+import com.cuit9622.olms.service.UserService;
+import com.cuit9622.olms.service.impl.UserServiceImpl;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * Author: lsh
  * Date: 2023/4/17 17:32
  * Version: 1.0
+ *
  * @Description: 用户控制器
  */
 @Slf4j(topic = "UserController")
@@ -16,5 +26,18 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "用户相关API")
 @RequestMapping("/auth")
 public class UserController {
-
+    @Resource
+    private UserService userService;
+    @PutMapping("/info")
+    @ApiOperation("用户自己修改联系信息")
+    @RequiresRoles(value = {"admin","teacher","student"}, logical = Logical.OR)
+    public R<String> updateContact(@RequestParam String phone, @RequestParam String email,@RequestParam String avatar) {
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        String userName = user.getUsername();
+        Boolean result =userService.updateUserContactInformationByUserName(userName, phone, email,avatar);
+        if(result){
+            return R.ok("修改用户信息成功");
+        }
+        return R.error(500,"修改用户信息失败");
+    }
 }

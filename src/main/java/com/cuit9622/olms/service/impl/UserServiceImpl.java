@@ -37,4 +37,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         wrapper.eq(User::getUsername, username);
         return mapper.selectOne(wrapper);
     }
+
+    @Override
+    public Boolean updateUserContactInformationByUserName(String username, String phone, String email,String avatar) {
+        return mapper.updateByUserName(username, phone, email, avatar);
+    }
 }

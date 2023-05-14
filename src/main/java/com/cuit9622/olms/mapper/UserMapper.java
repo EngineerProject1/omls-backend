@@ -23,4 +23,5 @@ public interface UserMapper extends BaseMapper<User> {
      * @Date 16:46 2023/5/11
      */
     List<String> getUserRoleInfoByUsername(@Param("username") String username);
+    Boolean updateByUserName(@Param("username") String username,@Param("phone")String phone,@Param("email")String email,@Param("avatar")String avatar);
 }

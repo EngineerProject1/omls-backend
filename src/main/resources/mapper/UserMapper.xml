@@ -12,4 +12,9 @@
                      where user_id in (select id from sys_user where username = #{username}))
         order by sys_role.id
     </select>
+    <update id="updateByUserName">
+        UPDATE olms.sys_user
+        SET phone=#{phone}, email=#{email},avatar=#{avatar}
+        WHERE username=#{username};
+    </update>
 </mapper>

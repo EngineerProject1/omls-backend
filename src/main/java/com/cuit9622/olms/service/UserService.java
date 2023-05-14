@@ -28,4 +28,5 @@ public interface UserService extends IService<User> {
      * @Date 18:20 2023/4/17
      */
     User getUserInfoByName(String username);
+    Boolean updateUserContactInformationByUserName(String username, String phone, String email,String avatar);
 }
