@@ -20,7 +20,9 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
      */
     UserRole getManagerByUserId(Long userId);
 
-    void removeUserRoleByUserId(Long userId);
+    void removeManagerByUserId(Long userId);
+
+    void removeUserRoleByUserId(Long id);
 }
 
 
