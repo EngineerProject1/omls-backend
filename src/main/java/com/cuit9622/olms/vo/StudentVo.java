@@ -13,6 +13,8 @@ public class StudentVo extends Student{
     private String majorName;
     @ApiModelProperty("学院名称")
     private String collegeName;
+    @ApiModelProperty("学院id")
+    private Long collegeId;
     /**
      * 1:管理员 0:非管理员
      */

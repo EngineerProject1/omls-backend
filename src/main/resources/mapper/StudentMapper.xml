@@ -20,11 +20,21 @@
     <insert id="saveStudent">
         insert into sys_user_student(sid, student_name, major_id, grade, class_number) values(#{studentVo.sid},#{studentVo.studentName},#{studentVo.majorId},#{studentVo.grade},#{studentVo.classNumber})
     </insert>
+    <update id="updateStudent">
+        update sys_user_student
+            set sid = #{studentVo.sid},
+                student_name = #{studentVo.studentName},
+                major_id = #{studentVo.majorId},
+                grade = #{studentVo.grade},
+                class_number = #{studentVo.classNumber}
+                where sid = #{studentVo.sid}
+    </update>
     <select id="page" resultType="com.cuit9622.olms.vo.StudentVo">
         select sid,
                student_name,
                grade,
                class_number,
+               (select id from sys_user where sys_user.username = sys_user_student.sid) id,
                (select major_name from sys_major where sys_major.id = sys_user_student.major_id) major_name,
                (select college_name
                 from sys_college,
@@ -47,6 +57,8 @@
                      sys_major
                 WHERE sys_major.id = student.major_id
                   AND sys_college.id = sys_major.college_id)                            college_name,
+               major_id,
+               (select college_id from sys_major where sys_major.id = student.major_id) college_id,
                grade,
                class_number,
                phone,

@@ -33,6 +33,8 @@ public interface StudentMapper extends BaseMapper<Student> {
     StudentVo getStudentInfoByUsername(String username);
 
     void saveStudent(@Param("studentVo") StudentVo studentVo);
+
+    void updateStudent(@Param("studentVo") StudentVo studentVo);
 }
 
 

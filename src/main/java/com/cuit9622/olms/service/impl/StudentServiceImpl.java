@@ -104,6 +104,28 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         userRole.setRoleId(3L);
         userRoleService.save(userRole);
     }
+    @Transactional
+    @Override
+    public void updateWithUserAndRole(StudentVo studentVo) {
+        // 修改学生表信息
+        studentMapper.updateStudent(studentVo);
+
+        // 修改用户表信息
+        userService.updateById(studentVo);
+
+        //修改角色表信息
+        UserRole manager = userRoleMapper.getManagerByUserId(studentVo.getId());
+        // 设置为管理员
+        if(manager == null && studentVo.getIsSetManager() == 1) {
+            UserRole userRole = new UserRole();
+            userRole.setUserId(studentVo.getId());
+            userRole.setRoleId(1L);
+        }
+        // 取消管理员
+        if(manager != null && studentVo.getIsSetManager() == 0) {
+            userRoleMapper.removeUserRoleByUserId(studentVo.getId());
+        }
+    }
 }
 
 
