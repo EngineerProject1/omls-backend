@@ -1,5 +1,6 @@
 package com.cuit9622.olms.controller;
 
+import com.cuit9622.common.exception.BizException;
 import com.cuit9622.common.model.R;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.service.UserService;
@@ -35,9 +36,18 @@ public class UserController {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         String userName = user.getUsername();
         Boolean result =userService.updateUserContactInformationByUserName(userName, phone, email,avatar);
-        if(result){
-            return R.ok("修改用户信息成功");
+        if(!result){
+            throw new BizException(402,"修改用户信息失败");
         }
-        return R.error(500,"修改用户信息失败");
+        return R.ok("修改用户信息成功");
+    }
+    @PutMapping("/password")
+    @ApiOperation("用户自己修改密码")
+    @RequiresRoles(value = {"admin","teacher","student"}, logical = Logical.OR)
+    public R<String> updatePassword(@RequestParam String oldPassword, @RequestParam String newPassword){
+        if(userService.updatePassword(oldPassword,newPassword)==-1){
+            throw new BizException(402,"旧密码有误");
+        }
+        return R.ok("用户密码修改成功");
     }
 }

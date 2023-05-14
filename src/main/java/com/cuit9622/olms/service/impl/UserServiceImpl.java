@@ -1,16 +1,20 @@
 package com.cuit9622.olms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cuit9622.common.utils.DigestsUtils;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.mapper.UserMapper;
 import com.cuit9622.olms.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author: lsh
@@ -40,6 +44,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Boolean updateUserContactInformationByUserName(String username, String phone, String email,String avatar) {
-        return mapper.updateByUserName(username, phone, email, avatar);
+        return mapper.updateContactByUserName(username, phone, email, avatar);
+    }
+
+    @Override
+    public Integer updatePassword(String oldPassword,String newPassword){
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        String oldHash=DigestsUtils.sha1(oldPassword,user.getSalt());
+        if(!StringUtils.equals(oldHash,user.getPassword())){
+            return -1;
+        }
+        Map<String,String> map=DigestsUtils.encrypt(newPassword);
+        user.setPassword(map.get("password"));
+        user.setSalt(map.get("salt"));
+        mapper.updateById(user);
+        return 1;
     }
 }

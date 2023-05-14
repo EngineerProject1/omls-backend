@@ -2,6 +2,7 @@ package com.cuit9622.olms.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.auth.util.JWTUtils;
+import com.cuit9622.common.exception.BizException;
 import com.cuit9622.common.model.R;
 import com.cuit9622.olms.annotation.DateAutoFill;
 import com.cuit9622.olms.entity.*;
@@ -90,7 +91,7 @@ public class StudentController {
     public R<List<Major>> getMajors(@PathVariable Long id) {
         List<Major> majors = majorService.selectMajorsByCollegeId(id);
         if(majors == null) {
-            return R.error(404,"查询专业信息失败");
+            throw new BizException(404,"查询专业信息失败");
         }
         return R.ok("查询专业信息成功",majors);
     }
