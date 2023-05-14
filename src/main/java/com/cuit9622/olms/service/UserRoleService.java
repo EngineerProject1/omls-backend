@@ -9,5 +9,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-05-13 00:25:42
 */
 public interface UserRoleService extends IService<UserRole> {
+    /**
+     * 通过userId查询该用户是否是管理员
+     * @param userId
+     * @return
+     */
+    UserRole getManagerByUserId(Long userId);
 
 }

@@ -7,6 +7,7 @@ import com.cuit9622.common.utils.DigestsUtils;
 import com.cuit9622.olms.entity.Student;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.entity.UserRole;
+import com.cuit9622.olms.mapper.UserRoleMapper;
 import com.cuit9622.olms.service.StudentService;
 import com.cuit9622.olms.mapper.StudentMapper;
 import com.cuit9622.olms.service.UserRoleService;
@@ -36,6 +37,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     private UserService userService;
     @Resource
     private UserRoleService userRoleService;
+    @Resource
+    private UserRoleMapper userRoleMapper;
 
     @Override
     public R<Page<StudentVo>> selectStudents(Integer pageSize, Integer page) {
@@ -47,6 +50,17 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     @Override
     public StudentVo getStudentInfoByUsername(String username) {
         StudentVo student = studentMapper.getStudentInfoByUsername(username);
+        // 如果存在该学生
+        if(student != null) {
+            Long userId = student.getId();
+            // 查询该学生是否为管理员
+            UserRole userRole = userRoleMapper.getManagerByUserId(userId);
+            // 如果是管理员，管理员标志设为1
+            if(userRole != null) {
+                student.setIsSetManager(1);
+            }
+            else student.setIsSetManager(0);
+        }
         log.info("用户名为{}的学生的信息为{}",username, student);
         return student;
     }
