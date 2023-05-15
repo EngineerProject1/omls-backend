@@ -45,6 +45,12 @@
                 where sys_major.id = sys_user_student.major_id
                   and sys_college.id = sys_major.college_id)                                     college_name
         from sys_user_student
+        <where>
+            <if test="model.name != null and model.name !='' ">
+                sys_user_student.student_name like concat('%',#{model.name},'%')
+            </if>
+        </where>
+
 
     </select>
     <select id="getStudentInfoByUsername" resultType="com.cuit9622.olms.vo.StudentVo">
