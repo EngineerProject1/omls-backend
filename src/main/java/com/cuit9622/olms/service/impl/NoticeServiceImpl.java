@@ -2,7 +2,6 @@ package com.cuit9622.olms.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cuit9622.common.model.R;
 import com.cuit9622.olms.entity.Notice;
 import com.cuit9622.olms.model.NoticeSelectModel;
 import com.cuit9622.olms.vo.NoticeVo;
@@ -29,7 +28,6 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice>
     public Page<NoticeVo> selectNotice(Integer pageSize, Integer page, NoticeSelectModel model) {
         Page<NoticeVo> pageInfo = new Page<>(page, pageSize);
         pageInfo = noticeMapper.page(pageInfo, model);
-
         return pageInfo;
     }
 }
