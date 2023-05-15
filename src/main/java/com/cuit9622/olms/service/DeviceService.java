@@ -16,7 +16,7 @@ public interface DeviceService extends IService<Device> {
      * @return
      * @Date 16:47 2023/5/11
      */
-    Page<DeviceVo> selectDevice(Integer pageSize, Integer page);
+    Page<DeviceVo> selectDevice(Integer pageSize, Integer page, String name, String status);
 
     /**
      * @Description 通过id获取设备信息
