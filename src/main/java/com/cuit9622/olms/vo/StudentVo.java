@@ -20,4 +20,10 @@ public class StudentVo extends Student{
      */
     @ApiModelProperty("是否设置为管理员")
     private int isSetManager;
+
+    /**
+     * 1:重置 0:不重置
+     */
+    @ApiModelProperty("是否重置密码")
+    private int isResetPwd;
 }
