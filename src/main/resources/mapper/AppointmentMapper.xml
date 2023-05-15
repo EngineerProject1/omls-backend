@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cuit9622.olms.mapper.AppointmentMapper">
+
+    <resultMap id="BaseResultMap" type="com.cuit9622.olms.vo.AppointVo">
+        <result property="labId" column="lab_id" jdbcType="INTEGER"/>
+        <result property="cur" column="cur" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="capacity" column="capacity" jdbcType="BIGINT"/>
+        <result property="location" column="location" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,start_time,end_time
+    </sql>
+    <select id="getTargetTypeAppointment" resultType="com.cuit9622.olms.vo.AppointVo">
+        select
+            sys_lab.id lab_id,
+            name,
+            capacity,
+            location,
+            `type`,
+            (
+                select
+                    count(*)
+                from
+                    sys_appointment
+                where
+                    sys_appointment.lab_id = sys_lab.id
+                  and sys_appointment.time_slot_id = #{slotId}
+                  and sys_appointment.book_time=DATE_ADD(CURRENT_DATE(), INTERVAL #{offsetDay} DAY)) cur
+        from
+            sys_lab
+        where `type`=#{type}
+    </select>
+</mapper>

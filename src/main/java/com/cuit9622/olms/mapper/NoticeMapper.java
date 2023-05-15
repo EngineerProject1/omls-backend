@@ -25,8 +25,6 @@ public interface NoticeMapper extends BaseMapper<Notice> {
      * @Date 16:46 2023/5/11
      */
     Page<NoticeVo> page(@Param("page") Page<NoticeVo> page, @Param("model") NoticeSelectModel model);
-
-
 }
 
 
