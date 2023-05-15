@@ -33,4 +33,12 @@ public interface UserMapper extends BaseMapper<User> {
      * @return Boolean
      */
     Boolean updateContactByUserName(@Param("username") String username, @Param("phone")String phone, @Param("email")String email, @Param("avatar")String avatar);
+
+    /**
+     * 通过学号sid获取用户id
+     * @param sid
+     * @return
+     */
+
+    Long getUserIdBySid(long sid);
 }

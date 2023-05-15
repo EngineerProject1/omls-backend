@@ -7,6 +7,7 @@ import com.cuit9622.common.utils.DigestsUtils;
 import com.cuit9622.olms.entity.Student;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.entity.UserRole;
+import com.cuit9622.olms.mapper.UserMapper;
 import com.cuit9622.olms.mapper.UserRoleMapper;
 import com.cuit9622.olms.service.StudentService;
 import com.cuit9622.olms.mapper.StudentMapper;
@@ -21,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,6 +43,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     private UserRoleService userRoleService;
     @Resource
     private UserRoleMapper userRoleMapper;
+    @Resource
+    private UserMapper userMapper;
 
     @Override
     public R<Page<StudentVo>> selectStudents(Integer pageSize, Integer page) {
@@ -137,6 +142,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     }
 
     @Override
+    @Transactional
     public void deleteWithUserAndRole(StudentVo studentVo) {
         // 在学生表中删除
         studentMapper.removeStudentBySid(studentVo.getSid());
@@ -146,6 +152,28 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
 
         // 在角色表中删除
         userRoleMapper.removeUserRoleByUserId(studentVo.getId());
+    }
+
+    @Override
+    @Transactional
+    public void deleteBatchWithUserAndRole(List<Integer> sids) {
+        List<Long> ids = new ArrayList<>();
+
+        for(int i = 0; i < sids.size(); i++) {
+            long sid = sids.get(i);
+            // 通过学生sid获取对应的用户id
+            long id = userMapper.getUserIdBySid(sid);
+            ids.add(id);
+
+            // 在角色表中删除
+            userRoleMapper.removeUserRoleByUserId(id);
+
+            // 在学生表中批量删除
+            studentMapper.removeStudentBySid(sid);
+        }
+
+        // 在用户表中批量删除
+        userService.removeBatchByIds(ids);
     }
 }
 
