@@ -28,6 +28,8 @@ public interface TeacherMapper extends BaseMapper<Teacher> {
     void saveTeacher(@Param("teacherVo") TeacherVo teacherVo);
 
     void updateTeacher(@Param("teacherVo") TeacherVo teacherVo);
+
+    void removeTeacherByTid(Long tid);
 }
 
 
