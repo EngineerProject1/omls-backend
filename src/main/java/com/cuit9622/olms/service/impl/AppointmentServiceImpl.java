@@ -15,9 +15,9 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
     AppointmentMapper appointmentMapper;
 
     @Override
-    public Page<AppointVo> getTargetTypeAppointment(Integer page, Integer pageSize, Integer slotId, String type, Integer offsetDay) {
+    public Page<AppointVo> getTargetTypeAppointment(Integer page, Integer pageSize, Long userId,Integer slotId, String type, Integer offsetDay) {
         Page<AppointVo> pageInfo = new Page<>(page, pageSize);
-        pageInfo = appointmentMapper.getTargetTypeAppointment(pageInfo, slotId, type, offsetDay);
+        pageInfo = appointmentMapper.getTargetTypeAppointment(pageInfo, userId,slotId, type, offsetDay);
         return pageInfo;
     }
 }

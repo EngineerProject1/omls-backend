@@ -8,5 +8,11 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface AppointmentMapper extends BaseMapper<AppointVo> {
-    Page<AppointVo> getTargetTypeAppointment(@Param("page") Page<AppointVo> page, @Param("slotId") Integer slotId, @Param("type") String type, @Param("offsetDay") Integer offsetDay);
+    Page<AppointVo> getTargetTypeAppointment(
+            @Param("page") Page<AppointVo> page,
+            @Param("userId") Long userId,
+            @Param("timeSlotId") Integer timeSlotId,
+            @Param("type") String type,
+            @Param("offsetDay") Integer offsetDay
+    );
 }
