@@ -33,4 +33,16 @@
                  INNER JOIN sys_user_teacher teacher ON teacher.tid = USER.username
         WHERE tid = #{username}
     </select>
+    <select id="page" resultType="com.cuit9622.olms.vo.TeacherVo">
+        select tid,
+               teacher_name,
+               college_id,
+               (select college_name from sys_college where sys_college.id = sys_user_teacher.college_id) college_name
+               from sys_user_teacher
+        <where>
+            <if test="model.name != null and model.name !='' ">
+                sys_user_teacher.teacher_name like concat('%',#{model.name},'%')
+            </if>
+        </where>
+    </select>
 </mapper>

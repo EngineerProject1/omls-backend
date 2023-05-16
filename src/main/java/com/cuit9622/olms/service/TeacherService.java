@@ -1,7 +1,9 @@
 package com.cuit9622.olms.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.olms.entity.Teacher;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.vo.TeacherVo;
 
 /**
@@ -18,4 +20,6 @@ public interface TeacherService extends IService<Teacher> {
      * @Date 18:23 2023/5/11
      */
     TeacherVo getTeacherInfoByUsername(String username);
+
+    Page<TeacherVo> selectTeachers(Integer pageSize, Integer page, UserSelectModel model);
 }
