@@ -19,11 +19,19 @@
         insert into sys_user_teacher(tid, teacher_name, college_id)
         values(#{teacherVo.tid},#{teacherVo.teacherName},#{teacherVo.collegeId})
     </insert>
+    <update id="updateTeacher">
+        update sys_user_teacher
+        set tid = #{teacherVo.tid},
+            teacher_name = #{teacherVo.teacherName},
+            college_id = #{teacherVo.collegeId}
+        where tid = #{teacherVo.tid}
+    </update>
     <select id="getTeacherInfoByUsername" resultType="com.cuit9622.olms.vo.TeacherVo">
         SELECT USER
                    .id,
                tid,
                teacher_name,
+               college_id,
                username,
                real_name,
                sex,
@@ -41,6 +49,7 @@
         select tid,
                teacher_name,
                college_id,
+               (select id from sys_user where sys_user.username = sys_user_teacher.tid) id,
                (select college_name from sys_college where sys_college.id = sys_user_teacher.college_id) college_name
                from sys_user_teacher
         <where>

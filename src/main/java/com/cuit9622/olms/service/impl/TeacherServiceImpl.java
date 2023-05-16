@@ -103,6 +103,37 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
         userRole.setRoleId(2L);
         userRoleService.save(userRole);
     }
+
+    @Transactional
+    @Override
+    public void updateWithUserAndRole(TeacherVo teacherVo) {
+        // 修改教师表信息
+        teacherMapper.updateTeacher(teacherVo);
+
+        // 修改用户表信息
+        // 重置密码
+        if(teacherVo.getIsResetPwd() == 1) {
+            Map<String,String> map = DigestsUtils.encrypt("olms123456");
+            String password = map.get("password");
+            String salt = map.get("salt");
+            teacherVo.setPassword(password);
+            teacherVo.setSalt(salt);
+        }
+        userService.updateById(teacherVo);
+
+        //修改角色表信息
+        UserRole manager = userRoleMapper.getManagerByUserId(teacherVo.getId());
+        // 设置为管理员
+        if(manager == null && teacherVo.getIsSetManager() == 1) {
+            UserRole userRole = new UserRole();
+            userRole.setUserId(teacherVo.getId());
+            userRole.setRoleId(1L);
+        }
+        // 取消管理员
+        if(manager != null && teacherVo.getIsSetManager() == 0) {
+            userRoleMapper.removeManagerByUserId(teacherVo.getId());
+        }
+    }
 }
 
 

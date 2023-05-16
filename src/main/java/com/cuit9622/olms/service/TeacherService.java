@@ -24,4 +24,6 @@ public interface TeacherService extends IService<Teacher> {
     Page<TeacherVo> selectTeachers(Integer pageSize, Integer page, UserSelectModel model);
 
     void saveWithUserAndRole(TeacherVo teacherVo);
+
+    void updateWithUserAndRole(TeacherVo teacherVo);
 }

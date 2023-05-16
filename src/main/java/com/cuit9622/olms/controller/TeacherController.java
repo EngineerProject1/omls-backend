@@ -66,4 +66,16 @@ public class TeacherController {
         teacherService.saveWithUserAndRole(teacherVo);
         return R.ok("添加教师信息成功");
     }
+
+    /**
+     * 在教师表、用户表、角色表中修改教师信息
+     * @param teacherVo
+     * @return
+     */
+    @PutMapping("/teacher")
+    @DateAutoFill(DateAutoFill.Type.UPDATE)
+    public R<String> updateStudent(@RequestBody TeacherVo teacherVo) {
+        teacherService.updateWithUserAndRole(teacherVo);
+        return R.ok("修改教师信息成功");
+    }
 }
