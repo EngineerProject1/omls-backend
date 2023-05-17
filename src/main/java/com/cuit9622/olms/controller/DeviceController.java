@@ -10,15 +10,14 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Parameter;
+
 
 /**
- * @Description:
+ * @Description: 设备控制类
  */
 @RestController
 @Slf4j(topic = "DeviceController")
@@ -34,7 +33,7 @@ public class DeviceController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageSize", value = "每页的条数", defaultValue = "5", required = true),
             @ApiImplicitParam(name = "page", value = "页码", defaultValue = "1", required = true),
-            @ApiImplicitParam(name = "name", value = "name", defaultValue = ""),
+            @ApiImplicitParam(name = "name", value = "名称", defaultValue = ""),
             @ApiImplicitParam(name = "status", value = "状态", defaultValue = "1")
     })
     public R<Page<DeviceVo>> getDeviceByPage(
@@ -48,13 +47,13 @@ public class DeviceController {
     }
 
     /**
+     * @Description 通过id获取设备信息
      * @param id 设备的id
      * @return
-     * @Description 通过id获取设备信息
      */
     @GetMapping("/device/{id}")
     @ApiOperation("通过id获取某个设备")
-    public R<DeviceVo> getDeviceById(@PathVariable("id") Long id) {
+    public R<DeviceVo> getDeviceById(@PathVariable("id") Long id){
 
         DeviceVo deviceDto = deviceService.getById(id);
         System.out.println(deviceDto);
@@ -62,9 +61,9 @@ public class DeviceController {
     }
 
     /**
+     * @Description 根据id修改设备信息
      * @param deviceVo 需要修改的设备信息
      * @return
-     * @Description 根据id修改设备信息
      * @Date 15:36 2023/5/10
      */
     @PutMapping("/auth/device")

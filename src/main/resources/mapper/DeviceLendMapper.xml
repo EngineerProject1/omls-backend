@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cuit9622.olms.mapper.DeviceLendMapper">
+
+    <resultMap id="BaseResultMap" type="com.cuit9622.olms.entity.DeviceLend">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="deviceId" column="device_id" jdbcType="BIGINT"/>
+            <result property="lendTime" column="lend_time" jdbcType="TIMESTAMP"/>
+            <result property="returnTime" column="return_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,device_id,
+        lend_time,
+        return_time
+    </sql>
+    <select id="getAppointmentLab" resultType="map">
+        select distinct(id), name from sys_lab where id in
+             (select distinct(lab_id) from sys_appointment
+                                      where status = '1'
+                                        and user_id = #{id}
+                                        and now() &lt;= concat(book_time, ' ', (select end_time from sys_time_slot where id = time_slot_id)));
+
+    </select>
+    <select id="page" resultType="com.cuit9622.olms.vo.DeviceVo">
+        select name, images, model, price, count(*) count
+        from sys_device
+        where
+            status = '0'
+            and lab_id = #{labId}
+            and name like concat('%', #{name}, '%')
+        group by model
+    </select>
+</mapper>
