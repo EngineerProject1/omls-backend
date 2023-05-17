@@ -30,4 +30,13 @@ public interface DeviceLendService extends IService<DeviceLend> {
      * @return
      */
     Page<DeviceVo> getDevice(Integer pageSize, Integer page, String name, Long labId);
+
+    /**
+     * @Description 设备信息的分页查找
+     * @param page 分页信息
+     * @param  name 设备名称
+     * @param  userId 用户id
+     * @return
+     */
+    Page<DeviceVo> getLendDevice(Integer pageSize, Integer page, String name, Long userId);
 }

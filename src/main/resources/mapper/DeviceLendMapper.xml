@@ -34,4 +34,11 @@
             and name like concat('%', #{name}, '%')
         group by model
     </select>
+    <select id="pageInLend" resultType="com.cuit9622.olms.vo.DeviceVo">
+        select name, images, price, model, count(*) count
+        from sys_device
+        where id in (select  device_id from sys_device_lend where user_id = #{userId} and return_time is null)
+          and name like concat('%', #{name}, '%')
+        group by model
+    </select>
 </mapper>

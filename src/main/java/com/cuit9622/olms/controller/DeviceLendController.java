@@ -59,4 +59,23 @@ public class DeviceLendController {
         Page<DeviceVo> info = deviceLendService.getDevice(pageSize, page, name, labId);
         return R.ok("获取成功", info);
     }
+
+
+    @GetMapping("/auth/deviceLend")
+    @ApiOperation("根据用户id和设备名称查询借用设备信息")
+    @RequiresRoles("teacher")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageSize", value = "每页的条数", defaultValue = "5", required = true),
+            @ApiImplicitParam(name = "page", value = "页码", defaultValue = "1", required = true),
+            @ApiImplicitParam(name = "name", value = "名称", defaultValue = ""),
+    })
+    public R<Page<DeviceVo>> getLendDevice(
+            @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "name", defaultValue = "") String name
+    ){
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        Page<DeviceVo> info = deviceLendService.getLendDevice(pageSize, page, name, user.getId());
+        return R.ok("获取成功", info);
+    }
 }

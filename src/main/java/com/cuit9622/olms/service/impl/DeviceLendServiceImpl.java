@@ -35,6 +35,13 @@ public class DeviceLendServiceImpl extends ServiceImpl<DeviceLendMapper, DeviceL
         Page<DeviceVo> devicePage = deviceLendMapper.page( pageInfo, name, lagId);
         return devicePage;
     }
+
+    @Override
+    public Page<DeviceVo> getLendDevice(Integer pageSize, Integer page, String name, Long userId) {
+        Page<DeviceVo> pageInfo = new Page<>(page, pageSize);
+        Page<DeviceVo> devicePage = deviceLendMapper.pageInLend( pageInfo, name, userId);
+        return devicePage;
+    }
 }
 
 
