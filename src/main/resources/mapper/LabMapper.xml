@@ -35,7 +35,7 @@
                  left join sys_user su on su.id = sl.master_id
         <where>
             <if test="model.name != null and model.name !='' ">
-                `name` like concat('%',#{model.title},'%')
+                `name` like concat('%',#{model.name},'%')
             </if>
         </where>
         <if test="(model.capacity != null and model.capacity != '') and (model.capacity == 'asc' or model.capacity =='desc' )">
