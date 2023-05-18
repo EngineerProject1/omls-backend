@@ -1,26 +1,29 @@
 package com.cuit9622.olms.service.impl;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cuit9622.common.utils.DigestsUtils;
-import com.cuit9622.olms.entity.Student;
-import com.cuit9622.olms.entity.User;
-import com.cuit9622.olms.entity.UserRole;
+import com.cuit9622.olms.entity.*;
 import com.cuit9622.olms.mapper.UserMapper;
 import com.cuit9622.olms.mapper.UserRoleMapper;
 import com.cuit9622.olms.model.UserSelectModel;
-import com.cuit9622.olms.service.StudentService;
+import com.cuit9622.olms.service.*;
 import com.cuit9622.olms.mapper.StudentMapper;
-import com.cuit9622.olms.service.UserRoleService;
-import com.cuit9622.olms.service.UserService;
 import com.cuit9622.olms.vo.StudentVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +46,10 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     private UserRoleMapper userRoleMapper;
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private CollegeService collegeService;
+    @Resource
+    private MajorService majorService;
 
     @Override
     public Page<StudentVo> selectStudents(Integer pageSize, Integer page, UserSelectModel model) {
@@ -174,6 +181,30 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         // 在用户表中批量删除
         userService.removeBatchByIds(ids);
     }
+
+    @Override
+    public void exportExcel(HttpServletResponse response) throws IOException {
+
+    }
+
+    @Override
+    public void importExcel() throws FileNotFoundException {
+        // 1.读取文件的流
+        File file = new File("d:/student.xlsx");
+        InputStream is = new FileInputStream(file);
+
+        // 2.创建一个读取监听器
+        StudentReadListener listener = new StudentReadListener();
+
+        EasyExcel.read(is,
+                StudentVo.class,
+                listener).sheet(0) // 读第几个工作表
+                .headRowNumber(1) // 列头占几行
+                .doRead();
+    }
+
+
+
 }
 
 

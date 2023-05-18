@@ -1,4 +1,6 @@
 package com.cuit9622.olms.vo;
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.cuit9622.olms.entity.Student;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,10 +10,13 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel("学生Vo")
+@ExcelIgnoreUnannotated
 public class StudentVo extends Student{
     @ApiModelProperty("专业名称")
+    @ExcelProperty(value = "专业",index = 3)
     private String majorName;
     @ApiModelProperty("学院名称")
+    @ExcelProperty(value="学院",index = 2)
     private String collegeName;
     @ApiModelProperty("学院id")
     private Long collegeId;
