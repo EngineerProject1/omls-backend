@@ -61,4 +61,22 @@
             </if>
         </where>
     </select>
+    <select id="getTeacherVos" resultType="com.cuit9622.olms.vo.TeacherVo">
+        SELECT USER
+                   .id,
+               tid,
+               teacher_name,
+               college_id,
+               username,
+               real_name,
+               sex,
+               (SELECT college_name FROM sys_college WHERE teacher.college_id = sys_college.id) college_name,
+               phone,
+               email,
+               avatar,
+               create_time,
+               update_time
+        FROM sys_user USER
+                 INNER JOIN sys_user_teacher teacher ON teacher.tid = USER.username
+    </select>
 </mapper>

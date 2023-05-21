@@ -1,5 +1,7 @@
 package com.cuit9622.olms.controller;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.common.model.R;
@@ -7,6 +9,7 @@ import com.cuit9622.olms.annotation.DateAutoFill;
 import com.cuit9622.olms.entity.Student;
 import com.cuit9622.olms.entity.Teacher;
 import com.cuit9622.olms.entity.User;
+import com.cuit9622.olms.mapper.TeacherMapper;
 import com.cuit9622.olms.model.DeleteModel;
 import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.service.TeacherService;
@@ -19,6 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.List;
 
 @RestController
 @Slf4j(topic = "TeacherController")
@@ -28,6 +35,8 @@ public class TeacherController {
     private TeacherService teacherService;
     @Resource
     private UserService userService;
+    @Resource
+    private TeacherMapper teacherMapper;
 
     @GetMapping("/teacher")
     @ApiOperation("教师信息分页查询的接口")
@@ -102,5 +111,25 @@ public class TeacherController {
     public R<String> deleteTeachersByids(@RequestBody DeleteModel model) {
         teacherService.deleteBatchWithUserAndRole(model.getIds());
         return R.ok("批量删除教师信息成功");
+    }
+
+    /**
+     * 导出教师信息为excel供用户下载
+     * @param response
+     * @throws IOException
+     */
+    @GetMapping ("/teacher/export")
+    public void exportExcel(HttpServletResponse response) throws IOException {
+        List<TeacherVo> list = teacherMapper.getTeacherVos();
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setCharacterEncoding("utf-8");
+        String fileName = URLEncoder.encode("教师信息表","UTF-8").replaceAll("\\+","%20");
+        response.setHeader("Content-disposition","attachment;filename="+fileName+".xlsx");
+
+        EasyExcel.write(response.getOutputStream())
+                .head(TeacherVo.class)
+                .excelType(ExcelTypeEnum.XLSX)
+                .sheet("教师信息表")
+                .doWrite(list);
     }
 }
