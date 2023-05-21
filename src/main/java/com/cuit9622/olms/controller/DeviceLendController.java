@@ -48,7 +48,7 @@ public class DeviceLendController {
             @ApiImplicitParam(name = "pageSize", value = "每页的条数", defaultValue = "5", required = true),
             @ApiImplicitParam(name = "page", value = "页码", defaultValue = "1", required = true),
             @ApiImplicitParam(name = "name", value = "名称", defaultValue = ""),
-            @ApiImplicitParam(name = "status", value = "状态", defaultValue = "1")
+            @ApiImplicitParam(name = "labId", value = "实验室Id", defaultValue = "1")
     })
     public R<Page<DeviceVo>> getDeviceByLab(
             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
