@@ -73,7 +73,7 @@ public class StudentController {
      * @return
      */
     @GetMapping("/student/{sid}")
-    @ApiOperation("通过id获取学生信息")
+    @ApiOperation("通过id获取学生信息的接口")
     public R<Student> getStudent(@PathVariable String sid) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getUsername, sid);
@@ -92,7 +92,7 @@ public class StudentController {
      * @return
      */
     @GetMapping("/student/college")
-    @ApiOperation("获取学院信息")
+    @ApiOperation("获取学院信息的接口")
     public R<List<College>> getColleges(){
         return R.ok("学院信息查询成功",collegeService.list());
     }
@@ -102,7 +102,7 @@ public class StudentController {
      * @return
      */
     @GetMapping("/student/major/{id}")
-    @ApiOperation("通过id获取学院所对应的专业信息")
+    @ApiOperation("通过id获取学院所对应的专业信息的接口")
     public R<List<Major>> getMajors(@PathVariable Long id) {
         List<Major> majors = majorService.selectMajorsByCollegeId(id);
         if(majors == null) {
@@ -117,6 +117,7 @@ public class StudentController {
      * @return
      */
     @GetMapping("/student/role/{id}")
+    @ApiOperation("通过学号获取用户角色的接口")
     public R<List<String>> getRoleId(@PathVariable Long id) {
         List<String> roles = userService.getUserRoleByName(id.toString());
         return R.ok("查询角色信息成功",roles);
@@ -128,6 +129,7 @@ public class StudentController {
      * @return
      */
     @PostMapping("/student")
+    @ApiOperation("添加学生信息的接口")
     @DateAutoFill(DateAutoFill.Type.INSERT)
     public R<String> addStudent(@RequestBody StudentVo studentVo) {
         studentService.saveWithUserAndRole(studentVo);
@@ -140,6 +142,7 @@ public class StudentController {
      * @return
      */
     @PutMapping("/student")
+    @ApiOperation("修改学生信息的接口")
     @DateAutoFill(DateAutoFill.Type.UPDATE)
     public R<String> updateStudent(@RequestBody StudentVo studentVo) {
         studentService.updateWithUserAndRole(studentVo);
@@ -152,6 +155,7 @@ public class StudentController {
      * @return
      */
     @DeleteMapping("/student")
+    @ApiOperation("删除学生信息的接口")
     @DateAutoFill(DateAutoFill.Type.UPDATE)
     public R<String> deleteStudent(@RequestBody StudentVo studentVo) {
         studentService.deleteWithUserAndRole(studentVo);
@@ -164,6 +168,7 @@ public class StudentController {
      * @return
      */
     @DeleteMapping("/students")
+    @ApiOperation("批量删除学生信息的接口")
     @DateAutoFill(DateAutoFill.Type.UPDATE)
     public R<String> deleteStudentsByids(@RequestBody DeleteModel model) {
         studentService.deleteBatchWithUserAndRole(model.getIds());
@@ -177,6 +182,7 @@ public class StudentController {
      * @throws IOException
      */
     @PostMapping("/student/import")
+    @ApiOperation("从excel导入学生信息的接口")
     public R<List<String>> importExcel(MultipartFile file) throws IOException {
         // 创建监听器
         StudentReadListener listener = new StudentReadListener(studentService,studentMapper,majorMapper,majorService);
@@ -195,6 +201,7 @@ public class StudentController {
      * @throws IOException
      */
     @GetMapping ("/student/export")
+    @ApiOperation("导出学生信息为excel的接口")
     public void exportExcel(HttpServletResponse response) throws IOException {
         List<StudentVo> list = studentMapper.getStudentVos();
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");

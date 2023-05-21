@@ -3,9 +3,12 @@ package com.cuit9622.olms.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.olms.entity.Teacher;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cuit9622.olms.entity.TeacherReadListener;
 import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.vo.TeacherVo;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -55,4 +58,6 @@ public interface TeacherService extends IService<Teacher> {
      * @param tids 教师tid列表
      */
     void deleteBatchWithUserAndRole(List<Integer> tids);
+
+    void importExcel(MultipartFile file, TeacherReadListener listener) throws IOException;
 }

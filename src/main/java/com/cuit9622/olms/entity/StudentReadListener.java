@@ -18,6 +18,7 @@ import java.util.List;
 
 @Slf4j
 public class StudentReadListener implements ReadListener<StudentVo> {
+    // 封装学生信息列表
     List<StudentVo> list = new ArrayList<>();
     private StudentMapper studentMapper;
 
@@ -26,9 +27,9 @@ public class StudentReadListener implements ReadListener<StudentVo> {
     private StudentService studentService;
 
     private MajorService majorService;
-
+    // 错误信息列表
     private List<String> info = new ArrayList<>();
-
+    // 校验通过标识
     private boolean flag = true;
 
 
@@ -106,7 +107,7 @@ public class StudentReadListener implements ReadListener<StudentVo> {
 
         // 检验性别
         String sex = studentVo.getSex();
-        if(sex == null || sex == "") {
+        if(sex == null || sex.equals("")) {
             singleFlag = false;
             flag = false;
             error += "  [性别不存在]";

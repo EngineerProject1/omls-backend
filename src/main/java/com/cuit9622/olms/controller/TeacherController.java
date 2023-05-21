@@ -6,12 +6,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.common.model.R;
 import com.cuit9622.olms.annotation.DateAutoFill;
-import com.cuit9622.olms.entity.Student;
-import com.cuit9622.olms.entity.Teacher;
-import com.cuit9622.olms.entity.User;
+import com.cuit9622.olms.entity.*;
 import com.cuit9622.olms.mapper.TeacherMapper;
 import com.cuit9622.olms.model.DeleteModel;
 import com.cuit9622.olms.model.UserSelectModel;
+import com.cuit9622.olms.service.CollegeService;
 import com.cuit9622.olms.service.TeacherService;
 import com.cuit9622.olms.service.UserService;
 import com.cuit9622.olms.vo.StudentVo;
@@ -20,6 +19,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +37,8 @@ public class TeacherController {
     private UserService userService;
     @Resource
     private TeacherMapper teacherMapper;
+    @Resource
+    private CollegeService collegeService;
 
     @GetMapping("/teacher")
     @ApiOperation("教师信息分页查询的接口")
@@ -71,6 +73,7 @@ public class TeacherController {
      * @return
      */
     @PostMapping("/teacher")
+    @ApiOperation("增添教师信息的接口")
     @DateAutoFill(DateAutoFill.Type.INSERT)
     public R<String> addTeacher(@RequestBody TeacherVo teacherVo) {
         teacherService.saveWithUserAndRole(teacherVo);
@@ -83,8 +86,9 @@ public class TeacherController {
      * @return
      */
     @PutMapping("/teacher")
+    @ApiOperation("修改教师信息的接口")
     @DateAutoFill(DateAutoFill.Type.UPDATE)
-    public R<String> updateStudent(@RequestBody TeacherVo teacherVo) {
+    public R<String> updateTeacher(@RequestBody TeacherVo teacherVo) {
         teacherService.updateWithUserAndRole(teacherVo);
         return R.ok("修改教师信息成功");
     }
@@ -95,6 +99,7 @@ public class TeacherController {
      * @return
      */
     @DeleteMapping("/teacher")
+    @ApiOperation("删除教师信息的接口")
     @DateAutoFill(DateAutoFill.Type.UPDATE)
     public R<String> deleteTeacher(@RequestBody TeacherVo teacherVo) {
         teacherService.deleteWithUserAndRole(teacherVo);
@@ -107,6 +112,7 @@ public class TeacherController {
      * @return
      */
     @DeleteMapping("/teachers")
+    @ApiOperation("批量删除教师信息的接口")
     @DateAutoFill(DateAutoFill.Type.UPDATE)
     public R<String> deleteTeachersByids(@RequestBody DeleteModel model) {
         teacherService.deleteBatchWithUserAndRole(model.getIds());
@@ -119,6 +125,7 @@ public class TeacherController {
      * @throws IOException
      */
     @GetMapping ("/teacher/export")
+    @ApiOperation("将教师信息导出为excel")
     public void exportExcel(HttpServletResponse response) throws IOException {
         List<TeacherVo> list = teacherMapper.getTeacherVos();
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -131,5 +138,25 @@ public class TeacherController {
                 .excelType(ExcelTypeEnum.XLSX)
                 .sheet("教师信息表")
                 .doWrite(list);
+    }
+
+    /**
+     * 从用户上传的Excel文件导入教师信息
+     * @param file excel文件
+     * @return
+     * @throws IOException
+     */
+    @PostMapping("/teacher/import")
+    @ApiOperation("从excel导入教师信息的接口")
+    public R<List<String>> importExcel(MultipartFile file) throws IOException {
+        // 创建监听器
+        TeacherReadListener listener = new TeacherReadListener(teacherService,teacherMapper,collegeService );
+        teacherService.importExcel(file,listener);
+        // 如果有错误信息
+        if(listener.isFlag() == false) {
+            return R.ok("校验错误",listener.getInfo());
+        }
+        // 无错误信息
+        else return R.ok("校验通过");
     }
 }
