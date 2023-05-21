@@ -23,13 +23,36 @@ public interface TeacherService extends IService<Teacher> {
      */
     TeacherVo getTeacherInfoByUsername(String username);
 
+    /**
+     * 教师分页查询
+     * @param pageSize 条数
+     * @param page 第几页
+     * @param model 搜索条件
+     * @return
+     */
     Page<TeacherVo> selectTeachers(Integer pageSize, Integer page, UserSelectModel model);
 
+    /**
+     * 在教师表、用户表、角色表中添加教师信息
+     * @param teacherVo TeacherVo对象
+     */
     void saveWithUserAndRole(TeacherVo teacherVo);
 
+    /**
+     * 在教师表、用户表、角色表中修改教师信息
+     * @param teacherVo TeacherVo对象
+     */
     void updateWithUserAndRole(TeacherVo teacherVo);
 
+    /**
+     * 在教师表、用户表、角色表中删除教师信息
+     * @param teacherVo TeacherVo对象
+     */
     void deleteWithUserAndRole(TeacherVo teacherVo);
 
-    void deleteBatchWithUserAndRole(List<Integer> ids);
+    /**
+     * 通过tid在教师表、用户表、角色表中批量删除教师信息
+     * @param tids 教师tid列表
+     */
+    void deleteBatchWithUserAndRole(List<Integer> tids);
 }

@@ -1,5 +1,6 @@
 package com.cuit9622.olms.entity;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -34,6 +35,7 @@ public class User {
     private String realName;
 
     @ApiModelProperty("性别")
+    @ExcelProperty(value="性别",index=2)
     private String sex;
 
     @ApiModelProperty("手机号")

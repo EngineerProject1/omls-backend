@@ -1,6 +1,7 @@
 package com.cuit9622.olms.vo;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.cuit9622.olms.entity.Student;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -13,10 +14,12 @@ import lombok.EqualsAndHashCode;
 @ExcelIgnoreUnannotated
 public class StudentVo extends Student{
     @ApiModelProperty("专业名称")
-    @ExcelProperty(value = "专业",index = 3)
+    @ColumnWidth(15)
+    @ExcelProperty(value = "专业",index = 4)
     private String majorName;
     @ApiModelProperty("学院名称")
-    @ExcelProperty(value="学院",index = 2)
+    @ColumnWidth(15)
+    @ExcelProperty(value="学院",index = 3)
     private String collegeName;
     @ApiModelProperty("学院id")
     private Long collegeId;

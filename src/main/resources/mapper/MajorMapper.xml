@@ -17,4 +17,9 @@
     <select id="selectListByCollegeId" resultType="com.cuit9622.olms.entity.Major">
         select id, major_name, college_id from sys_major where college_id = #{id}
     </select>
+    <select id="selectCollegeByMajorName" resultType="com.cuit9622.olms.entity.College">
+        select * from sys_college
+                 where id = (select college_id from sys_major where major_name = #{majorName})
+
+    </select>
 </mapper>

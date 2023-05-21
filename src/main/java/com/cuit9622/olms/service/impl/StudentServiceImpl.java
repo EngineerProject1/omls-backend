@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -181,20 +182,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         // 在用户表中批量删除
         userService.removeBatchByIds(ids);
     }
-
+    @Transactional
     @Override
-    public void exportExcel(HttpServletResponse response) throws IOException {
-
-    }
-
-    @Override
-    public void importExcel() throws FileNotFoundException {
+    public void importExcel(MultipartFile file,StudentReadListener listener) throws IOException {
         // 1.读取文件的流
-        File file = new File("d:/student.xlsx");
-        InputStream is = new FileInputStream(file);
+        InputStream is = file.getInputStream();
 
         // 2.创建一个读取监听器
-        StudentReadListener listener = new StudentReadListener();
+//        StudentReadListener listener = new StudentReadListener(studentMapper);
 
         EasyExcel.read(is,
                 StudentVo.class,
