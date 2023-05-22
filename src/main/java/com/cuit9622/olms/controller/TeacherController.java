@@ -4,6 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cuit9622.common.exception.BizException;
 import com.cuit9622.common.model.R;
 import com.cuit9622.olms.annotation.DateAutoFill;
 import com.cuit9622.olms.entity.*;
@@ -13,7 +14,6 @@ import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.service.CollegeService;
 import com.cuit9622.olms.service.TeacherService;
 import com.cuit9622.olms.service.UserService;
-import com.cuit9622.olms.vo.StudentVo;
 import com.cuit9622.olms.vo.TeacherVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j(topic = "TeacherController")
@@ -45,6 +46,23 @@ public class TeacherController {
     public R<Page<TeacherVo>> getTeachers(UserSelectModel model) {
         Page<TeacherVo> info = teacherService.selectTeachers(model.getPageSize(), model.getPage(), model);
         return R.ok("查询教师信息成功", info);
+    }
+
+    /**
+     * @Description 查询所有教师的姓名和id
+     * @param
+     * @return
+     * @Date 20:59 2023/5/22
+     */
+    @GetMapping("/teacher/names")
+    @ApiOperation("查询所有教师的名字和id")
+    public R<List<Map<Long, String>>> getTeacherNameAndId(){
+        List<Map<Long, String>> teachers = teacherService.getStudentNameAndId();
+        if (teachers == null || teachers.size() == 0){
+            throw new BizException("查询教师名字失败");
+        }
+        return R.ok("查询教师姓名成功", teachers);
+
     }
 
     /**

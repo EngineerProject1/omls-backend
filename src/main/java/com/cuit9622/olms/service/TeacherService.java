@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description 教师接口
@@ -60,4 +61,12 @@ public interface TeacherService extends IService<Teacher> {
     void deleteBatchWithUserAndRole(List<Integer> tids);
 
     void importExcel(MultipartFile file, TeacherReadListener listener) throws IOException;
+
+
+    /**
+     * @Description 获取所有教师的名字和姓名
+     * @return
+     * @Date 20:59 2023/5/22
+     */
+    List<Map<Long, String>> getStudentNameAndId();
 }
