@@ -12,9 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -78,4 +77,23 @@ public class DeviceLendController {
         Page<DeviceVo> info = deviceLendService.getLendDevice(pageSize, page, name, user.getId());
         return R.ok("获取成功", info);
     }
+
+    /**
+     * @Description 根据id修改设备信息
+     * @param deviceVo 需要修改的设备信息
+     * @return
+     * @Date 15:36 2023/5/10
+     */
+    @PutMapping("/auth/deviceReturn")
+    @ApiOperation("修改某个设备")
+    @RequiresRoles("admin")
+    public R<String> returnDevice(@RequestBody DeviceVo deviceVo) {
+        Integer count = deviceLendService.returnDeviceByModel(deviceVo);
+        if (count == 2) {
+            return R.ok("归还成功");
+        } else {
+            return R.ok("归还失败");
+        }
+    }
+
 }

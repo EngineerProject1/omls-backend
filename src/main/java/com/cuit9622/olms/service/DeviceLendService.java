@@ -39,4 +39,11 @@ public interface DeviceLendService extends IService<DeviceLend> {
      * @return
      */
     Page<DeviceVo> getLendDevice(Integer pageSize, Integer page, String name, Long userId);
+
+    /**
+     * @Description 根据型号归还设备(逐一归还)
+     * @param deviceVo 设备信息
+     * @return
+     */
+    Integer returnDeviceByModel(DeviceVo deviceVo);
 }

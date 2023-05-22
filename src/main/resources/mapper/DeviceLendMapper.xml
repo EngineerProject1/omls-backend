@@ -17,6 +17,12 @@
         lend_time,
         return_time
     </sql>
+    <update id="returnDeviceById">
+        update sys_device set status = '0' where id = #{id};
+    </update>
+    <update id="updateReturnTime">
+        update sys_device_lend set return_time = now() where device_id = #{id};
+    </update>
     <select id="getAppointmentLab" resultType="map">
         select distinct(id), name from sys_lab where id in
              (select distinct(lab_id) from sys_appointment
@@ -40,5 +46,8 @@
         where id in (select  device_id from sys_device_lend where user_id = #{userId} and return_time is null)
           and name like concat('%', #{name}, '%')
         group by model
+    </select>
+    <select id="getDeviceIdLong" resultType="java.lang.Long">
+        select id from sys_device where model = #{deviceVo.model} and name = #{deviceVo.name} and `status` = '2' limit 1;
     </select>
 </mapper>

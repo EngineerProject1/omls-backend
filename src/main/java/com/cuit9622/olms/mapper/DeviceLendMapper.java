@@ -43,6 +43,28 @@ public interface DeviceLendMapper extends BaseMapper<DeviceLend> {
      * @return
      */
     Page<DeviceVo> pageInLend(@Param("page") Page<DeviceVo> page, @Param("name") String name, @Param("userId") Long userId);
+
+    /**
+     * @Description 根据型号归还设备(逐一归还) 将设备状态改为可用
+     * @param id 设备id
+     * @return
+     */
+    Integer returnDeviceById(@Param("id") Long id);
+
+    /**
+     * @Description 对应sys_device_lend中应该改变时间状态
+     * @param id 设备id
+     * @return
+     */
+    Integer updateReturnTime(@Param("id") Long id);
+
+
+    /**
+     * @Description 获取休要修改的设备id
+     * @param deviceVo 设备信息
+     * @return
+     */
+    Long getDeviceIdLong(@Param("deviceVo") DeviceVo deviceVo);
 }
 
 

@@ -42,6 +42,20 @@ public class DeviceLendServiceImpl extends ServiceImpl<DeviceLendMapper, DeviceL
         Page<DeviceVo> devicePage = deviceLendMapper.pageInLend( pageInfo, name, userId);
         return devicePage;
     }
+
+    @Override
+    public Integer returnDeviceByModel(DeviceVo deviceVo) {
+        //先得到要修改状态的设备id
+        Long deviceId = deviceLendMapper.getDeviceIdLong(deviceVo);
+
+        Integer count = 0;
+        //修改sys_device_lend中的归还时间
+        count = deviceLendMapper.updateReturnTime(deviceId);
+        //修改sys_device中的status
+        count += deviceLendMapper.returnDeviceById(deviceId);
+
+        return count;
+    }
 }
 
 
