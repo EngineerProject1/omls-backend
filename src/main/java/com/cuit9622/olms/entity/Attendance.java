@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 /**
@@ -25,12 +27,14 @@ public class Attendance implements Serializable {
      * 考勤人员
      */
     @TableField(value = "user_id")
+    @JsonIgnore
     private Long userId;
 
     /**
      * 预约记录id
      */
     @TableField(value = "appointment_id")
+    @JsonIgnore
     private Long appointmentId;
 
     /**
@@ -49,14 +53,13 @@ public class Attendance implements Serializable {
      * 考勤创建时间
      */
     @TableField(value = "create_time")
+    @JsonIgnore
     private Date createTime;
 
     /**
      * 考勤修改时间
      */
     @TableField(value = "update_time")
+    @JsonIgnore
     private Date updateTime;
-
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
 }

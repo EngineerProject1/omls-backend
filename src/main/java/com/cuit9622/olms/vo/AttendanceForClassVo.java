@@ -8,9 +8,10 @@ import java.sql.Date;
 import java.sql.Time;
 
 @Data
-public class AttendanceVo extends Attendance {
+public class AttendanceForClassVo extends Attendance {
     private String experimentName;
     private String labName;
+    private Integer classNumber;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date bookTime;
     private Time startTime;
