@@ -38,5 +38,5 @@ public interface DeviceService extends IService<Device> {
      * @param deviceVo
      * @return
      */
-    Integer insertOne(DeviceVo deviceVo);
+    Integer insertOne(Device device);
 }

@@ -16,9 +16,9 @@
 
     <insert id="insertOne">
         insert sys_device ( name, price, lab_id, model, images)
-        values(#{deviceVo.name}, #{deviceVo.price},
-               (select id from sys_lab where name = #{deviceVo.labName}),
-               #{deviceVo.model}, #{deviceVo.images});
+        values(#{device.name}, #{device.price},
+               #{device.labId},
+               #{device.model}, #{device.images});
     </insert>
 
     <update id="updateById">

@@ -80,13 +80,14 @@ public class DeviceLendController {
 
     /**
      * @Description 逐一归还设备
-     * @param deviceVo 需要修改的设备信息
+     * @param deviceVo 需要归还的设备信息
      * @return
      */
     @PutMapping("/auth/deviceReturn")
     @ApiOperation("归还设备（单一）")
     @RequiresRoles("teacher")
     public R<String> returnDevice(@RequestBody DeviceVo deviceVo) {
+
         Integer count = deviceLendService.returnDeviceByModel(deviceVo);
 
         if (count == 2) {
@@ -96,4 +97,26 @@ public class DeviceLendController {
         }
     }
 
+    /**
+     * @Description 逐一归还设备
+     * @param deviceVos 需要归还的设备信息
+     * @return
+     */
+    @PutMapping("/auth/deviceReturnAll")
+    @ApiOperation("一键归还")
+    @RequiresRoles("teacher")
+    public R<String> returnDeviceAll(@RequestBody List<DeviceVo> deviceVos) {
+
+        for (int i = 0; i < deviceVos.size(); i++) {
+            System.out.println(deviceVos.get(i));
+        }
+//        Integer count = deviceLendService.returnDeviceByModel(deviceVo);
+//
+//        if (count == 2) {
+//            return R.ok("归还成功");
+//        } else {
+//            return R.ok("归还失败");
+//        }
+        return null;
+    }
 }

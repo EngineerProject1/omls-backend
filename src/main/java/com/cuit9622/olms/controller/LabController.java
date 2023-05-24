@@ -17,6 +17,7 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Author: lsh
@@ -47,6 +48,16 @@ public class LabController {
         return R.ok("查询实验室信息成功", page);
     }
 
+    /**
+     * @Description 查询所有实验室
+     * @return
+     */
+    @GetMapping("/allLab")
+    @ApiOperation("实验室查询分页查询的接口")
+    public R<List<Lab>> getAllLab() {
+        List<Lab> labs = labService.getBaseMapper().selectList(null);
+        return R.ok("查询实验室信息成功", labs);
+    }
     /**
      * @Description 根据id删除实验室信息
      * @param id

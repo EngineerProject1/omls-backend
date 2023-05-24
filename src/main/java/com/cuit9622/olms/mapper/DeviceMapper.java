@@ -38,9 +38,9 @@ public interface DeviceMapper extends BaseMapper<Device> {
 
     /**
      * @Description 新增设备信息
-     * @param deviceVo
+     * @param device
      * @return
      */
-    Integer insertOne(@Param("deviceVo") DeviceVo deviceVo);
+    Integer insertOne(@Param("device") Device device);
 
 }

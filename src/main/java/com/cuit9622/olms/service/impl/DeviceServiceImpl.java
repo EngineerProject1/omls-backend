@@ -38,8 +38,8 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     }
 
     @Override
-    public Integer insertOne(DeviceVo deviceVo) {
-        return deviceMapper.insertOne(deviceVo);
+    public Integer insertOne(Device device) {
+        return deviceMapper.insertOne(device);
     }
 
 
