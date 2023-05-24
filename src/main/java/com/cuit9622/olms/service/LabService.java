@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.cuit9622.olms.model.LabSelectModel;
 import com.cuit9622.olms.vo.LabVo;
 
+import java.util.List;
+
 /**
 * @author 刘世浩
 * @description 针对表【sys_lab(实验室表)】的数据库操作Service
@@ -22,4 +24,20 @@ public interface LabService extends IService<Lab> {
      * @Date 16:08 2023/5/15
      */
     Page<LabVo> listByPage(Page<LabVo> page, LabSelectModel model);
+
+    /**
+     * @Description 删除实验室
+     * @param id 根据id删除实验室
+     * @return
+     * @Date 14:44 2023/5/24
+     */
+    void deleteLab(Integer id);
+
+    /**
+     * @Description 批量删除实验室
+     * @param id
+     * @return
+     * @Date 14:57 2023/5/24
+     */
+    void deleteLabs(List<Integer> id);
 }
