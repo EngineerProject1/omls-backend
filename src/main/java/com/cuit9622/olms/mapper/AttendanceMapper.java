@@ -20,5 +20,5 @@ public interface AttendanceMapper extends BaseMapper<Attendance> {
     Page<AttendanceForPersonVo> getTargetAttendanceForPerson(@Param("page") Page<AttendanceForPersonVo> page, @Param("userId") Integer userId);
     Page<AttendanceForClassVo> getTargetAttendanceForClass(@Param("page") Page<AttendanceForClassVo> page, @Param("userId") Integer userId);
     Page<AttendanceForAppointmentVo> getAttendanceForTargetAppointment(@Param("page") Page<AttendanceForAppointmentVo> page,@Param("appointmentId") Integer appointmentId);
-
+    Integer autoAttendance();
 }
