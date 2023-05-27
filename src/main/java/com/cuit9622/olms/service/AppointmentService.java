@@ -16,5 +16,5 @@ public interface AppointmentService extends IService<AppointVo> {
 
     Boolean addAppointment(User user, AppointmentUpdateModel data);
 
-    Page<AttendanceManagerVo> selectAppointmentUser(User user, Integer pageSize, Integer page, UserSelectModel model) throws ParseException;
+    Page<AttendanceManagerVo> selectAppointmentUser(Long labId,Integer pageSize, Integer page, UserSelectModel model) throws ParseException;
 }

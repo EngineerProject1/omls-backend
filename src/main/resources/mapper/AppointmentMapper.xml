@@ -169,9 +169,12 @@
                   and lab_id = sys_lab.id)
     </select>
     <select id="selectAppointmentUser" resultType="com.cuit9622.olms.vo.AttendanceManagerVo">
-        select  real_name,
+        select  app.id,
+                app.user_id,
+                real_name,
                 username,
-                experiment_name
+                experiment_name,
+                (select `status` from sys_attendance where sys_attendance.appointment_id = app.id and sys_attendance.user_id = sys_user.id) `status`
                 from  sys_appointment app, sys_user
                     where app.user_id = sys_user.id
                     and app.lab_id = #{labId}
