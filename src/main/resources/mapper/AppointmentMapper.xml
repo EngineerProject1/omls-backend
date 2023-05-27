@@ -168,4 +168,17 @@
                   and (`type` = '1' or user_id=#{userId})
                   and lab_id = sys_lab.id)
     </select>
+    <select id="selectAppointmentUser" resultType="com.cuit9622.olms.vo.AttendanceManagerVo">
+        select  real_name,
+                username,
+                experiment_name
+                from  sys_appointment app, sys_user
+                    where app.user_id = sys_user.id
+                    and app.lab_id = #{labId}
+                    and app.time_slot_id = #{slotId}
+                    and app.book_time = #{day}
+        <if test="model.name != null and model.name !='' ">
+            and sys_user.real_name like concat('%',#{model.name},'%')
+        </if>
+    </select>
 </mapper>
