@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @Slf4j(topic = "LabController")
-@Api("实验室相关接口")
+@Api(tags = "实验室相关接口")
 public class LabController {
 
     @Resource

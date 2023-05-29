@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 @Slf4j(topic = "DeviceServiceImpl")
@@ -40,6 +41,11 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     @Override
     public Integer insertOne(Device device) {
         return deviceMapper.insertOne(device);
+    }
+
+    @Override
+    public List<DeviceVo> getAllDevice() {
+        return deviceMapper.getDevices();
     }
 
 
