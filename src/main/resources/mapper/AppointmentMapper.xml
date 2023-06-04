@@ -69,6 +69,8 @@
             and (`type` = '1' or user_id = #{data.userId} )
             and lab_id = #{data.labId})
           and exists(select * from sys_lab where id=#{data.labId} and status="0")
+          and not exists (select * from sys_appointment where
+            sys_appointment.user_id=#{data.userId} and sys_appointment.book_time=DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day) and sys_appointment.time_slot_id=#{data.timeSlotId})
     </insert>
     <insert id="addAppointmentForClass">
         insert
@@ -127,6 +129,8 @@
                 and time_slot_id = #{data.timeSlotId}
                 and lab_id = #{data.labId})=0
             and exists(select * from sys_lab where id=#{data.labId} and status="0")
+            and not exists (select * from sys_appointment where
+                sys_appointment.class_number=#{data.classNumber} and sys_appointment.book_time=DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day) and sys_appointment.time_slot_id=#{data.timeSlotId})
     </insert>
     <select id="getTargetTypeAppointment" resultType="com.cuit9622.olms.vo.AppointVo">
         select
@@ -169,19 +173,59 @@
                   and lab_id = sys_lab.id)
     </select>
     <select id="selectAppointmentUser" resultType="com.cuit9622.olms.vo.AttendanceManagerVo">
-        select  app.id,
-                app.user_id,
-                real_name,
-                username,
-                experiment_name,
-                (select `status` from sys_attendance where sys_attendance.appointment_id = app.id and sys_attendance.user_id = sys_user.id) `status`
-                from  sys_appointment app, sys_user
-                    where app.user_id = sys_user.id
-                    and app.lab_id = #{labId}
-                    and app.time_slot_id = #{slotId}
-                    and app.book_time = #{day}
+        select * from(
+        select
+        app.id,
+        app.user_id,
+        real_name,
+        username,
+        experiment_name,
+        (
+        select
+        `status`
+        from
+        sys_attendance
+        where
+        sys_attendance.appointment_id = app.id
+        and sys_attendance.user_id = sys_user.id) `status`,
+        0 `type`
+        from
+        sys_appointment app,
+        sys_user
+        where
+        app.user_id = sys_user.id
+        and app.lab_id = #{labId}
+        and app.time_slot_id = #{slotId}
+        and app.book_time = #{day}
+        and app.`type`="0"
+        union all
+        select
+        sys_user.id,
+        app.id user_id,
+        student_name real_name,
+        sid user_name,
+        experiment_name,
+        (
+        select
+        `status`
+        from
+        sys_attendance
+        where
+        sys_attendance.appointment_id = app.id
+        and sys_attendance.user_id = sys_user.id) `status`,
+        1 `type`
+        from
+        sys_appointment app
+        inner join sys_user_student student on student.class_number = app.class_number
+        inner join sys_user on sys_user.username = sid
+        where
+        app.lab_id = #{labId}
+        and app.time_slot_id = #{slotId}
+        and app.book_time = #{day}
+        and app.`type`="1"
+        ) as T
         <if test="model.name != null and model.name !='' ">
-            and sys_user.real_name like concat('%',#{model.name},'%')
+            where T.real_name like concat('%',#{model.name}, '%')
         </if>
     </select>
 </mapper>
