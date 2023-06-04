@@ -49,6 +49,11 @@ public class AttendanceManagerController {
         Page<AttendanceManagerVo> info = appointmentService.selectAppointmentUser(id,model.getPageSize(),model.getPage(),model);
         return R.ok("查询考勤信息成功", info);
     }
+
+    /**
+     * 获取当前教师管理的实验室
+     * @return
+     */
     @GetMapping("/auth/getLabs")
     public R<List<Lab>> getLabs() {
         // 拿到当前登录用户
@@ -59,12 +64,23 @@ public class AttendanceManagerController {
         return R.ok("查询实验室信息成功",labs);
     }
 
+    /**
+     * 添加一条考勤信息
+     * @param attendance
+     * @return
+     */
     @PostMapping("/attendanceManager")
     @DateAutoFill(DateAutoFill.Type.INSERT)
     public R<String> addAttendance(@RequestBody Attendance attendance) {
         attendanceService.save(attendance);
         return R.ok("添加考勤信息成功");
     }
+
+    /**
+     * 修改考勤状态
+     * @param attendance
+     * @return
+     */
     @PutMapping("/attendanceManager")
     @DateAutoFill(DateAutoFill.Type.UPDATE)
     public R<String> updateAttendance(@RequestBody Attendance attendance) {
