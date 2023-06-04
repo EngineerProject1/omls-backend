@@ -36,11 +36,7 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
     @Resource
     UserMapper userMapper;
     @Resource
-    TeacherMapper teacherMapper;
-    @Resource
     StudentMapper studentMapper;
-    @Resource
-    private LabService labService;
     @Resource
     private TimeSlotService timeSlotService;
 
@@ -58,15 +54,15 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
         if (data.getOffsetDay() <= 0 || data.getOffsetDay() > 7) {
             throw new BizException("预约失败");
         }
-        String role = userMapper.getUserRoleInfoByUsername(user.getUsername()).get(0);
-        if (role.equals("teacher")) {
+        List<String> roles = userMapper.getUserRoleInfoByUsername(user.getUsername());
+        if (roles.contains("teacher")) {
             data.setMajorId(null);
             if (data.getType().equals("1")) {
                 count = appointmentMapper.addAppointmentForClass(data);
             }else {
                 count = appointmentMapper.addAppointmentForIndividual(data);
             }
-        } else if (role.equals("student")) {
+        } else if (roles.contains("student")) {
             Student student = studentMapper.getStudentInfoByUsername(user.getUsername());
             data.setClassNumber(null);
             data.setMajorId(Integer.parseInt(student.getMajorId().toString()));
