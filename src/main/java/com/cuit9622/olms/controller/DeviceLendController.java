@@ -80,6 +80,26 @@ public class DeviceLendController {
     }
 
     /**
+     * @Description 逐一借用设备
+     * @param deviceVo 需要借用的设备信息
+     * @return
+     */
+    @PutMapping("/auth/deviceLend")
+    @ApiOperation("借用设备")
+    @RequiresRoles("teacher")
+    public R<String> lendDevice(@RequestBody DeviceVo deviceVo) {
+        // 获取当前用户信息
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        Integer count = deviceLendService.lendDeviceByModel(deviceVo, user.getId());
+
+        if (count == 2) {
+            return R.ok("借用成功");
+        } else {
+            return R.ok("借用失败");
+        }
+    }
+
+    /**
      * @Description 逐一归还设备
      * @param deviceVo 需要归还的设备信息
      * @return

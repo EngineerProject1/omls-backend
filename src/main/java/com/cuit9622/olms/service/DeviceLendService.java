@@ -1,6 +1,7 @@
 package com.cuit9622.olms.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cuit9622.olms.entity.Device;
 import com.cuit9622.olms.entity.DeviceLend;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cuit9622.olms.vo.DeviceVo;
@@ -46,4 +47,12 @@ public interface DeviceLendService extends IService<DeviceLend> {
      * @return
      */
     Integer returnDeviceByModel(DeviceVo deviceVo);
+
+    /**
+     * @Description 根据设备信息借用设备
+     * @param deviceVo 设备信息
+     * @param userId 用户id
+     * @return
+     */
+    Integer lendDeviceByModel(DeviceVo deviceVo, Long userId);
 }
