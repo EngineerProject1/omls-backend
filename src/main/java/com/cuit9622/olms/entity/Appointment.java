@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -52,6 +53,7 @@ public class Appointment implements Serializable {
      * 实验预约的时间
      */
     @ApiModelProperty("实验室预约时间")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date bookTime;
 
     /**
@@ -88,12 +90,14 @@ public class Appointment implements Serializable {
      * 创建时间
      */
     @ApiModelProperty("创建时间")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date createTime;
 
     /**
      * 修改时间
      */
     @ApiModelProperty("修改时间")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date updateTime;
 
     @ApiModelProperty("年级")
