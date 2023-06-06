@@ -53,6 +53,7 @@ public class AppointmentController {
     }
 
     /**
+     * @Description 根据model查询预约记录
      * @param model
      * @return
      * @Description 根据model查询预约记录
@@ -67,16 +68,16 @@ public class AppointmentController {
     }
 
     /**
-     * @param
+     * @Description 根据预约类型查询有预约记录的实验室
+     * @param type 预约类型
      * @return
-     * @Description 查询有预约记录的实验室
      * @Date 19:27 2023/6/6
      */
-    @GetMapping("/auth/appointment/lab")
+    @GetMapping("/auth/appointment/lab/{type}")
     @RequiresRoles("admin")
-    @ApiOperation("查询有预约记录的实验室")
-    public R<List<Map<String, String>>> getAppointLabs() {
-        List<Map<String, String>> appointLabs = appointmentService.getAppointLabs();
+    @ApiOperation("根据预约类型查询有预约记录的实验室")
+    public R<List<Map<String, String>>> getAppointLabs(@PathVariable String type){
+        List<Map<String, String>> appointLabs = appointmentService.getAppointLabs(type);
         log.info("有预约记录的实验室{}", appointLabs.toString());
         return R.ok("查询实验室成功", appointLabs);
     }

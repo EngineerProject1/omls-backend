@@ -156,8 +156,8 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
     }
 
     @Override
-    public List<Map<String, String>> getAppointLabs() {
-        return appointmentMapper.getAppointLabs();
+    public List<Map<String, String>> getAppointLabs(String type) {
+        return appointmentMapper.getAppointLabs(type);
     }
 
     public Integer auditAppointment(Long id, String status) {

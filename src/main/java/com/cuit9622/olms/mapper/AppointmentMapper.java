@@ -58,10 +58,10 @@ public interface AppointmentMapper extends BaseMapper<Appointment> {
 
     /**
      * @Description 得到有预约记录的实验室
-     * @param
+     * @param type 预约类型
      * @return
      * @Date 19:12 2023/6/6
      */
     @MapKey("id")
-    List<Map<String, String>> getAppointLabs();
+    List<Map<String, String>> getAppointLabs(String type);
 }
