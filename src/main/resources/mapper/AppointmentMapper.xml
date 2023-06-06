@@ -48,65 +48,77 @@
                '1'
         where exists(
                 select *
-                from sys_lab_schedule
+                from sys_lab_schedule inner join sys_lab on sys_lab.id=sys_lab_schedule.lab_id
                 where sys_lab_schedule.lab_id = #{data.labId}
-                  and sys_lab_schedule.weekday = (DAYOFWEEK(DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day))))
+                  and sys_lab_schedule.weekday = (DAYOFWEEK(DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)))
+                  and status = "0")
           and not exists(
                 select *
                 from sys_appointment
                 where book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
                   and time_slot_id = #{data.timeSlotId}
-                  and (`type` = '1' or user_id = #{data.userId})
-                  and lab_id = #{data.labId})
-          and exists(select * from sys_lab where id = #{data.labId} and status = "0")
-          and not exists(select *
-                         from sys_appointment
-                         where sys_appointment.user_id = #{data.userId}
-                           and sys_appointment.book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
-                           and sys_appointment.time_slot_id = #{data.timeSlotId})
+                  and ((lab_id = #{data.labId} and `type` = '1') or user_id = #{data.userId}))
+          and
+          (select sys_lab.capacity from sys_lab where sys_lab.id=#{data.labId})>
+          (select count(*)
+                from sys_appointment
+                where book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
+                and time_slot_id = #{data.timeSlotId}
+                and lab_id = #{data.labId})
     </insert>
     <insert id="addAppointmentForClass">
         insert
-        into sys_appointment
-        (user_id,
-         lab_id,
-         experiment_name,
-         purpose,
-         book_time,
-         time_slot_id,
-         `type`,
-         major_id,
-         class_number,
-         `time`,
-         create_time,
-         update_time,
-         status)
-        select #{data.userId},
-               #{data.labId},
-               #{data.experimentName},
-               #{data.purpose},
-               DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day),
-               #{data.timeSlotId},
-               '1',
-               #{data.majorId},
-               #{data.classNumber},
-               concat((select start_time from sys_time_slot where sys_time_slot.id = #{data.timeSlotId}), ' ~ ',
-                      (select end_time from sys_time_slot where sys_time_slot.id = #{data.timeSlotId})),
-               now(),
-               now(),
-               '0'
-        where exists(
-                select *
-                from sys_lab_schedule
-                where sys_lab_schedule.lab_id = #{data.labId}
-                  and sys_lab_schedule.weekday = (DAYOFWEEK(DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day))))
-          and not exists(
-                select *
-                from sys_appointment
-                where book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
-                  and time_slot_id = #{data.timeSlotId}
-                  and (`type` = '1' or user_id = #{data.userId})
-                  and lab_id = #{data.labId})
+        into
+            sys_appointment
+        (
+            user_id,
+            lab_id,
+            experiment_name,
+            purpose,
+            book_time,
+            time_slot_id,
+            `type`,
+            major_id,
+            class_number,
+            `time`,
+            create_time,
+            update_time,
+            status,
+            grade
+        )
+        select
+            #{data.userId},
+            #{data.labId},
+            #{data.experimentName},
+            #{data.purpose},
+            DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day),
+            #{data.timeSlotId},
+            '1',
+            #{data.majorId},
+            #{data.classNumber},
+            concat((select start_time from sys_time_slot where sys_time_slot.id=#{data.timeSlotId}),' ~ ',(select end_time from sys_time_slot where sys_time_slot.id=#{data.timeSlotId})),
+            now(),
+            now(),
+            '0',
+            #{data.grade}
+            where
+            exists (
+            select
+            *
+            from
+            sys_lab_schedule
+            where
+            sys_lab_schedule.lab_id = #{data.labId}
+            and sys_lab_schedule.weekday =(DAYOFWEEK(DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day))))
+            and not exists (
+                select
+                *
+                from
+                sys_appointment
+                where
+                book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
+                and time_slot_id = #{data.timeSlotId}
+                and user_id = #{data.userId})
           and (select count(*)
                from sys_appointment
                where book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
@@ -116,6 +128,8 @@
           and not exists(select *
                          from sys_appointment
                          where sys_appointment.class_number = #{data.classNumber}
+                           and sys_appointment.major_id = #{data.majorId}
+                           and sys_appointment.grade = #{data.grade}
                            and sys_appointment.book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
                            and sys_appointment.time_slot_id = #{data.timeSlotId})
     </insert>
@@ -172,6 +186,7 @@
         and app.time_slot_id = #{slotId}
         and app.book_time = #{day}
         and app.`type`="0"
+        and app.status='1'
         union all
         select
         sys_user.id,
@@ -197,6 +212,7 @@
         and app.time_slot_id = #{slotId}
         and app.book_time = #{day}
         and app.`type`="1"
+        and app.status='1'
         ) as T
         <if test="model.name != null and model.name !='' ">
             where T.real_name like concat('%',#{model.name}, '%')
@@ -236,5 +252,48 @@
         from sys_lab sl
         where id in (select lab_id from sys_appointment)
     </select>
-
+    <select id="testIsBookedOnTargetTime" resultType="com.cuit9622.olms.model.Count">
+        select
+            count(*) `count`
+        from
+            sys_appointment
+        where
+            book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
+          and time_slot_id = #{data.timeSlotId}
+          and user_id = #{data.userId}
+    </select>
+    <select id="testIsBookedByPerson" resultType="com.cuit9622.olms.model.Count">
+        select count(*) `count`
+        from sys_appointment
+        where book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
+          and time_slot_id = #{data.timeSlotId}
+          and lab_id = #{data.labId}
+    </select>
+    <select id="testTargetClassIsBooked" resultType="com.cuit9622.olms.model.Count">
+        select count(*) `count`
+        from sys_appointment
+        where sys_appointment.class_number = #{data.classNumber}
+          and sys_appointment.major_id = #{data.majorId}
+          and sys_appointment.grade = #{data.grade}
+          and sys_appointment.book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
+          and sys_appointment.time_slot_id = #{data.timeSlotId}
+    </select>
+    <select id="testIsBookedByClass" resultType="com.cuit9622.olms.model.Count">
+        select count(*) `count`
+        from sys_appointment
+        where book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
+          and time_slot_id = #{data.timeSlotId}
+          and lab_id = #{data.labId}
+          and `type` = '1'
+    </select>
+    <select id="testIsFull" resultType="com.cuit9622.olms.model.Count">
+        select 1 `count` where
+        (select count(*)
+                from sys_appointment
+                where book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
+                and time_slot_id = #{data.timeSlotId}
+                and lab_id = #{data.labId})
+        >=
+        (select sys_lab.capacity from sys_lab where sys_lab.id=#{data.labId})
+    </select>
 </mapper>

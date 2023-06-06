@@ -21,6 +21,10 @@ public class AppointmentUpdateModel {
     private Integer timeSlotId;
     @ApiModelProperty("\"0\"代表学生预约，\"1\"代表教师预约")
     private String type;
+    @ApiModelProperty("年级")
+    private Integer grade;
+    @ApiModelProperty("学院id")
+    private Integer collegeId;
     @ApiModelProperty("专业id")
     private Integer majorId;
     @ApiModelProperty("班级")
