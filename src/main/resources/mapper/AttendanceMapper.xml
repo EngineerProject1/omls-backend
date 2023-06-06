@@ -55,6 +55,7 @@
                     sys_appointment.`type` = '1'
                     and current_date()= sys_appointment.book_time
                     and current_time() between start_time and end_time
+                    and sys_appointment.`status`="1"
                 union all
                 select
                     sys_user.id uid,
@@ -73,6 +74,7 @@
                     sys_appointment.`type` = '0'
                   and current_date()= sys_appointment.book_time
                   and current_time() between start_time and end_time
+                  and sys_appointment.`status`="1"
             ) as T
         where
             not exists(

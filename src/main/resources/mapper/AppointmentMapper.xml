@@ -57,7 +57,7 @@
                 from sys_appointment
                 where book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
                   and time_slot_id = #{data.timeSlotId}
-                  and ((lab_id = #{data.labId} and `type` = '1') or user_id = #{data.userId}))
+                  and ((lab_id = #{data.labId} and `type` = '1' and `status`!='2') or user_id = #{data.userId}))
           and
           (select sys_lab.capacity from sys_lab where sys_lab.id=#{data.labId})>
           (select count(*)
@@ -290,6 +290,7 @@
           and time_slot_id = #{data.timeSlotId}
           and lab_id = #{data.labId}
           and `type` = '1'
+          and  `status`!='2'
     </select>
     <select id="testIsFull" resultType="com.cuit9622.olms.model.Count">
         select 1 `count` where
