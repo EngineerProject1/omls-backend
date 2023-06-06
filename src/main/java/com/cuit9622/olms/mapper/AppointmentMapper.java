@@ -7,8 +7,13 @@ import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.vo.AppointRecordVo;
 import com.cuit9622.olms.vo.AppointVo;
 import com.cuit9622.olms.vo.AttendanceManagerVo;
+import com.cuit9622.olms.vo.StudentVo;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AppointmentMapper extends BaseMapper<AppointVo> {
@@ -19,10 +24,12 @@ public interface AppointmentMapper extends BaseMapper<AppointVo> {
             @Param("type") String type,
             @Param("offsetDay") Integer offsetDay
     );
-    Integer addAppointmentForIndividual(@Param("data")AppointmentUpdateModel data);
-    Integer addAppointmentForClass(@Param("data")AppointmentUpdateModel data);
 
-    Page<AttendanceManagerVo> selectAppointmentUser(Long labId, Integer slotId, String day,Page<AttendanceManagerVo> page, @Param("model") UserSelectModel model);
+    Integer addAppointmentForIndividual(@Param("data") AppointmentUpdateModel data);
+
+    Integer addAppointmentForClass(@Param("data") AppointmentUpdateModel data);
+
+    Page<AttendanceManagerVo> selectAppointmentUser(Long labId, Integer slotId, String day, Page<AttendanceManagerVo> page, @Param("model") UserSelectModel model);
 
     /**
      * @Description 查询个人预约
@@ -41,4 +48,13 @@ public interface AppointmentMapper extends BaseMapper<AppointVo> {
      * @Date 17:01 2023/6/6
      */
     Page<AppointRecordVo> pageAppointRecordForClass(@Param("page") Page<AppointRecordVo> page, @Param("labId") Integer labId);
+
+    /**
+     * @Description 得到有预约记录的实验室
+     * @param
+     * @return
+     * @Date 19:12 2023/6/6
+     */
+    @MapKey("id")
+    List<Map<String, String>> getAppointLabs();
 }
