@@ -10,6 +10,8 @@ import com.cuit9622.olms.vo.StudentVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface AppointmentMapper extends BaseMapper<AppointVo> {
     Page<AppointVo> getTargetTypeAppointment(
@@ -22,5 +24,5 @@ public interface AppointmentMapper extends BaseMapper<AppointVo> {
     Integer addAppointmentForIndividual(@Param("data")AppointmentUpdateModel data);
     Integer addAppointmentForClass(@Param("data")AppointmentUpdateModel data);
 
-    Page<AttendanceManagerVo> selectAppointmentUser(Long labId, Integer slotId, String day,Page<AttendanceManagerVo> page, @Param("model") UserSelectModel model);
+    Page<AttendanceManagerVo> selectAppointmentUser(Long labId, Integer slotId, String day, Page<AttendanceManagerVo> page, @Param("model") UserSelectModel model);
 }
