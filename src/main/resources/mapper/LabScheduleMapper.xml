@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cuit9622.olms.mapper.LabScheduleMapper">
+
+    <insert id="insertSchedule">
+        insert into sys_lab_schedule(lab_id, weekday) values
+        <foreach collection="weekdays" item="weekday" separator=",">
+            (#{labId},#{weekday})
+        </foreach>
+    </insert>
+</mapper>

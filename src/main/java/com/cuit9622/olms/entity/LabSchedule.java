@@ -23,7 +23,7 @@ public class LabSchedule implements Serializable {
      */
     @TableId
     @ApiModelProperty("实验室id")
-    private Integer labId;
+    private Long labId;
 
     /**
      * 1代表周日，其余以此类推

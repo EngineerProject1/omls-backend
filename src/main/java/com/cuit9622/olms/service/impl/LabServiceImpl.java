@@ -41,9 +41,9 @@ public class LabServiceImpl extends ServiceImpl<LabMapper, Lab>
     public Page<LabVo> listByPage(Page<LabVo> page, LabSelectModel model) {
         Page<LabVo> voPage = labMapper.page(page, model);
         List<LabVo> records = voPage.getRecords();
-        records = records.stream().peek((item)->{
+        records = records.stream().peek((item) -> {
             // 查询该实验室所对应的开放时间
-            List<Long> weekdays = labMapper.getWeekday(item.getId());
+            List<Integer> weekdays = labMapper.getWeekday(item.getId());
             item.setWeekdays(weekdays);
         }).collect(Collectors.toList());
         return voPage.setRecords(records);
@@ -69,6 +69,56 @@ public class LabServiceImpl extends ServiceImpl<LabMapper, Lab>
         LambdaQueryWrapper<LabSchedule> wrapper = new LambdaQueryWrapper<>();
         wrapper.in(LabSchedule::getLabId, id);
         labScheduleMapper.delete(wrapper);
+    }
+
+    @Override
+    public List<Integer> getLabSchedule(Long id) {
+        return labMapper.getWeekday(id);
+    }
+
+    @Override
+    @Transactional
+    public Boolean updateLab(LabVo labVo) {
+        try {
+            // 修改实验室
+            labMapper.updateById(labVo);
+            // 删除该实验的开放时间，并将本次时间插入进去
+            // 删除
+            LambdaQueryWrapper<LabSchedule> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(LabSchedule::getLabId, labVo.getId());
+            labScheduleMapper.delete(wrapper);
+            List<Integer> weekdays = labVo.getWeekdays();
+            if (weekdays.size() != 0){
+                // 新增时间段
+                Integer result = labScheduleMapper.insertSchedule(labVo.getId(), weekdays);
+                if (result != weekdays.size()){
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public Boolean addLab(LabVo labVo) {
+        try {
+            // 新增实验室
+            labMapper.insert(labVo);
+            // 新增时间段
+            List<Integer> weekdays = labVo.getWeekdays();
+            if (weekdays.size() != 0){
+                Integer result = labScheduleMapper.insertSchedule(labVo.getId(), weekdays);
+                if (result != weekdays.size()){
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }
 
