@@ -29,22 +29,19 @@ import java.util.List;
 @Api(tags = "考勤管理相关Api")
 public class AttendanceManagerController {
     @Resource
-    private AppointmentMapper appointmentMapper;
-    @Resource
     private AppointmentService appointmentService;
     @Resource
     private LabService labService;
-
     @Resource
     private AttendanceService attendanceService;
     /**
      * 分页查询
      * @param
      * @param
-     * @return
+     * @return 用户信息
      */
     @GetMapping("/attendanceManager/{id}")
-    @ApiOperation("考勤信息分页查询的接口")
+    @ApiOperation("通过实验室id分页查询考勤信息的接口")
     public R<Page<AttendanceManagerVo>> getAppointments (@PathVariable Long id,UserSelectModel model) throws ParseException {
         Page<AttendanceManagerVo> info = appointmentService.selectAppointmentUser(id,model.getPageSize(),model.getPage(),model);
         return R.ok("查询考勤信息成功", info);
@@ -52,9 +49,10 @@ public class AttendanceManagerController {
 
     /**
      * 获取当前教师管理的实验室
-     * @return
+     * @return 实验室列表
      */
     @GetMapping("/auth/getLabs")
+    @ApiOperation("获取教师所管理的实验室的接口")
     public R<List<Lab>> getLabs() {
         // 拿到当前登录用户
         User user = (User) SecurityUtils.getSubject().getPrincipal();
@@ -66,10 +64,11 @@ public class AttendanceManagerController {
 
     /**
      * 添加一条考勤信息
-     * @param attendance
+     * @param attendance 要增添的考勤信息
      * @return
      */
     @PostMapping("/attendanceManager")
+    @ApiOperation("添加考勤信息的接口")
     @DateAutoFill(DateAutoFill.Type.INSERT)
     public R<String> addAttendance(@RequestBody Attendance attendance) {
         attendanceService.save(attendance);
@@ -78,10 +77,11 @@ public class AttendanceManagerController {
 
     /**
      * 修改考勤状态
-     * @param attendance
+     * @param attendance 所接收的考勤信息
      * @return
      */
     @PutMapping("/attendanceManager")
+    @ApiOperation("修改考勤状态的接口")
     @DateAutoFill(DateAutoFill.Type.UPDATE)
     public R<String> updateAttendance(@RequestBody Attendance attendance) {
         LambdaQueryWrapper<Attendance> queryWrapper = new LambdaQueryWrapper<>();

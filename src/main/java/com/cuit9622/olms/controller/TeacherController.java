@@ -34,13 +34,21 @@ import java.util.Map;
 public class TeacherController {
     @Resource
     private TeacherService teacherService;
+
     @Resource
     private UserService userService;
+
     @Resource
     private TeacherMapper teacherMapper;
+
     @Resource
     private CollegeService collegeService;
 
+    /**
+     * 分页查询教师信息
+     * @param model Model
+     * @return 教师信息
+     */
     @GetMapping("/teacher")
     @ApiOperation("教师信息分页查询的接口")
     public R<Page<TeacherVo>> getTeachers(UserSelectModel model) {
@@ -67,8 +75,8 @@ public class TeacherController {
 
     /**
      * 查询指定tid教师信息
-     * @param tid
-     * @return
+     * @param tid 职工号
+     * @return 对应教师信息
      */
     @GetMapping("/teacher/{tid}")
     @ApiOperation("通过tid获取教师信息")
@@ -87,7 +95,7 @@ public class TeacherController {
 
     /**
      * 添加教师信息至教师表、用户表、角色表
-     * @param teacherVo
+     * @param teacherVo 教师信息
      * @return
      */
     @PostMapping("/teacher")
@@ -100,7 +108,7 @@ public class TeacherController {
 
     /**
      * 在教师表、用户表、角色表中修改教师信息
-     * @param teacherVo
+     * @param teacherVo 教师信息
      * @return
      */
     @PutMapping("/teacher")
@@ -113,7 +121,7 @@ public class TeacherController {
 
     /**
      * 在教师表、用户表、角色表中删除教师信息
-     * @param teacherVo
+     * @param teacherVo 教师信息
      * @return
      */
     @DeleteMapping("/teacher")
@@ -126,7 +134,7 @@ public class TeacherController {
 
     /**
      * 在教师表、用户表、角色表中批量删除教师信息
-     * @param model
+     * @param model Model
      * @return
      */
     @DeleteMapping("/teachers")
@@ -146,11 +154,13 @@ public class TeacherController {
     @ApiOperation("将教师信息导出为excel")
     public void exportExcel(HttpServletResponse response) throws IOException {
         List<TeacherVo> list = teacherMapper.getTeacherVos();
+        // 设置响应数据格式
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setCharacterEncoding("utf-8");
         String fileName = URLEncoder.encode("教师信息表","UTF-8").replaceAll("\\+","%20");
         response.setHeader("Content-disposition","attachment;filename="+fileName+".xlsx");
 
+        // 导出excel
         EasyExcel.write(response.getOutputStream())
                 .head(TeacherVo.class)
                 .excelType(ExcelTypeEnum.XLSX)

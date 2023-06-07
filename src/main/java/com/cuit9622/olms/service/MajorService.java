@@ -12,5 +12,10 @@ import java.util.List;
 */
 public interface MajorService extends IService<Major> {
 
+    /**
+     * 通过学院id获取对应的专业
+     * @param id 学院id
+     * @return 专业列表
+     */
     List<Major> selectMajorsByCollegeId(Long id);
 }

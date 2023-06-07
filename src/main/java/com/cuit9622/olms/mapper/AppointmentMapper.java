@@ -36,6 +36,15 @@ public interface AppointmentMapper extends BaseMapper<Appointment> {
     Count testIsBookedByClass(@Param("data") AppointmentUpdateModel data);
     Count testIsFull(@Param("data") AppointmentUpdateModel data);
 
+    /**
+     * 获取预约实验室的用户信息
+     * @param labId 实验室id
+     * @param slotId 时间段id
+     * @param day 当前年月日
+     * @param page 分页页数
+     * @param model model
+     * @return 用户信息
+     */
     Page<AttendanceManagerVo> selectAppointmentUser(Long labId, Integer slotId, String day, Page<AttendanceManagerVo> page, @Param("model") UserSelectModel model);
 
     /**

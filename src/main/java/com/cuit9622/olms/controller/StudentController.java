@@ -49,6 +49,7 @@ public class StudentController {
 
     @Resource
     private StudentMapper studentMapper;
+
     @Resource
     private MajorMapper majorMapper;
 
@@ -57,7 +58,7 @@ public class StudentController {
      *
      * @param
      * @param
-     * @return
+     * @return 学生信息
      */
     @GetMapping("/student")
     @ApiOperation("学生信息分页查询的接口")
@@ -69,8 +70,8 @@ public class StudentController {
     /**
      * 查询指定id学生信息
      *
-     * @param sid
-     * @return
+     * @param sid 学号
+     * @return 指定学生id的信息
      */
     @GetMapping("/student/{sid}")
     @ApiOperation("通过id获取学生信息的接口")
@@ -89,7 +90,7 @@ public class StudentController {
     /**
      * 查询学院信息
      *
-     * @return
+     * @return 学院列表
      */
     @GetMapping("/student/college")
     @ApiOperation("获取学院信息的接口")
@@ -100,7 +101,7 @@ public class StudentController {
     /**
      * 查询所选学院对应的专业信息
      *
-     * @return
+     * @return 学院所对应的专业列表
      */
     @GetMapping("/student/major/{id}")
     @ApiOperation("通过id获取学院所对应的专业信息的接口")
@@ -115,8 +116,8 @@ public class StudentController {
     /**
      * 查询用户角色
      *
-     * @param id
-     * @return
+     * @param id 学号
+     * @return 用户角色列表
      */
     @GetMapping("/student/role/{id}")
     @ApiOperation("通过学号获取用户角色的接口")
@@ -128,7 +129,7 @@ public class StudentController {
     /**
      * 添加学生信息至学生表、用户表、角色表
      *
-     * @param studentVo
+     * @param studentVo 学生信息
      * @return
      */
     @PostMapping("/student")
@@ -142,7 +143,7 @@ public class StudentController {
     /**
      * 在学生表、用户表、角色表中修改学生信息
      *
-     * @param studentVo
+     * @param studentVo 学生信息
      * @return
      */
     @PutMapping("/student")
@@ -156,7 +157,7 @@ public class StudentController {
     /**
      * 在学生表、用户表、角色表中删除学生信息
      *
-     * @param studentVo
+     * @param studentVo 学生信息
      * @return
      */
     @DeleteMapping("/student")
@@ -212,11 +213,13 @@ public class StudentController {
     @ApiOperation("导出学生信息为excel的接口")
     public void exportExcel(HttpServletResponse response) throws IOException {
         List<StudentVo> list = studentMapper.getStudentVos();
+        // 设置相应数据格式
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setCharacterEncoding("utf-8");
         String fileName = URLEncoder.encode("学生信息表", "UTF-8").replaceAll("\\+", "%20");
         response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
 
+        // 导出excel
         EasyExcel.write(response.getOutputStream())
                 .head(StudentVo.class)
                 .excelType(ExcelTypeEnum.XLSX)

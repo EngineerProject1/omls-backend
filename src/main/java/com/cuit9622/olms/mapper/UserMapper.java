@@ -41,5 +41,10 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
 
+    /**
+     * 通过学号获取学生的用户id
+     * @param sid 学号
+     * @return 用户id
+     */
     Long getUserIdBySid(long sid);
 }

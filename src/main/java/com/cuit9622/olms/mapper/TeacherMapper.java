@@ -27,14 +27,36 @@ public interface TeacherMapper extends BaseMapper<Teacher> {
      */
     TeacherVo getTeacherInfoByUsername(String username);
 
+    /**
+     * 教师信息分页查询你
+     * @param pageInfo 分页信息
+     * @param model Model
+     * @return
+     */
     Page<TeacherVo> page(@Param("page") Page<TeacherVo> pageInfo, @Param("model") UserSelectModel model);
 
+    /**
+     * 在教师表、用户表和角色表中增添教师信息
+     * @param teacherVo 教师完整信息
+     */
     void saveTeacher(@Param("teacherVo") TeacherVo teacherVo);
 
+    /**
+     * 在教师表、用户表和角色表中修改教师信息
+     * @param teacherVo 教师完整信息
+     */
     void updateTeacher(@Param("teacherVo") TeacherVo teacherVo);
 
+    /**
+     * 通过职工号在教师表、用户表和角色表中删除教师信息
+     * @param tid 职工号
+     */
     void removeTeacherByTid(Long tid);
 
+    /**
+     * 获取所有教师在用户表和教师表中的信息
+     * @return 教师列表
+     */
     List<TeacherVo> getTeacherVos();
 
     /**
