@@ -54,7 +54,7 @@ public interface AppointmentMapper extends BaseMapper<Appointment> {
      * @return
      * @Date 17:01 2023/6/6
      */
-    Page<AppointRecordVo> pageAppointRecordForClass(@Param("page") Page<AppointRecordVo> page, @Param("labId") Integer labId);
+    Page<AppointRecordVo> pageAppointRecordForClass(@Param("page") Page<AppointRecordVo> page, @Param("labId") Integer labId,@Param("only")Integer only);
 
     /**
      * @Description 得到有预约记录的实验室

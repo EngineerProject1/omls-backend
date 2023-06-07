@@ -84,6 +84,7 @@ public class AppointmentController {
 
     @PutMapping("/auth/auditAppointment")
     @ApiOperation("审核预约")
+    @RequiresRoles("admin")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "预约ID", paramType = "Query", required = true),
             @ApiImplicitParam(name = "status", value = "审核结果", paramType = "Query", required = true)})
@@ -93,12 +94,5 @@ public class AppointmentController {
             throw new BizException("审核预约失败");
         }
         return R.ok("成功审核预约");
-    }
-
-    @GetMapping("/auth/getUnauditedAppointment")
-    @ApiOperation("获取没有审核的预约")
-    public R<Page<Appointment>> getUnauditedAppointment(Integer current, Integer pageSize) {
-        Page<Appointment> result = appointmentService.getUnauditedAppointment(current, pageSize);
-        return R.ok("成功获取未审核预约", result);
     }
 }

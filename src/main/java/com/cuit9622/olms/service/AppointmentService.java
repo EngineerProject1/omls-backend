@@ -39,5 +39,4 @@ public interface AppointmentService extends IService<Appointment> {
      */
     List<Map<String, String>> getAppointLabs(String type);
     Integer auditAppointment(Long id,String status);
-    Page<Appointment> getUnauditedAppointment(Integer page,Integer pageSize);
 }

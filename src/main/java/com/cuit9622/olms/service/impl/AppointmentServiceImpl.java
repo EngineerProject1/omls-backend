@@ -130,7 +130,7 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
         if (model.getType() == 0) {
             appointmentMapper.pageAppointRecordForPerson(page, model.getLabId());
         } else {
-            appointmentMapper.pageAppointRecordForClass(page, model.getLabId());
+            appointmentMapper.pageAppointRecordForClass(page, model.getLabId(),model.getOnly());
         }
         // 分配角色
         List<AppointRecordVo> records = page.getRecords();
@@ -166,12 +166,5 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
                 .eq(Appointment::getStatus, "0")
                 .eq(Appointment::getId, id);
         return appointmentMapper.update(null, wrapper);
-    }
-
-    @Override
-    public Page<Appointment> getUnauditedAppointment(Integer current, Integer pageSize) {
-        LambdaUpdateWrapper<Appointment> wrapper = new LambdaUpdateWrapper<>();
-        wrapper.eq(Appointment::getStatus, "0");
-        return appointmentMapper.selectPage(new Page<>(current, pageSize), wrapper);
     }
 }
