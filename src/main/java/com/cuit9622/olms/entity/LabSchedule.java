@@ -28,7 +28,6 @@ public class LabSchedule implements Serializable {
     /**
      * 1代表周日，其余以此类推
      */
-    @TableId
     @ApiModelProperty("1代表周日")
     private Object weekday;
 

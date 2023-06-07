@@ -69,8 +69,7 @@ public class LabController {
     @ApiOperation("根据id删除实验室")
     public R<String> deleteLab(@PathVariable("id") Integer id) {
         try{
-            //labService.deleteLab(id);
-            labService.removeById(id);
+            labService.deleteLab(id);
         }catch (Exception e){
             throw new BizException("删除失败");
         }
@@ -88,8 +87,7 @@ public class LabController {
     @ApiOperation("批量删除实验室")
     public R<String> deleteLabs(@RequestBody DeleteModel model) {
         try{
-            //labService.deleteLabs(model.getIds());
-            labService.removeBatchByIds(model.getIds());
+            labService.deleteLabs(model.getIds());
         }catch (Exception e){
             throw new BizException("删除失败");
         }
