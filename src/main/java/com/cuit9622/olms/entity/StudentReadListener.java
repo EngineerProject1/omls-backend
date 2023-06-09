@@ -159,6 +159,27 @@ public class StudentReadListener implements ReadListener<StudentVo> {
             }
         }
 
+        // 检验电话格式
+        String phone = studentVo.getPhone();
+        // 如果电话号码存在，判定格式
+        if(phone != null) {
+            if(!phone.matches("\\d{11}")) {
+                singleFlag = false;
+                flag = false;
+                error += "  [电话(" + phone+")格式错误]";
+            }
+        }
+
+        // 检验邮箱格式
+        String email = studentVo.getEmail();
+        if(email != null){
+            if(!email.matches("\\S{2,50}")) {
+                singleFlag = false;
+                flag = false;
+                error += "  [邮箱(" + email+")格式错误]";
+            }
+        }
+
         // 如果校验不成功，将错误信息添加
         if(!singleFlag) {
             info.add(error);
