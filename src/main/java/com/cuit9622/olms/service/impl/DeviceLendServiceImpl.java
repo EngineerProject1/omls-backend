@@ -71,6 +71,9 @@ public class DeviceLendServiceImpl extends ServiceImpl<DeviceLendMapper, DeviceL
         Integer flag = deviceLendMapper.cheekAttendance(appointmentId, userId);
 
         Integer count = 0;
+        if(flag == null){
+            return 0;
+        }
         // 用户考勤状态为 '正常' 或者 '迟到' 可以进行借用设备
         if(flag == 1 || flag == 2){
             // 在此条件下用户才可以进行设备借用
