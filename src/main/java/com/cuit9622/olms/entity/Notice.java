@@ -29,11 +29,11 @@ public class Notice implements Serializable {
     private String content;
 
     @ApiModelProperty("公告发表时间")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Shanghai")
     private Date createTime;
 
     @ApiModelProperty("公告修改时间")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Shanghai")
     private Date updateTime;
 
     @ApiModelProperty("发布人的id")
