@@ -7,6 +7,7 @@ import com.cuit9622.olms.service.DeviceLendService;
 import com.cuit9622.olms.mapper.DeviceLendMapper;
 import com.cuit9622.olms.vo.DeviceVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -43,10 +44,9 @@ public class DeviceLendServiceImpl extends ServiceImpl<DeviceLendMapper, DeviceL
         return devicePage;
     }
 
+    @Transactional
     @Override
-    public Integer returnDeviceByModel(DeviceVo deviceVo) {
-        //先得到要修改状态的设备id
-        Long deviceId = deviceLendMapper.getDeviceIdLong(deviceVo);
+    public Integer returnDeviceByModel(Long deviceId) {
 
         Integer count = 0;
         //修改sys_device_lend中的归还时间
@@ -61,15 +61,12 @@ public class DeviceLendServiceImpl extends ServiceImpl<DeviceLendMapper, DeviceL
     public Integer lendDeviceByModel(DeviceVo deviceVo, Long userId) {
         //先查询当前时间是否在该实验室进行阶段 若是就返回预约id
         Long appointmentId = deviceLendMapper.checkTime(deviceVo, userId);
-
         // 不在当前实验时间直接返回0
         if(appointmentId == null){
             return 0;
         }
-
         //再查询当前用户考勤状态是否正常
         Integer flag = deviceLendMapper.cheekAttendance(appointmentId, userId);
-
         Integer count = 0;
         if(flag == null){
             return 0;
@@ -78,7 +75,7 @@ public class DeviceLendServiceImpl extends ServiceImpl<DeviceLendMapper, DeviceL
         if(flag == 1 || flag == 2){
             // 在此条件下用户才可以进行设备借用
             //拿到设备编号
-            Long deviceId = deviceLendMapper.getDeviceId(deviceVo);
+            Long deviceId = deviceVo.getId();
             //更新设备表
             count += deviceLendMapper.updateDeviceStatus(deviceId);
             //更新设备借用表

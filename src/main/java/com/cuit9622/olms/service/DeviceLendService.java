@@ -46,7 +46,7 @@ public interface DeviceLendService extends IService<DeviceLend> {
      * @param deviceVo 设备信息
      * @return
      */
-    Integer returnDeviceByModel(DeviceVo deviceVo);
+    Integer returnDeviceByModel(Long id);
 
     /**
      * @Description 根据设备信息借用设备

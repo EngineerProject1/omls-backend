@@ -1,8 +1,10 @@
 package com.cuit9622.olms.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.cuit9622.common.model.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.olms.entity.Device;
+import com.cuit9622.olms.entity.DeviceLend;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.service.DeviceLendService;
 import com.cuit9622.olms.vo.DeviceVo;
@@ -101,11 +103,11 @@ public class DeviceLendController {
      * @param deviceVo 需要归还的设备信息
      * @return
      */
-    @PutMapping("/auth/deviceReturn")
+    @PutMapping("/auth/deviceReturn/{id}")
     @ApiOperation("归还设备（单一）")
-    public R<String> returnDevice(@RequestBody DeviceVo deviceVo) {
+    public R<String> returnDevice(@PathVariable("id") Long id) {
 
-        Integer count = deviceLendService.returnDeviceByModel(deviceVo);
+        Integer count = deviceLendService.returnDeviceByModel(id);
 
         if (count == 2) {
             return R.ok("归还成功");
@@ -116,20 +118,21 @@ public class DeviceLendController {
 
     /**
      * @Description 逐一归还设备
-     * @param deviceVos 需要归还的设备信息
+     * @param
      * @return
      */
     @PutMapping("/auth/deviceReturnAll")
     @ApiOperation("一键归还")
-    public R<String> returnDeviceAll(@RequestBody List<DeviceVo> deviceVos) {
+    public R<String> returnDeviceAll() {
 
-        for (int i = 0; i < deviceVos.size(); i++) {
-            for (int j = 0; j < deviceVos.get(i).getCount(); j++) {
-                DeviceVo deviceVo = new DeviceVo();
-                deviceVo.setModel(deviceVos.get(i).getModel());
-                deviceVo.setName(deviceVos.get(i).getName());
-                deviceVo.setImages(deviceVos.get(i).getImages());
-                deviceLendService.returnDeviceByModel(deviceVo);
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+
+        LambdaQueryWrapper<DeviceLend> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(DeviceLend::getUserId, user.getId());
+        List<DeviceLend> list = deviceLendService.list(wrapper);
+        for (DeviceLend deviceLend : list){
+            if (deviceLend.getReturnTime() == null){
+                deviceLendService.returnDeviceByModel(deviceLend.getDeviceId());
             }
         }
         return R.ok("归还成功");
