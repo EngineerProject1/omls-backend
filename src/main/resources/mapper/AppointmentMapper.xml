@@ -32,39 +32,19 @@
          create_time,
          update_time,
          status)
-        select #{data.userId},
-               #{data.labId},
-               #{data.experimentName},
-               #{data.purpose},
-               DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day),
-               #{data.timeSlotId},
-               '0',
-               #{data.majorId},
-               #{data.classNumber},
-               concat((select start_time from sys_time_slot where sys_time_slot.id = #{data.timeSlotId}), ' ~ ',
-                      (select end_time from sys_time_slot where sys_time_slot.id = #{data.timeSlotId})),
-               now(),
-               now(),
-               '1'
-        where exists(
-                select *
-                from sys_lab_schedule inner join sys_lab on sys_lab.id=sys_lab_schedule.lab_id
-                where sys_lab_schedule.lab_id = #{data.labId}
-                  and sys_lab_schedule.weekday = (DAYOFWEEK(DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)))
-                  and status = "0")
-          and not exists(
-                select *
-                from sys_appointment
-                where book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
-                  and time_slot_id = #{data.timeSlotId}
-                  and ((lab_id = #{data.labId} and `type` = '1' and `status`!='2') or user_id = #{data.userId}))
-          and
-          (select sys_lab.capacity from sys_lab where sys_lab.id=#{data.labId})>
-          (select count(*)
-                from sys_appointment
-                where book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
-                and time_slot_id = #{data.timeSlotId}
-                and lab_id = #{data.labId})
+        values (#{data.userId}, #{data.labId},
+                #{data.experimentName},
+                #{data.purpose},
+                DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day),
+                #{data.timeSlotId},
+                '0',
+                #{data.majorId},
+                #{data.classNumber},
+                concat((select start_time from sys_time_slot where sys_time_slot.id = #{data.timeSlotId}), ' ~ ',
+                       (select end_time from sys_time_slot where sys_time_slot.id = #{data.timeSlotId})),
+                now(),
+                now(),
+                '1')
     </insert>
     <insert id="addAppointmentForClass">
         insert
@@ -296,13 +276,25 @@
           and  `status`!='2'
     </select>
     <select id="testIsFull" resultType="com.cuit9622.olms.model.Count">
-        select 1 `count` where
-        (select count(*)
-                from sys_appointment
-                where book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
-                and time_slot_id = #{data.timeSlotId}
-                and lab_id = #{data.labId})
-        >=
-        (select sys_lab.capacity from sys_lab where sys_lab.id=#{data.labId})
+        select
+            if((
+                   select
+                       count(*)
+                   from
+                       sys_appointment
+                   where
+                       book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
+                     and time_slot_id = #{data.timeSlotId}
+                     and lab_id = #{data.labId})
+                   >=
+               (
+                   select
+                       sys_lab.capacity
+                   from
+                       sys_lab
+                   where
+                       sys_lab.id = #{data.labId}),
+               1,
+               0) `count`
     </select>
 </mapper>

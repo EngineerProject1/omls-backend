@@ -9,7 +9,6 @@ import com.cuit9622.olms.entity.Appointment;
 import com.cuit9622.olms.entity.TimeSlot;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.mapper.AppointmentMapper;
-import com.cuit9622.olms.mapper.StudentMapper;
 import com.cuit9622.olms.mapper.UserMapper;
 import com.cuit9622.olms.model.AppointmentModel;
 import com.cuit9622.olms.model.AppointmentUpdateModel;
@@ -21,6 +20,7 @@ import com.cuit9622.olms.vo.AppointVo;
 import com.cuit9622.olms.vo.AttendanceManagerVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
@@ -45,6 +45,7 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
         return pageInfo;
     }
 
+    @Transactional
     @Override
     public Boolean addAppointment(User user, AppointmentUpdateModel data) {
         Integer count = -1;
@@ -53,25 +54,25 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
             throw new BizException("预约失败");
         }
         List<String> roles = userMapper.getUserRoleInfoByUsername(user.getUsername());
+        if (appointmentMapper.testIsBookedOnTargetTime(data).getCount() > 0) {
+            throw new BizException("同一时间段只能预约一个实验室");
+        }
+        if (appointmentMapper.testIsBookedByClass(data).getCount() > 0) {
+            throw new BizException("该实验室已被班级预约");
+        }
         if (roles.contains("teacher")) {
             if (data.getType().equals("1")) {
-                count = appointmentMapper.addAppointmentForClass(data);
-                if(count==0) {
-                    if (appointmentMapper.testIsBookedOnTargetTime(data).getCount()>0) {
-                        throw new BizException("同一时间段只能预约一个实验室");
-                    }
-                    if (appointmentMapper.testIsBookedByPerson(data).getCount()>0) {
-                        throw new BizException("该实验室已被个人预约");
-                    }
-                    if(appointmentMapper.testIsBookedByClass(data).getCount()>0) {
-                        throw new BizException("该实验室已被班级预约");
-                    }
-                    if (appointmentMapper.testTargetClassIsBooked(data).getCount()>0) {
-                        throw new BizException("该班级在该时间段已预约实验室");
-                    }
-                    return true;
+                if (appointmentMapper.testIsBookedByPerson(data).getCount() > 0) {
+                    throw new BizException("该实验室已被个人预约");
                 }
+                if (appointmentMapper.testTargetClassIsBooked(data).getCount() > 0) {
+                    throw new BizException("该班级在该时间段已预约实验室");
+                }
+                count = appointmentMapper.addAppointmentForClass(data);
             } else {
+                if (appointmentMapper.testIsFull(data).getCount() > 0) {
+                    throw new BizException("该实验室可预约人数已满");
+                }
                 count = appointmentMapper.addAppointmentForIndividual(data);
             }
         } else if (roles.contains("student")) {
@@ -79,20 +80,14 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
             data.setMajorId(null);
             data.setGrade(null);
             data.setType("0");
+            if (appointmentMapper.testIsFull(data).getCount() > 0) {
+                throw new BizException("该实验室可预约人数已满");
+            }
             count = appointmentMapper.addAppointmentForIndividual(data);
         } else {
             throw new BizException("服务器内部错误");
         }
         if (count == 0) {
-            if (appointmentMapper.testIsBookedOnTargetTime(data).getCount()>0) {
-                throw new BizException("同一时间段只能预约一个实验室");
-            }
-            if(appointmentMapper.testIsBookedByClass(data).getCount()>0) {
-                throw new BizException("该实验室已被班级预约");
-            }
-            if(appointmentMapper.testIsFull(data).getCount()>0) {
-                throw new BizException("该实验室可预约人数已满");
-            }
             throw new BizException("预约该时间段的实验室失败");
         } else if (count > 1) {
             throw new BizException("服务器内部错误");
@@ -101,7 +96,8 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
     }
 
     @Override
-    public Page<AttendanceManagerVo> selectAppointmentUser(Long id, Integer pageSize, Integer page, UserSelectModel model) throws ParseException {
+    public Page<AttendanceManagerVo> selectAppointmentUser(Long id, Integer pageSize, Integer page, UserSelectModel
+            model) throws ParseException {
         Page<AttendanceManagerVo> pageInfo = new Page<>(page, pageSize);
         // 获取需要查询的时间段
         Integer slotId = null;
@@ -128,7 +124,7 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
         if (model.getType() == 0) {
             appointmentMapper.pageAppointRecordForPerson(page, model.getLabId());
         } else {
-            appointmentMapper.pageAppointRecordForClass(page, model.getLabId(),model.getOnly());
+            appointmentMapper.pageAppointRecordForClass(page, model.getLabId(), model.getOnly());
         }
         // 分配角色
         List<AppointRecordVo> records = page.getRecords();
