@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://101.43.182.254:3306/olms
+    username: lsh
+    password: wL2002s26H.q
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 开启驼峰映射
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.cuit9622.olms.entity
+
+  global-config:
+    db-config:
+      # 雪花算法
+      id-type: assign_id
+      # 指定表的前缀
+      table-prefix: sys_
