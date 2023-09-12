@@ -1,9 +1,12 @@
 package com.cuit9622.common.model;
 
 import io.swagger.annotations.ApiModel;
-import org.springframework.http.HttpStatus;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author: lsh
@@ -11,53 +14,55 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Description: 业务响应对象
  */
 @ApiModel("业务响应对象")
-public class R extends ConcurrentHashMap<String, Object> {
+@Data
+@Accessors(chain = true)
+public class R<T> {
 
-    public R() {
-        this.put("code", HttpStatus.OK.value());
-        this.put("msg", "success");
+    @ApiModelProperty(value = "响应状态码", name = "code", example = "200", required = true)
+    private Integer code;
+
+    @ApiModelProperty(value = "错误信息说明", name = "error", example = "error")
+    private String error;
+
+    @ApiModelProperty(value = "响应状态码说明", name = "msg", example = "success")
+    private String msg;
+
+    @ApiModelProperty("数据")
+    private T data;
+
+    @ApiModelProperty("动态数据")
+    private Map<String, Object> map = new HashMap<>();
+
+
+    public R(Integer code, String error, String msg, T data) {
+        this.code = code;
+        this.error = error;
+        this.msg = msg;
+        this.data = data;
     }
 
-    public static R ok() {
-        return new R();
+    public static <T> R<T> ok() {
+        return new R<>(200, null, "success", null);
     }
 
-    public static R ok(String msg) {
-        if (msg == null) msg = "";
-        return R.ok().put("msg", msg);
+    public static <T> R<T> ok(String msg) {
+        return new R<>(200, null, msg, null);
     }
 
-    public static R ok(Object data) {
-        if (data == null) data = "[]";
-        return R.ok().put("data", data);
+    public static <T> R<T> ok(String msg, T data) {
+        return new R<>(200, null, msg, data);
     }
 
-    public static R ok(String msg, Object data) {
-        if (data == null) data = "[]";
-        return R.ok(msg).put("data", data);
+    public static <T> R<T> error(int code, String error) {
+        return new R<>(code, error, null, null);
     }
 
-    public static R error(int code, String error) {
-        if (error == null) error = "[]";
-        return R.ok()
-                .put("code", code)
-                .put("error", error)
-                .put("msg", "");
+    public static <T> R<T> error(int code, String error, String msg) {
+        return new R<>(code, error, msg, null);
     }
 
-    public static R error(int code, String error, String msg) {
-        if (msg == null) msg = "";
-        if (error == null) error = "";
-        return R.ok()
-                .put("code", code)
-                .put("error", error)
-                .put("msg", msg);
-    }
-
-    @Override
-    public R put(String key, Object value) {
-        super.put(key, value);
+    public R<T> add(String key, Object value) {
+        map.put(key, value);
         return this;
     }
-
 }

@@ -1,6 +1,7 @@
 package com.cuit9622.auth.controller;
 
 import com.cuit9622.auth.util.JWTUtils;
+import com.cuit9622.common.exception.BizException;
 import com.cuit9622.common.model.R;
 import com.cuit9622.common.utils.DigestsUtils;
 import com.cuit9622.common.utils.RedisUtils;
@@ -45,20 +46,20 @@ public class AuthController {
      * @return R
      */
     @PostMapping("/login")
-    @ApiOperation("用户登录查询的接口")
+    @ApiOperation("用户登录的接口")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "用户名", required = true),
             @ApiImplicitParam(name = "password", value = "密码", required = true)
     })
-    public R auth(String username, String password) {
+    public R<Map<String, Object>> auth(String username, String password) {
         User user = userService.getUserInfoByName(username);
         if (user == null) {
-            return R.error(401, "用户名或密码错误");
+            throw new BizException(401, "用户名或密码错误");
         }
 
         String passwordByDigests = DigestsUtils.sha1(password, user.getSalt());
         if (!user.getPassword().equals(passwordByDigests)) {
-            return R.error(401, "用户名或密码错误");
+            throw new BizException(401, "用户名或密码错误");
         }
         Calendar instance = Calendar.getInstance();
         instance.add(Calendar.DATE, 2);
