@@ -8,12 +8,11 @@ import com.cuit9622.common.utils.RedisUtils;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.service.UserService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -41,39 +40,34 @@ public class AuthController {
 
     /**
      * @Description 执行登录操作
-     * @param username 用户名
-     * @param password 密码
+     * @param user 用户对象
      * @return R
      */
     @PostMapping("/login")
     @ApiOperation("用户登录的接口")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "用户名", required = true),
-            @ApiImplicitParam(name = "password", value = "密码", required = true)
-    })
-    public R<Map<String, Object>> auth(String username, String password) {
-        User user = userService.getUserInfoByName(username);
-        if (user == null) {
+    public R<Map<String, Object>> auth(@RequestBody User user) {
+        User userOne = userService.getUserInfoByName(user.getUsername());
+        if (userOne == null) {
             throw new BizException(401, "用户名或密码错误");
         }
 
-        String passwordByDigests = DigestsUtils.sha1(password, user.getSalt());
-        if (!user.getPassword().equals(passwordByDigests)) {
+        String passwordByDigests = DigestsUtils.sha1(user.getPassword(), userOne.getSalt());
+        if (!userOne.getPassword().equals(passwordByDigests)) {
             throw new BizException(401, "用户名或密码错误");
         }
         Calendar instance = Calendar.getInstance();
         instance.add(Calendar.DATE, 2);
         String token = JWTUtils.creatToken(user.getUsername(), instance.getTime());
         // 将token存到redis中
-        redisTemplate.opsForValue().set(RedisUtils.JWT_TOKEN + username, token);
+        redisTemplate.opsForValue().set(RedisUtils.JWT_TOKEN + user.getUsername(), token);
         redisTemplate.expireAt(RedisUtils.JWT_TOKEN, instance.getTime());
 
         // 拿到用户的角色信息
-        List<String> roles = userService.getUserRoleByName(username);
+        List<String> roles = userService.getUserRoleByName(user.getUsername());
         Map<String, Object> data = new HashMap<>();
         data.put("roles", roles);
         data.put("token", token);
-        log.info("{}的角色为{}", username, roles.toString());
+        log.info("{}的角色为{}", user.getUsername(), roles.toString());
         return R.ok("登录成功", data);
     }
 
