@@ -1,5 +1,6 @@
 package com.cuit9622.olms.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.cuit9622.olms.entity.User;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  * Version: 1.0
  * @Description: 用户服务接口
  */
-public interface UserService {
+public interface UserService extends IService<User> {
 
     /**
      * @Description 根据用户名查询角色信息的列表
