@@ -52,7 +52,7 @@ public class NoticeController {
      * @param id 需要删除的id
      * @return
      */
-    @DeleteMapping("/auth/delete/{id}")
+    @DeleteMapping("/auth/notice/{id}")
     @ApiOperation("根据id删除公告信息")
     @ApiImplicitParam(name = "id", value = "要删除的id", required = true)
     public R<String> deleteNoticeById(@PathVariable("id") Integer id) {
@@ -66,7 +66,7 @@ public class NoticeController {
      * @param ids
      * @return
      */
-    @DeleteMapping("/auth/delete")
+    @DeleteMapping("/auth/notice")
     @ApiOperation("根据ids删除公告信息")
     @ApiImplicitParam(name = "model", value = "要删除的id数组", required = true)
     public R<String> deleteNoticeByIds(@RequestBody DeleteModel model) {
