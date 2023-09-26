@@ -2,18 +2,24 @@ package com.cuit9622.olms.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.common.model.R;
+import com.cuit9622.olms.entity.Notice;
 import com.cuit9622.olms.entity.dto.NoticeDto;
 import com.cuit9622.olms.model.DeleteModel;
 import com.cuit9622.olms.service.NoticeService;
+import com.cuit9622.olms.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Author: lsh
@@ -27,6 +33,9 @@ public class NoticeController {
 
     @Resource
     private NoticeService noticeService;
+
+    @Resource
+    private UserService userService;
 
     /**
      * @Description 分页查询公告
@@ -78,4 +87,23 @@ public class NoticeController {
         return R.ok("删除成功");
     }
 
+    /**
+     * @Description 新增公告
+     * @param notice
+     * @return
+     */
+    @PostMapping("/auth/notice")
+    @ApiOperation("新增公告信息")
+    @RequiresRoles("admin")
+    public R<String> addNotice(@RequestBody Notice notice){
+        Subject subject = SecurityUtils.getSubject();
+        String username = ((String) subject.getPrincipal());
+        Long id = userService.getUserInfoByName(username).getId();
+        notice.setUserId(id);
+        notice.setCreateTime(LocalDateTime.now());
+        notice.setUpdateTime(LocalDateTime.now());
+        noticeService.save(notice);
+        log.info("{}新增的公告为{}",username, notice);
+        return R.ok("新增公告成功");
+    }
 }
