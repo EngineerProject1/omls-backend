@@ -3,7 +3,7 @@ package com.cuit9622.olms.mapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.olms.entity.Notice;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.cuit9622.olms.entity.dto.NoticeDto;
+import com.cuit9622.olms.vo.NoticeVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,7 +15,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface NoticeMapper extends BaseMapper<Notice> {
 
-    Page<NoticeDto> page(@Param("page") Page<NoticeDto> page);
+    Page<NoticeVo> page(@Param("page") Page<NoticeVo> page);
 
 }
 
