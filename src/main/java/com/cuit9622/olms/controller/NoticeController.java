@@ -31,9 +31,6 @@ public class NoticeController {
     @Resource
     private NoticeService noticeService;
 
-    @Resource
-    private UserService userService;
-
     /**
      * @Description 分页查询公告
      * @param pageSize 条数

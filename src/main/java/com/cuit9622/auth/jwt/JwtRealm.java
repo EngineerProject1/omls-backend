@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.cuit9622.auth.util.JWTUtils;
 import com.cuit9622.common.exception.BizException;
 import com.cuit9622.common.utils.RedisUtils;
+import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
@@ -53,12 +54,12 @@ public class JwtRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         // 获取用户名
-        String username = ((String) principals.getPrimaryPrincipal());
+        User user = ((User) principals.getPrimaryPrincipal());
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 
         // 封装角色信息
-        List<String> roles = userService.getUserRoleByName(username);
+        List<String> roles = userService.getUserRoleByName(user.getUsername());
         info.addRoles(roles);
         return info;
     }
@@ -81,7 +82,8 @@ public class JwtRealm extends AuthorizingRealm {
         if (!StringUtils.equals(tokenByRedis, token) || !StringUtils.equals(usernameByRedis, username)) {
             throw new BizException("token异常");
         }
+        User user = userService.getUserInfoByName(username);
         log.info("认证完成");
-        return new SimpleAuthenticationInfo(username, Boolean.TRUE, getName());
+        return new SimpleAuthenticationInfo(user, Boolean.TRUE, getName());
     }
 }
