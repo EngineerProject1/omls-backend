@@ -61,7 +61,7 @@ public class FileController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return R.ok(fileName);
+        return R.ok("文件上传成功",fileName);
     }
 
     /**
