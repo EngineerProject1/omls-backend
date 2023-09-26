@@ -16,6 +16,6 @@ import lombok.EqualsAndHashCode;
 @ApiModel("公告Dto")
 public class NoticeDto extends Notice {
 
-    @ApiModelProperty("发布公告的人(只有老师和管理员)")
+    @ApiModelProperty("发布公告的人(管理员)")
     private String name;
 }
