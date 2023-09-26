@@ -2,7 +2,6 @@ package com.cuit9622.olms.aop;
 
 import com.cuit9622.olms.annotation.DateAutoFill;
 import com.cuit9622.olms.entity.User;
-import com.cuit9622.olms.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.JoinPoint;
@@ -13,9 +12,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.lang.reflect.Method;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Author: lsh
@@ -26,9 +24,6 @@ import java.time.LocalDateTime;
 @Component
 @Slf4j
 public class DateAutoFillAop {
-    @Resource
-    private UserService userService;
-
     private static final String CREATE_TIME = "createTime";
     private static final String UPDATE_TIME = "updateTime";
     private static final String CREATOR = "creator";
@@ -64,10 +59,10 @@ public class DateAutoFillAop {
             BeanWrapperImpl beanWrapper = new BeanWrapperImpl(arg);
             // 创建创建时间和修改时间
             if (beanWrapper.isWritableProperty(CREATE_TIME)) {
-                beanWrapper.setPropertyValue(CREATE_TIME, LocalDateTime.now());
+                beanWrapper.setPropertyValue(CREATE_TIME, new Date());
             }
             if (beanWrapper.isWritableProperty(UPDATE_TIME)) {
-                beanWrapper.setPropertyValue(UPDATE_TIME, LocalDateTime.now());
+                beanWrapper.setPropertyValue(UPDATE_TIME, new Date());
             }
 
             // 设置创建人
@@ -88,7 +83,7 @@ public class DateAutoFillAop {
             BeanWrapperImpl beanWrapper = new BeanWrapperImpl(arg);
             // 设置修改时间
             if (beanWrapper.isWritableProperty(UPDATE_TIME)) {
-                beanWrapper.setPropertyValue(UPDATE_TIME, LocalDateTime.now());
+                beanWrapper.setPropertyValue(UPDATE_TIME, new Date());
             }
             log.info("完成修改时间注入");
         }

@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -28,12 +28,12 @@ public class Notice implements Serializable {
     private String content;
 
     @ApiModelProperty("公告发表时间")
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime createTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date createTime;
 
     @ApiModelProperty("公告修改时间")
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime updateTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date updateTime;
 
     @ApiModelProperty("发布人的id")
     private Long creator;
