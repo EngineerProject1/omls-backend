@@ -14,4 +14,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface DeviceMapper extends BaseMapper<Device> {
     Page<DeviceVo> page(@Param("page") Page<DeviceVo> page);
+
+    DeviceVo getOne(@Param("id") Long id);
 }
