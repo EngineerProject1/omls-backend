@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -27,9 +28,11 @@ public class Notice implements Serializable {
     private String content;
 
     @ApiModelProperty("公告发表时间")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createTime;
 
     @ApiModelProperty("公告修改时间")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime updateTime;
 
     @ApiModelProperty("发布公告的人(只有老师和管理员)")
