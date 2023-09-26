@@ -35,8 +35,8 @@ public class Notice implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime updateTime;
 
-    @ApiModelProperty("发布公告的人(只有老师和管理员)")
-    private String name;
+    @ApiModelProperty("发布人的id")
+    private Integer userId;
 
     @NotNull(message="[公告的等级，按照公告从小到大排序]不能为空")
     @ApiModelProperty("公告的等级，按照公告从小到大排序")

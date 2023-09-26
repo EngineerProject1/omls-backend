@@ -2,7 +2,7 @@ package com.cuit9622.olms.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.common.model.R;
-import com.cuit9622.olms.entity.Notice;
+import com.cuit9622.olms.entity.dto.NoticeDto;
 import com.cuit9622.olms.model.DeleteModel;
 import com.cuit9622.olms.service.NoticeService;
 import io.swagger.annotations.Api;
@@ -40,10 +40,10 @@ public class NoticeController {
             @ApiImplicitParam(name = "pageSize", value = "每页的条数", defaultValue = "5", required = true),
             @ApiImplicitParam(name = "page", value = "页码", defaultValue = "1", required = true)
     })
-    public R<Page<Notice>> getNotice(
+    public R<Page<NoticeDto>> getNotice(
             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
             @RequestParam(value = "page", defaultValue = "1") Integer page) {
-        R<Page<Notice>> info = noticeService.selectNotice(pageSize, page);
+        R<Page<NoticeDto>> info = noticeService.selectNotice(pageSize, page);
         log.info(info.getMsg());
         return info;
     }

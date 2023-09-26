@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cuit9622.common.model.R;
 import com.cuit9622.olms.entity.Notice;
+import com.cuit9622.olms.entity.dto.NoticeDto;
 import com.cuit9622.olms.service.NoticeService;
 import com.cuit9622.olms.mapper.NoticeMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +24,8 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice>
     private NoticeMapper noticeMapper;
 
     @Override
-    public R<Page<Notice>> selectNotice(Integer pageSize, Integer page) {
-        Page<Notice> pageInfo = new Page<>(page, pageSize);
+    public R<Page<NoticeDto>> selectNotice(Integer pageSize, Integer page) {
+        Page<NoticeDto> pageInfo = new Page<>(page, pageSize);
         pageInfo = noticeMapper.page(pageInfo);
         return R.ok("查询公告信息成功", pageInfo);
     }
