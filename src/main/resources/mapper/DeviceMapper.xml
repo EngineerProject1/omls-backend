@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cuit9622.olms.mapper.DeviceMapper">
+
+    <resultMap id="BaseResultMap" type="com.cuit9622.olms.entity.Device">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="DOUBLE"/>
+        <result property="labId" column="lab_id" jdbcType="BIGINT"/>
+        <result property="model" column="model" jdbcType="VARCHAR"/>
+        <result property="images" column="images" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"></result>
+    </resultMap>
+
+
+    <select id="page" resultType="com.cuit9622.olms.entity.dto.DeviceDto">
+        select sys_device.id id,
+               sys_device.name name,
+               lab_id,
+               sys_lab.name labName,
+               price,
+               model,
+               sys_device.images images,
+               status
+        from sys_device, sys_lab where sys_lab.id = sys_device.lab_id
+    </select>
+
+</mapper>
