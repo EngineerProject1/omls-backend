@@ -17,7 +17,7 @@ public interface NoticeService extends IService<Notice> {
      * @param pageSize 条数
      * @param page 第几页
      * @param model 查询的条件
-     * @return
+     * @return 公告的分页数据
      * @Date 17:21 2023/4/28
      */
     Page<NoticeVo> selectNotice(Integer pageSize, Integer page, NoticeSelectModel model);

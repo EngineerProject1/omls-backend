@@ -153,7 +153,7 @@ public class LabController {
     /**
      * @Description 根据地址查询实验室
      * @param location
-     * @return
+     * @return String
      * @Date 21:44 2023/5/22
      */
     @GetMapping("/lab/location")

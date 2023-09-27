@@ -34,7 +34,7 @@ public interface StudentService extends IService<Student> {
     /**
      * @Description 得到学生的信息
      * @param username 用户名
-     * @return
+     * @return 学生信息
      * @Date 18:21 2023/5/11
      */
      StudentVo getStudentInfoByUsername(String username);

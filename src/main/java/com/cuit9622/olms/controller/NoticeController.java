@@ -49,7 +49,7 @@ public class NoticeController {
     /**
      * @Description 根据id删除信息
      * @param id 需要删除的id
-     * @return
+     * @return String
      * @Date 21:07 2023/5/9
      */
     @DeleteMapping("/auth/notice/{id}")
@@ -63,8 +63,8 @@ public class NoticeController {
 
     /**
      * @Description 根据ids删除公告
-     * @param model
-     * @return
+     * @param model 删除模型
+     * @return String
      * @Date 21:07 2023/5/9
      */
     @DeleteMapping("/auth/notice")
@@ -78,8 +78,8 @@ public class NoticeController {
 
     /**
      * @Description 新增公告
-     * @param notice
-     * @return
+     * @param notice 公告信息
+     * @return String
      * @Date 12:25 2023/5/10
      */
     @PostMapping("/auth/notice")
@@ -94,7 +94,7 @@ public class NoticeController {
     /**
      * @Description 通过id获取公告信息
      * @param id 公告的id
-     * @return
+     * @return 公告信息
      * @Date 15:30 2023/5/10
      */
     @GetMapping("/notice/{id}")
@@ -109,7 +109,7 @@ public class NoticeController {
     /**
      * @Description 根据id修改公告信息
      * @param notice 需要修改的公告信息
-     * @return
+     * @return String
      * @Date 15:36 2023/5/10
      */
     @PutMapping("/auth/notice")

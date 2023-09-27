@@ -20,7 +20,7 @@ public interface LabService extends IService<Lab> {
      * @Description 分页查询实验室
      * @param page 分页数据
      * @param model 查询条件
-     * @return
+     * @return LabVo
      * @Date 16:08 2023/5/15
      */
     Page<LabVo> listByPage(Page<LabVo> page, LabSelectModel model);
@@ -52,7 +52,7 @@ public interface LabService extends IService<Lab> {
     /**
      * @Description 修改实验室
      * @param labVo
-     * @return
+     * @return Boolean是否修改成功
      * @Date 20:37 2023/6/7
      */
     Boolean updateLab(LabVo labVo);
@@ -60,7 +60,7 @@ public interface LabService extends IService<Lab> {
     /**
      * @Description 新增实验室
      * @param labVo
-     * @return
+     * @return Boolean类型是否新增实验室成功
      * @Date 20:37 2023/6/7
      */
     Boolean addLab(LabVo labVo);
