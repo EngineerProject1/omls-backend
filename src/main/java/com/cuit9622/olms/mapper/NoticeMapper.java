@@ -15,6 +15,11 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface NoticeMapper extends BaseMapper<Notice> {
 
+    /**
+     * @Description 公告信息的分页查找
+     * @param page 分页信息
+     * @return
+     */
     Page<NoticeVo> page(@Param("page") Page<NoticeVo> page);
 
 }

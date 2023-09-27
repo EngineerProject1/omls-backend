@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,19 +17,13 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName(value ="sys_user_student")
 @Data
+@ApiModel("学生")
 public class Student extends User implements Serializable {
-    /**
-     * id和user表中id保持一致
-     */
-    @TableId(type = IdType.AUTO)
-    @ApiModelProperty("主键")
-    private Long id;
-
     /**
      * 学号
      */
     @ApiModelProperty("学号")
-    private Integer sid;
+    private Long sid;
 
     /**
      * 用户名

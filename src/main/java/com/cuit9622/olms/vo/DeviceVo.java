@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@ApiModel("设备Dto")
+@ApiModel("设备Vo")
 @EqualsAndHashCode(callSuper = true)
 public class DeviceVo extends Device {
 

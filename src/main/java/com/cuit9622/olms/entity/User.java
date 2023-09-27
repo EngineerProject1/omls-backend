@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * @Description: 用户实体类
  */
 @Data
-@ApiModel("用户")
+@ApiModel("用户表对应的实体类")
 public class User {
     @TableId
     @ApiModelProperty("主键")

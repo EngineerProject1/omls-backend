@@ -15,5 +15,10 @@ import java.util.List;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
+    /**
+     * @Description 通过用户名获取角色信息
+     * @param username 用户名
+     * @return
+     */
     List<String> getUserRoleInfoByUsername(@Param("username") String username);
 }
