@@ -30,6 +30,13 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         pageInfo = studentMapper.page(pageInfo);
         return R.ok("查询学生信息成功", pageInfo);
     }
+
+    @Override
+    public StudentVo getStudentInfoByUsername(String username) {
+        StudentVo student = studentMapper.getStudentInfoByUsername(username);
+        log.info("用户名为{}的学生的信息为{}",username, student);
+        return student;
+    }
 }
 
 

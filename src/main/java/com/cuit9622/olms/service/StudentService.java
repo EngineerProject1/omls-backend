@@ -19,4 +19,11 @@ public interface StudentService extends IService<Student> {
      * @return
      */
     R<Page<StudentVo>> selectStudents(Integer pageSize, Integer page);
+
+    /**
+     * @Description 得到学生的信息
+     * @param username
+     * @return
+     */
+    StudentVo getStudentInfoByUsername(String username);
 }

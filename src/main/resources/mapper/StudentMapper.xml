@@ -27,8 +27,33 @@
                 from sys_college,
                      sys_major
                 where sys_major.id = sys_user_student.major_id
-                  and sys_college.id = sys_major.college_id) college_name
+                  and sys_college.id = sys_major.college_id)                                     college_name
         from sys_user_student
 
+    </select>
+    <select id="getStudentInfoByUsername" resultType="com.cuit9622.olms.vo.StudentVo">
+        SELECT USER
+                   .id,
+               username,
+               real_name,
+               sid,
+               student_name,
+               sex,
+               (SELECT major_name FROM sys_major WHERE sys_major.id = student.major_id) major_name,
+               (SELECT college_name
+                FROM sys_college,
+                     sys_major
+                WHERE sys_major.id = student.major_id
+                  AND sys_college.id = sys_major.college_id)                            college_name,
+               grade,
+               class_number,
+               phone,
+               email,
+               avatar,
+               create_time,
+               update_time
+        FROM sys_user USER
+                 INNER JOIN sys_user_student student ON student.sid = USER.username
+        WHERE sid = #{username}
     </select>
 </mapper>

@@ -21,6 +21,13 @@ public interface StudentMapper extends BaseMapper<Student> {
      * @return
      */
     Page<StudentVo> page(@Param("page") Page<StudentVo> page);
+
+    /**
+     * @Description 通过username获取学生信息
+     * @param username
+     * @return
+     */
+    StudentVo getStudentInfoByUsername(String username);
 }
 
 
