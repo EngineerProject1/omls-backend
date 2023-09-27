@@ -15,7 +15,6 @@ import java.util.Map;
 /**
  * @Description 教师接口
  * @return
- * @Date 16:32 2023/5/11
  */
 public interface TeacherService extends IService<Teacher> {
 
@@ -23,7 +22,6 @@ public interface TeacherService extends IService<Teacher> {
      * @Description 根据用户名查询教师信息
      * @param username 用户名
      * @return
-     * @Date 18:23 2023/5/11
      */
     TeacherVo getTeacherInfoByUsername(String username);
 
@@ -72,7 +70,6 @@ public interface TeacherService extends IService<Teacher> {
     /**
      * @Description 获取所有教师的名字和姓名
      * @return
-     * @Date 20:59 2023/5/22
      */
     List<Map<Long, String>> getStudentNameAndId();
 }

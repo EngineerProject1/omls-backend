@@ -20,7 +20,6 @@ import javax.annotation.Resource;
 
 /**
  * Author: lsh
- * Date: 2023/4/28 17:02
  * Version: 1.0
  * @Description: 公告控制类
  */
@@ -37,7 +36,6 @@ public class NoticeController {
      * @param pageSize 条数
      * @param page 当前页
      * @return
-     * @Date 17:31 2023/4/28
      */
     @GetMapping("/notice")
     @ApiOperation("公告信息分页查询的接口")
@@ -49,8 +47,7 @@ public class NoticeController {
     /**
      * @Description 根据id删除信息
      * @param id 需要删除的id
-     * @return String
-     * @Date 21:07 2023/5/9
+     * @return
      */
     @DeleteMapping("/auth/notice/{id}")
     @ApiOperation("根据id删除公告信息")
@@ -63,9 +60,8 @@ public class NoticeController {
 
     /**
      * @Description 根据ids删除公告
-     * @param model 删除模型
-     * @return String
-     * @Date 21:07 2023/5/9
+     * @param model
+     * @return
      */
     @DeleteMapping("/auth/notice")
     @ApiOperation("根据ids删除公告信息")
@@ -78,9 +74,8 @@ public class NoticeController {
 
     /**
      * @Description 新增公告
-     * @param notice 公告信息
-     * @return String
-     * @Date 12:25 2023/5/10
+     * @param notice
+     * @return
      */
     @PostMapping("/auth/notice")
     @ApiOperation("新增公告信息")
@@ -94,8 +89,7 @@ public class NoticeController {
     /**
      * @Description 通过id获取公告信息
      * @param id 公告的id
-     * @return 公告信息
-     * @Date 15:30 2023/5/10
+     * @return
      */
     @GetMapping("/notice/{id}")
     @ApiOperation("通过id获取某个公告")
@@ -109,8 +103,7 @@ public class NoticeController {
     /**
      * @Description 根据id修改公告信息
      * @param notice 需要修改的公告信息
-     * @return String
-     * @Date 15:36 2023/5/10
+     * @return
      */
     @PutMapping("/auth/notice")
     @ApiOperation("修改某个公告")

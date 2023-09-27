@@ -2,7 +2,6 @@ package com.cuit9622.common.exception;
 
 /**
  * Author: lsh
- * Date: 2023/4/10 17:44
  * Version: 1.0
  * @Description: 自定义业务异常类
  */

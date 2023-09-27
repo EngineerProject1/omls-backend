@@ -12,7 +12,6 @@ import org.apache.ibatis.annotations.Param;
 /**
  * @author Wed0n
  * @description 针对表【sys_attendance(签到表)】的数据库操作Mapper
- * @createDate 2023-05-20 19:58:21
  * @Entity com.cuit9622.olms.entity.Attendance
  */
 @Mapper

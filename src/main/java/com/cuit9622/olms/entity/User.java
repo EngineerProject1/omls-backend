@@ -12,7 +12,6 @@ import java.util.Date;
 
 /**
  * Author: lsh
- * Date: 2023/4/17 16:57
  * Version: 1.0
  * @Description: 用户实体类
  */

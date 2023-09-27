@@ -13,7 +13,6 @@ import lombok.Data;
 
 /**
  * @Description 公告实体类
- * @Date 18:26 2023/4/28
  */
 @Data
 @ApiModel("公告")

@@ -60,7 +60,6 @@ public class TeacherController {
      * @Description 查询所有教师的姓名和id
      * @param
      * @return
-     * @Date 20:59 2023/5/22
      */
     @GetMapping("/teacher/names")
     @ApiOperation("查询所有教师的名字和id")

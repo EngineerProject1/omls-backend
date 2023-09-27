@@ -10,7 +10,6 @@ import com.cuit9622.olms.vo.AttendanceForClassVo;
 /**
 * @author Wed0n
 * @description 针对表【sys_attendance(签到表)】的数据库操作Service
-* @createDate 2023-05-20 19:58:22
 */
 public interface AttendanceService extends IService<Attendance> {
     Page<AttendanceForPersonVo> getAttendanceForPerson(Integer page, Integer pageSize, Integer userId);

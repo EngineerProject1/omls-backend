@@ -36,7 +36,6 @@ public interface AppointmentService extends IService<Appointment> {
      * @Description 根据model条件查询预约记录
      * @param model
      * @return
-     * @Date 17:59 2023/6/6
      */
     Page<AppointRecordVo> pageAppointRecord(AppointmentModel model);
 
@@ -44,7 +43,6 @@ public interface AppointmentService extends IService<Appointment> {
      * @Description 得到有预约记录的实验室
      * @param type 预约类型
      * @return
-     * @Date 19:24 2023/6/6
      */
     List<Map<String, String>> getAppointLabs(String type);
     Integer auditAppointment(Long id,String status);

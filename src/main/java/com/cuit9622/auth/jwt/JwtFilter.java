@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Author: lsh
- * Date: 2023/4/17 18:08
  * Version: 1.0
  * @Description: jwt的过滤链
  */
@@ -27,7 +26,6 @@ public class JwtFilter extends AccessControlFilter {
     /**
      * @Description 请求到来以后响应的方法
      * @return
-     * @Date 18:08 2023/4/17
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
@@ -37,7 +35,6 @@ public class JwtFilter extends AccessControlFilter {
     /**
      * @Description 认证未通过执行的方法
      * @return
-     * @Date 18:09 2023/4/17
      */
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {

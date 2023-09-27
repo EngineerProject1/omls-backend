@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Author: lsh
- * Date: 2023/4/10 17:43
  * Version: 1.0
  * @Description: mybatis配置类
  */

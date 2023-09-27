@@ -9,7 +9,6 @@ import java.util.List;
 
 /**
  * Author: lsh
- * Date: 2023/4/17 16:58
  * Version: 1.0
  * @Description: 用户mapper
  */
@@ -20,7 +19,6 @@ public interface UserMapper extends BaseMapper<User> {
      * @Description 通过用户名获取角色信息
      * @param username 用户名
      * @return
-     * @Date 16:46 2023/5/11
      */
     List<String> getUserRoleInfoByUsername(@Param("username") String username);
 

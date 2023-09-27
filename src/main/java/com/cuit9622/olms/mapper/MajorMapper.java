@@ -11,7 +11,6 @@ import java.util.List;
 /**
 * @author Zxin
 * @description 针对表【sys_major】的数据库操作Mapper
-* @createDate 2023-05-11 18:35:30
 * @Entity com.cuit9622.olms.entity.Major
 */
 @Mapper

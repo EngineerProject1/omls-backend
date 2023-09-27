@@ -10,7 +10,6 @@ import java.util.List;
 
 /**
  * Author: lsh
- * Date: 2023/5/15 15:43
  * Version: 1.0
  * @Description: 实验室Vo
  */

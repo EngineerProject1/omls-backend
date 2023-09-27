@@ -9,7 +9,6 @@ import javax.annotation.Resource;
 
 /**
  * Author: lsh
- * Date: 2023/4/17 17:04
  * Version: 1.0
  * @Description: UserService的测试类
  */
@@ -21,7 +20,6 @@ public class UserServiceTest {
     /**
      * @Description 测试加密工具类
      * @return
-     * @Date 18:15 2023/4/17
      */
     @Test
     public void testPwd() {
@@ -35,7 +33,6 @@ public class UserServiceTest {
     /**
      * @Description 测试mapper中的getUseRoleByName
      * @return
-     * @Date 18:17 2023/4/17
      */
     @Test
     public void testMapper(){

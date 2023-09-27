@@ -18,7 +18,6 @@ import java.util.UUID;
 
 /**
  * Author: lsh
- * Date: 2023/5/9 19:41
  * Version: 1.0
  * @Description: 文件上传和加载的控制器
  */
@@ -34,7 +33,6 @@ public class FileController {
      * @Description 文件上传
      * @param file
      * @return UUID生成的文件名字
-     * @Date 19:55 2023/5/9
      */
     @PostMapping("/img/upload")
     public R<String> upload(MultipartFile file){
@@ -69,7 +67,6 @@ public class FileController {
     /**
      * @Description 文件下载
      * @return
-     * @Date 19:56 2023/5/9
      */
     @GetMapping("/img/download")
     public void download(String name, HttpServletResponse response) {

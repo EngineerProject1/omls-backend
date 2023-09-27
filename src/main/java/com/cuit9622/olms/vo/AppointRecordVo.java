@@ -10,7 +10,6 @@ import java.sql.Time;
 
 /**
  * Author: lsh
- * Date: 2023/6/6 15:59
  * Version: 1.0
  * @Description: 预约记录实体类
  */

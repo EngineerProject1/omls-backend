@@ -23,7 +23,6 @@ import java.util.List;
 
 /**
  * Author: lsh
- * Date: 2023/4/10 17:28
  * Version: 1.0
  *
  * @Description: Swagger接口文档配置类

@@ -7,7 +7,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 
 /**
  * Author: lsh
- * Date: 2023/4/10 17:28
  * Version: 1.0
  * @Description: Mvc配置类
  */

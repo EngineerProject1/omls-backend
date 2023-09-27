@@ -15,7 +15,6 @@ import javax.annotation.Resource;
 /**
  * @author Wed0n
  * @description 针对表【sys_attendance(签到表)】的数据库操作Service实现
- * @createDate 2023-05-20 19:58:21
  */
 @Service
 public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attendance>

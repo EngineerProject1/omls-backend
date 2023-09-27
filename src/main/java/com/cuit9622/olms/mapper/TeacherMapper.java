@@ -14,7 +14,6 @@ import java.util.Map;
 
 /**
  * @Description 教师Mapper
- * @Date 16:32 2023/5/11
  */
 @Mapper
 public interface TeacherMapper extends BaseMapper<Teacher> {
@@ -23,7 +22,6 @@ public interface TeacherMapper extends BaseMapper<Teacher> {
      * @Description 根据用户名查询教师信息
      * @param username 用户名
      * @return
-     * @Date 17:28 2023/5/11
      */
     TeacherVo getTeacherInfoByUsername(String username);
 
@@ -62,7 +60,6 @@ public interface TeacherMapper extends BaseMapper<Teacher> {
     /**
      * @Description 获取所有教师的姓名和学号
      * @return
-     * @Date 21:00 2023/5/22
      */
     @MapKey("id")
     List<Map<Long, String>> selectTeacherNameAndId();

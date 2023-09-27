@@ -11,7 +11,6 @@ import org.apache.ibatis.annotations.Param;
 /**
 * @author 刘世浩
 * @description 针对表【sys_notice(公告表)】的数据库操作Mapper
-* @createDate 2023-04-28 16:59:18
 * @Entity com.cuit9622.olms.entity.Notice
 */
 @Mapper
@@ -22,7 +21,6 @@ public interface NoticeMapper extends BaseMapper<Notice> {
      * @param page 分页信息
      * @param model 查询的条件
      * @return
-     * @Date 16:46 2023/5/11
      */
     Page<NoticeVo> page(@Param("page") Page<NoticeVo> page, @Param("model") NoticeSelectModel model);
 }

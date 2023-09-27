@@ -33,7 +33,6 @@ import java.util.Map;
 
 /**
  * Author: lsh
- * Date: 2023/4/17 17:56
  * Version: 1.0
  *
  * @Description: 认证控制器
@@ -64,7 +63,6 @@ public class AuthController {
      * @param user 用户对象
      * @return R
      * @Description 执行登录操作
-     * @Date 18:23 2023/4/17
      */
     @PostMapping("/login")
     @ApiOperation("用户登录的接口")
@@ -100,7 +98,6 @@ public class AuthController {
 
     /**
      * @Description 用户登出
-     * @Date 23:50 2023/5/11
      */
     @GetMapping("/auth/logout")
     @ApiOperation("用户登出的接口")
@@ -114,7 +111,6 @@ public class AuthController {
      * @param role
      * @return
      * @Description 根据用户选择的用户，重新签发token
-     * @Date 13:37 2023/5/12
      */
     @PostMapping("/auth/roleToken")
     @ApiOperation("根据用户选择的用户，重新签发token")
@@ -136,7 +132,6 @@ public class AuthController {
     /**
      * @return 用户信息
      * @Description 根据请求头中token信息获取用户信息
-     * @Date 19:51 2023/5/8
      */
     @GetMapping("/auth/token")
     @ApiOperation("根据token获取用户信息")

@@ -8,7 +8,6 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Author: lsh
- * Date: 2023/5/10 11:28
  * Version: 1.0
  * @Description: 公告的数据传输对象
  */

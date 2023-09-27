@@ -17,7 +17,6 @@ import java.util.Date;
 
 /**
  * Author: lsh
- * Date: 2023/5/10 12:43
  * Version: 1.0
  * @Description: 日期创建人自动注入的切面
  */
@@ -37,7 +36,6 @@ public class DateAutoFillAop {
      * @Description 前置通知，用于自动填充时间和创建人员
      * @param point 切点
      * @return
-     * @Date 14:07 2023/5/10
      */
     @Before("pointcut()")
     public void before(JoinPoint point) {

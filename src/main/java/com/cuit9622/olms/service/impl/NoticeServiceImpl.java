@@ -14,7 +14,6 @@ import javax.annotation.Resource;
 
 /**
  * @Description 公告业务实现类
- * @Date 17:01 2023/4/28
  */
 @Service
 @Slf4j(topic = "NoticeServiceImpl")

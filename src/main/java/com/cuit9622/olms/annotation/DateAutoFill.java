@@ -4,7 +4,6 @@ import java.lang.annotation.*;
 
 /**
  * Author: lsh
- * Date: 2023/5/10 12:40
  * Version: 1.0
  * @Description: 自定义注解，用于aop自动注入时间
  */

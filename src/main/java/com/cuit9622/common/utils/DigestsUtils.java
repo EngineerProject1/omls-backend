@@ -8,7 +8,6 @@ import java.util.Map;
 
 /**
  * Author: lsh
- * Date: 2023/4/17 16:46
  * Version: 1.0
  * @Description: 加密工具类
  */
@@ -25,7 +24,6 @@ public class DigestsUtils {
      * @param text 明文
      * @param salt 加密盐
      * @return 密文
-     * @Date 16:46 2023/4/17
      */
     public static String sha1(String text, String salt) {
         return new SimpleHash(ALG, text, salt, ITERATIONS).toString();
@@ -34,7 +32,6 @@ public class DigestsUtils {
     /**
      * @Description 随机生成加密盐值
      * @return 盐值
-     * @Date 16:49 2023/4/17
      */
     public static String createSalt() {
         SecureRandomNumberGenerator generator = new SecureRandomNumberGenerator();
@@ -45,7 +42,6 @@ public class DigestsUtils {
      * @Description 返回map，map里有密文和加密盐值
      * @param text 明文
      * @return map集合
-     * @Date 16:50 2023/4/17
      */
     public static Map<String, String> encrypt(String text) {
         Map<String, String> map = new HashMap<>();

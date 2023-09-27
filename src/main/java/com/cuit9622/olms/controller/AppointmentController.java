@@ -57,7 +57,6 @@ public class AppointmentController {
      * @param model
      * @return
      * @Description 根据model查询预约记录
-     * @Date 15:57 2023/6/6
      */
     @GetMapping("/auth/appointment")
     @RequiresRoles("admin")
@@ -71,7 +70,6 @@ public class AppointmentController {
      * @Description 根据预约类型查询有预约记录的实验室
      * @param type 预约类型
      * @return
-     * @Date 19:27 2023/6/6
      */
     @GetMapping("/auth/appointment/lab/{type}")
     @RequiresRoles("admin")

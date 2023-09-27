@@ -16,7 +16,6 @@ public interface DeviceService extends IService<Device> {
      * @param pageSize 页面大小
      * @param page 页码
      * @return
-     * @Date 16:47 2023/5/11
      */
     Page<DeviceVo> selectDevice(Integer pageSize, Integer page, String name, String status);
 
@@ -24,7 +23,6 @@ public interface DeviceService extends IService<Device> {
      * @Description 通过id获取设备信息
      * @param id
      * @return
-     * @Date 16:47 2023/5/11
      */
     DeviceVo getById(Long id);
 
@@ -46,7 +44,6 @@ public interface DeviceService extends IService<Device> {
      * @Description 得到所有设备
      * @param
      * @return
-     * @Date 17:08 2023/5/29
      */
     List<DeviceVo> getAllDevice();
 

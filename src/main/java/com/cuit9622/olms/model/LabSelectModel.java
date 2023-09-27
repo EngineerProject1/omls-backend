@@ -6,7 +6,6 @@ import lombok.Data;
 
 /**
  * Author: lsh
- * Date: 2023/5/15 15:44
  * Version: 1.0
  * @Description: 用于查询实验室的Model
  */

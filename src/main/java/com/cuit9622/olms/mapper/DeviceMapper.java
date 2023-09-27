@@ -19,7 +19,6 @@ public interface DeviceMapper extends BaseMapper<Device> {
      * @Description 设备的分页查找
      * @param page 分页数据
      * @return
-     * @Date 16:45 2023/5/11
      */
     Page<DeviceVo> page(@Param("page") Page<DeviceVo> page, @Param("name") String name, @Param("status") String status);
 
@@ -27,7 +26,6 @@ public interface DeviceMapper extends BaseMapper<Device> {
      * @Description 通过id获取设备信息
      * @param id
      * @return
-     * @Date 16:46 2023/5/11
      */
     DeviceVo getOne(@Param("id") Long id);
 
@@ -49,7 +47,6 @@ public interface DeviceMapper extends BaseMapper<Device> {
      * @Description 得到所有设备
      * @param
      * @return
-     * @Date 17:09 2023/5/29
      */
     List<DeviceVo> getDevices();
 

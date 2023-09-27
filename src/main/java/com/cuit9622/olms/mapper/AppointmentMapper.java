@@ -52,7 +52,6 @@ public interface AppointmentMapper extends BaseMapper<Appointment> {
      * @param page
      * @param labId 要查询那个实验室的预约情况
      * @return
-     * @Date 17:01 2023/6/6
      */
     Page<AppointRecordVo> pageAppointRecordForPerson(@Param("page") Page<AppointRecordVo> page, @Param("labId") Integer labId);
 
@@ -61,7 +60,6 @@ public interface AppointmentMapper extends BaseMapper<Appointment> {
      * @param page
      * @param labId 要查询那个实验室的预约情况
      * @return
-     * @Date 17:01 2023/6/6
      */
     Page<AppointRecordVo> pageAppointRecordForClass(@Param("page") Page<AppointRecordVo> page, @Param("labId") Integer labId,@Param("only")Integer only);
 
@@ -69,7 +67,6 @@ public interface AppointmentMapper extends BaseMapper<Appointment> {
      * @Description 得到有预约记录的实验室
      * @param type 预约类型
      * @return
-     * @Date 19:12 2023/6/6
      */
     @MapKey("id")
     List<Map<String, String>> getAppointLabs(String type);

@@ -22,7 +22,6 @@ import java.util.List;
 
 /**
  * Author: lsh
- * Date: 2023/5/15 15:42
  * Version: 1.0
  * @Description: 实验室控制器
  */
@@ -38,7 +37,6 @@ public class LabController {
      * @Description 分页查询实验室的接口
      * @param model
      * @return
-     * @Date 16:09 2023/5/15
      */
     @GetMapping("/lab")
     @ApiOperation("实验室查询分页查询的接口")
@@ -63,7 +61,6 @@ public class LabController {
      * @Description 根据id删除实验室信息
      * @param id
      * @return
-     * @Date 21:44 2023/5/18
      */
     @DeleteMapping("/auth/lab/{id}")
     @RequiresRoles("admin")
@@ -81,7 +78,6 @@ public class LabController {
      * @Description 批量删除实验室
      * @param model
      * @return
-     * @Date 21:47 2023/5/18
      */
     @DeleteMapping("/auth/lab")
     @RequiresRoles("admin")
@@ -99,7 +95,6 @@ public class LabController {
      * @Description 根据id获取实验室
      * @param id
      * @return
-     * @Date 11:18 2023/5/20
      */
     @GetMapping("/lab/{id}")
     @ApiOperation("根据id获取实验室")
@@ -120,7 +115,6 @@ public class LabController {
      * @Description 添加实验室
      * @param lab
      * @return
-     * @Date 21:41 2023/5/22
      */
     @PostMapping("/auth/lab")
     @RequiresRoles("admin")
@@ -137,7 +131,6 @@ public class LabController {
      * @Description 修改实验室
      * @param lab
      * @return
-     * @Date 21:41 2023/5/22
      */
     @PutMapping("/auth/lab")
     @RequiresRoles("admin")
@@ -153,8 +146,7 @@ public class LabController {
     /**
      * @Description 根据地址查询实验室
      * @param location
-     * @return String
-     * @Date 21:44 2023/5/22
+     * @return
      */
     @GetMapping("/lab/location")
     @ApiOperation("根据地址查询实验室")

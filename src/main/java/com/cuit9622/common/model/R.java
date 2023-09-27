@@ -10,7 +10,6 @@ import java.util.Map;
 
 /**
  * Author: lsh
- * Date: 2023/4/10 17:42
  * Version: 1.0
  * @Description: 业务响应对象
  */

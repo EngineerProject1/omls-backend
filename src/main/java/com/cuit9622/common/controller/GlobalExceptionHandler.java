@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * Author: lsh
- * Date: 2023/4/10 17:45
  * Version: 1.0
  * @Description: 全局异常处理器
  */
@@ -21,7 +20,6 @@ public class GlobalExceptionHandler {
     /**
      * @Description 捕捉自定义业务异常
      * @param e 异常信息
-     * @Date 17:46 2023/4/10
      */
     @ExceptionHandler(BizException.class)
     public R<String> handlerBizException(BizException e) {
@@ -32,7 +30,6 @@ public class GlobalExceptionHandler {
     /**
      * @Description 捕捉其他异常
      * @param e 其他异常
-     * @Date 17:47 2023/4/10
      */
     @ExceptionHandler(Throwable.class)
     public R<String> handlerException(Throwable e) {

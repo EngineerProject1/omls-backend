@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 /**
 * @author Zxin
 * @description 针对表【sys_college】的数据库操作Mapper
-* @createDate 2023-05-11 16:25:53
 * @Entity com.cuit9622.olms.entity.College
 */
 @Mapper

@@ -13,7 +13,6 @@ import java.util.Map;
 /**
 * @author HP
 * @description 针对表【sys_device_lend(设备借阅表)】的数据库操作Mapper
-* @createDate 2023-05-15 20:26:06
 * @Entity com.cuit9622.olms.entity.DeviceLend
 */
 @Mapper

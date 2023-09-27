@@ -13,7 +13,6 @@ import java.util.List;
 /**
  * @author 刘世浩
  * @description 针对表【sys_lab(实验室表)】的数据库操作Mapper
- * @createDate 2023-05-15 15:38:57
  * @Entity com.cuit9622.olms.entity.Lab
  */
 @Mapper
@@ -24,7 +23,6 @@ public interface LabMapper extends BaseMapper<Lab> {
      * @param page 分页管理器
      * @param model
      * @return
-     * @Date 15:53 2023/5/15
      */
     Page<LabVo> page(@Param("page") Page<LabVo> page, @Param("model") LabSelectModel model);
 
@@ -32,7 +30,6 @@ public interface LabMapper extends BaseMapper<Lab> {
      * @Description 得到该实验室的开放时间段
      * @param labId
      * @return
-     * @Date 17:02 2023/6/7
      */
     List<Integer> getWeekday(@Param("labId") Long labId);
 }

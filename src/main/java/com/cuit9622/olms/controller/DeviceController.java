@@ -66,7 +66,6 @@ public class DeviceController {
      * @Description 根据id修改设备信息
      * @param deviceVo 需要修改的设备信息
      * @return
-     * @Date 15:36 2023/5/10
      */
     @PutMapping("/auth/device")
     @ApiOperation("修改某个设备")
@@ -117,7 +116,6 @@ public class DeviceController {
      * @Description 得到所有设备
      * @param
      * @return
-     * @Date 17:08 2023/5/29
      */
     @GetMapping("/device/all")
     @ApiOperation("得到所有设备")

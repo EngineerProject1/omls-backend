@@ -8,7 +8,6 @@ import java.util.List;
 
 /**
  * Author: lsh
- * Date: 2023/5/9 21:44
  * Version: 1.0
  * @Description: 删除数据时接收的实体类
  */

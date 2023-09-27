@@ -6,7 +6,6 @@ import lombok.Data;
 
 /**
  * Author: lsh
- * Date: 2023/5/12 19:23
  * Version: 1.0
  * @Description: 公告查询的排序条件
  */

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 /**
 * @author Zxin
 * @description 针对表【sys_college】的数据库操作Service实现
-* @createDate 2023-05-11 16:25:53
 */
 @Service
 @Slf4j(topic = "CollegeServiceImpl")

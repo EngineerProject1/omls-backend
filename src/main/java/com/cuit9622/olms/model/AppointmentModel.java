@@ -6,7 +6,6 @@ import lombok.Data;
 
 /**
  * Author: lsh
- * Date: 2023/6/6 15:39
  * Version: 1.0
  * @Description: 预约记录查询模型
  */

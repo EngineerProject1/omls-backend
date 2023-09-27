@@ -12,7 +12,6 @@ import java.util.UUID;
 
 /**
  * Author: lsh
- * Date: 2023/4/17 16:52
  * Version: 1.0
  * @Description: JWT工具类
  */
@@ -25,7 +24,6 @@ public class JWTUtils {
      * @param username 用户名
      * @param expire 过期时间
      * @return
-     * @Date 16:53 2023/4/17
      */
     public static String creatToken(String username, Date expire) {
 
@@ -46,7 +44,6 @@ public class JWTUtils {
      * @param username 用户名
      * @param expire 过期时间
      * @return
-     * @Date 13:30 2023/5/12
      */
     public static String creatToken(Map<String, Object> map, String username, Date expire) {
 
@@ -65,7 +62,6 @@ public class JWTUtils {
     /**
      * @Description 解析token
      * @return
-     * @Date 16:55 2023/4/17
      */
     public static DecodedJWT verify(String token) throws JWTVerificationException {
         return JWT.require(Algorithm.HMAC256(SECRET_KEY)).build().verify(token);

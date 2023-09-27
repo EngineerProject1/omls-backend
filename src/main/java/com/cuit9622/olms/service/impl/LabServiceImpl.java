@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 /**
  * @author 刘世浩
  * @description 针对表【sys_lab(实验室表)】的数据库操作Service实现
- * @createDate 2023-05-15 15:38:57
  */
 @Service
 @Slf4j(topic = "LabServiceImpl")

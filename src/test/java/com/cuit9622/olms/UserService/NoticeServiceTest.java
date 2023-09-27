@@ -11,7 +11,6 @@ import javax.annotation.Resource;
 
 /**
  * Author: lsh
- * Date: 2023/4/28 17:25
  * Version: 1.0
  * @Description: 公告测试类
  */
@@ -23,7 +22,6 @@ public class NoticeServiceTest {
 
     /**
      * @Description 测试公告分页查询
-     * @Date 17:30 2023/4/28
      */
 //    @Test
 //    public void testPage(){

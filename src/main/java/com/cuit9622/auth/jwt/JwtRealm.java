@@ -24,7 +24,6 @@ import java.util.List;
 
 /**
  * Author: lsh
- * Date: 2023/4/17 16:56
  * Version: 1.0
  * @Description: 自定义JwtRealm实现jwt登录
  */
@@ -41,7 +40,6 @@ public class JwtRealm extends AuthorizingRealm {
     /**
      * @Description 配置该Realm只支持JwtToken
      * @return
-     * @Date 17:10 2023/4/17
      */
     @Override
     public Class<?> getAuthenticationTokenClass() {
@@ -52,7 +50,6 @@ public class JwtRealm extends AuthorizingRealm {
      * @Description 自定义授权方法
      * @param principals
      * @return
-     * @Date 17:11 2023/4/17
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -71,7 +68,6 @@ public class JwtRealm extends AuthorizingRealm {
      * @Description 自定义登录认证方法
      * @param token
      * @return
-     * @Date 17:11 2023/4/17
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken jwtToken) throws AuthenticationException {
