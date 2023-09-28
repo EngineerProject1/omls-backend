@@ -38,6 +38,8 @@ import java.util.Map;
 @Api(tags = "认证相关API")
 public class AuthController {
 
+    private final Integer expireDate = 7;
+
     @Resource
     private UserService userService;
 
@@ -68,7 +70,7 @@ public class AuthController {
             throw new BizException(401, "用户名或密码错误");
         }
         Calendar instance = Calendar.getInstance();
-        instance.add(Calendar.DATE, 2);
+        instance.add(Calendar.DATE, expireDate);
         String token = JWTUtils.creatToken(user.getUsername(), instance.getTime());
         // 将token存到redis中
         redisTemplate.opsForValue().set(RedisUtils.JWT_TOKEN + user.getUsername(), token);
@@ -95,6 +97,28 @@ public class AuthController {
     }
 
     /**
+     * @Description 根据用户选择的用户，重新签发token
+     * @param role
+     * @return
+     */
+    @PostMapping("/auth/roleToken")
+    @ApiOperation("根据用户选择的用户，重新签发token")
+    public R<String> selectRole(String role){
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        // 加入用户选择的角色
+        Map<String, Object> map = new HashMap<>();
+        map.put("selectedRole", role);
+        Calendar instance = Calendar.getInstance();
+        instance.add(Calendar.DATE, expireDate);
+
+        String token = JWTUtils.creatToken(map,user.getUsername(), instance.getTime());
+        // 将token存到redis中
+        redisTemplate.opsForValue().set(RedisUtils.JWT_TOKEN + user.getUsername(), token);
+        redisTemplate.expireAt(RedisUtils.JWT_TOKEN, instance.getTime());
+        return R.ok("选择身份成功", token);
+    }
+
+    /**
      * @Description 根据请求头中token信息获取用户信息
      * @return 用户信息
      */
@@ -108,7 +132,6 @@ public class AuthController {
         } catch (Exception e) {
             throw new BizException(401, "token异常");
         }
-
 
         // 查询用户的角色信息
         List<String> roles = userService.getUserRoleByName(username);
