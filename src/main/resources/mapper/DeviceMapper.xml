@@ -14,6 +14,22 @@
         <result property="status" column="status" jdbcType="INTEGER"></result>
     </resultMap>
 
+    <insert id="insertOne">
+        insert sys_device ( name, price, lab_id, model, images)
+        values(#{deviceVo.name}, #{deviceVo.price},
+               (select id from sys_lab where name = #{deviceVo.labName}),
+               #{deviceVo.model}, #{deviceVo.images});
+    </insert>
+
+    <update id="updateById">
+        update sys_device set name = #{deviceVo.name},
+                              price = #{deviceVo.price},
+                              model = #{deviceVo.model},
+                              images = #{deviceVo.images},
+                              lab_id = (select id from sys_lab where name = #{deviceVo.labName})
+        where id = #{deviceVo.id};
+    </update>
+
 
     <select id="page" resultType="com.cuit9622.olms.vo.DeviceVo">
         select sys_device.id id,

@@ -25,7 +25,7 @@ public class NoticeServiceTest {
      */
     @Test
     public void testPage(){
-        R<Page<NoticeVo>> pageR = noticeService.selectNotice(2, 1);
+        Page<NoticeVo> pageR = noticeService.selectNotice(2, 1);
         System.out.println(pageR);
     }
 }

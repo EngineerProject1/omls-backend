@@ -46,9 +46,8 @@ public class NoticeController {
     public R<Page<NoticeVo>> getNotice(
             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
             @RequestParam(value = "page", defaultValue = "1") Integer page) {
-        R<Page<NoticeVo>> info = noticeService.selectNotice(pageSize, page);
-        log.info(info.getMsg());
-        return info;
+        Page<NoticeVo> info = noticeService.selectNotice(pageSize, page);
+        return R.ok("查询公告信息成功", info);
     }
 
     /**

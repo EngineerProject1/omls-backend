@@ -9,10 +9,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -37,9 +35,8 @@ public class DeviceController {
     public R<Page<DeviceVo>> getDeviceByPage(
             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
             @RequestParam(value = "page", defaultValue = "1") Integer page) {
-        R<Page<DeviceVo>> info = deviceService.selectDevice(pageSize, page);
-        log.info(info.getMsg());
-        return info;
+        Page<DeviceVo> info = deviceService.selectDevice(pageSize, page);
+        return R.ok("获取设备信息成功", info);
     }
 
     /**
@@ -52,10 +49,39 @@ public class DeviceController {
     public R<DeviceVo> getDeviceById(@PathVariable("id") Long id){
 
         DeviceVo deviceDto = deviceService.getById(id);
-
         System.out.println(deviceDto);
-
         log.info("获取的设备信息:{}",deviceDto);
         return R.ok("获取设备信息成功", deviceDto);
+    }
+
+    /**
+     * @Description 根据id修改设备信息
+     * @param deviceVo 需要修改的设备信息
+     * @return
+     */
+    @PutMapping("/auth/device")
+    @ApiOperation("修改某个设备")
+    @RequiresRoles("admin")
+    public R<String> updateDevice(@RequestBody DeviceVo deviceVo){
+        log.info("将要修改的设备信息为:{}",deviceVo);
+        Integer count = deviceService.updateById(deviceVo);
+        if(count > 0){
+            return R.ok("修改成功");
+        }else{
+            return R.ok("修改失败");
+        }
+    }
+
+    @PostMapping("/auth/device")
+    @ApiOperation("添加设备")
+    @RequiresRoles("admin")
+    public R<String> addDevice(@RequestBody DeviceVo deviceVo){
+        log.info("将要新增的设备信息为:{}",deviceVo);
+        Integer count = deviceService.insertOne(deviceVo);
+        if(count > 0){
+            return R.ok("添加成功");
+        }else{
+            return R.ok("添加失败");
+        }
     }
 }

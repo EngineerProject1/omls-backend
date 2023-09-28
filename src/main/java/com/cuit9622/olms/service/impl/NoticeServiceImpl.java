@@ -24,10 +24,11 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice>
     private NoticeMapper noticeMapper;
 
     @Override
-    public R<Page<NoticeVo>> selectNotice(Integer pageSize, Integer page) {
+    public Page<NoticeVo> selectNotice(Integer pageSize, Integer page) {
         Page<NoticeVo> pageInfo = new Page<>(page, pageSize);
         pageInfo = noticeMapper.page(pageInfo);
-        return R.ok("查询公告信息成功", pageInfo);
+
+        return pageInfo;
     }
 }
 

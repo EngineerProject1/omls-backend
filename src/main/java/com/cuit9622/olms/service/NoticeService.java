@@ -1,7 +1,6 @@
 package com.cuit9622.olms.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.cuit9622.common.model.R;
 import com.cuit9622.olms.entity.Notice;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cuit9622.olms.vo.NoticeVo;
@@ -17,5 +16,5 @@ public interface NoticeService extends IService<Notice> {
      * @param page 第几页
      * @return
      */
-    R<Page<NoticeVo>> selectNotice(Integer pageSize, Integer page);
+    Page<NoticeVo> selectNotice(Integer pageSize, Integer page);
 }
