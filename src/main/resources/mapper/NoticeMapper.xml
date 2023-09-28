@@ -36,7 +36,7 @@
         <if test="(model.level != null and model.level != '') and (model.level == 'asc' or model.level =='desc' )">
             order by level ${model.level}
         </if>
-        <if test="(model.createTime != null and model.createTime != '') and (model.createTime = 'asc' or model.createTime ='desc' )">
+        <if test="(model.createTime != null and model.createTime != '') and (model.createTime == 'asc' or model.createTime =='desc' )">
             order by create_time ${model.createTime}
         </if>
     </select>
