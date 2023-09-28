@@ -62,7 +62,6 @@ public class ShiroConfig {
         Map<String, String> chain = new LinkedHashMap<>();
         // 设置login不需要拦截
         chain.put("/login", "anon");
-        chain.put("/logout","logout");
         // 路径中含有auth的全部拦截
         chain.put("/auth/**", "jwtFilter");
 

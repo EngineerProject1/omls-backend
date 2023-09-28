@@ -13,6 +13,7 @@ import com.cuit9622.olms.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,6 +81,17 @@ public class AuthController {
         data.put("token", token);
         log.info("{}的角色为{}", user.getUsername(), roles.toString());
         return R.ok("登录成功", data);
+    }
+
+    /**
+     * @Description 用户登出
+     */
+    @GetMapping ("/auth/logout")
+    @ApiOperation("用户登出的接口")
+    public R<String> logout(){
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        redisTemplate.delete(RedisUtils.JWT_TOKEN + user.getUsername());
+        return R.ok("退出登录成功");
     }
 
     /**
