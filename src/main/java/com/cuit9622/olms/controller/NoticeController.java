@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.common.model.R;
 import com.cuit9622.olms.annotation.DateAutoFill;
 import com.cuit9622.olms.entity.Notice;
+import com.cuit9622.olms.model.NoticeSelectModel;
 import com.cuit9622.olms.vo.NoticeVo;
 import com.cuit9622.olms.model.DeleteModel;
 import com.cuit9622.olms.service.NoticeService;
@@ -39,14 +40,8 @@ public class NoticeController {
      */
     @GetMapping("/notice")
     @ApiOperation("公告信息分页查询的接口")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageSize", value = "每页的条数", defaultValue = "5", required = true),
-            @ApiImplicitParam(name = "page", value = "页码", defaultValue = "1", required = true)
-    })
-    public R<Page<NoticeVo>> getNotice(
-            @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
-            @RequestParam(value = "page", defaultValue = "1") Integer page) {
-        Page<NoticeVo> info = noticeService.selectNotice(pageSize, page);
+    public R<Page<NoticeVo>> getNotice(NoticeSelectModel model) {
+        Page<NoticeVo> info = noticeService.selectNotice(model.getPageSize(), model.getPage(), model);
         return R.ok("查询公告信息成功", info);
     }
 
