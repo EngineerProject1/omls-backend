@@ -23,6 +23,10 @@ public class UserServiceTest {
      */
     @Test
     public void testPwd() {
+        String password = DigestsUtils.encrypt("123456").get("password");
+        String salt = DigestsUtils.encrypt("123456").get("salt");
+        System.out.println(password);
+        System.out.println(salt);
         System.out.println(DigestsUtils.encrypt("123456"));
     }
 

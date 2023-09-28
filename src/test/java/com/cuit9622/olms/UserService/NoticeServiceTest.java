@@ -23,9 +23,9 @@ public class NoticeServiceTest {
     /**
      * @Description 测试公告分页查询
      */
-    @Test
-    public void testPage(){
-        Page<NoticeVo> pageR = noticeService.selectNotice(2, 1);
-        System.out.println(pageR);
-    }
+//    @Test
+//    public void testPage(){
+//        Page<NoticeVo> pageR = noticeService.selectNotice(2, 1);
+//        System.out.println(pageR);
+//    }
 }

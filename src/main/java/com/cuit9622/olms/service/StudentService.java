@@ -18,12 +18,14 @@ public interface StudentService extends IService<Student> {
      * @param page 第几页
      * @return
      */
-    R<Page<StudentVo>> selectStudents(Integer pageSize, Integer page);
+     R<Page<StudentVo>> selectStudents(Integer pageSize, Integer page);
 
     /**
      * @Description 得到学生的信息
      * @param username
      * @return
      */
-    StudentVo getStudentInfoByUsername(String username);
+     StudentVo getStudentInfoByUsername(String username);
+
+     void saveWithUserAndRole(StudentVo studentVo);
 }

@@ -3,15 +3,23 @@ package com.cuit9622.olms.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cuit9622.common.model.R;
+import com.cuit9622.common.utils.DigestsUtils;
 import com.cuit9622.olms.entity.Student;
+import com.cuit9622.olms.entity.User;
+import com.cuit9622.olms.entity.UserRole;
 import com.cuit9622.olms.service.StudentService;
 import com.cuit9622.olms.mapper.StudentMapper;
+import com.cuit9622.olms.service.UserRoleService;
+import com.cuit9622.olms.service.UserService;
 import com.cuit9622.olms.vo.NoticeVo;
 import com.cuit9622.olms.vo.StudentVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
 * @author Zxin
@@ -23,6 +31,10 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     implements StudentService{
     @Resource
     private StudentMapper studentMapper;
+    @Resource
+    private UserService userService;
+    @Resource
+    private UserRoleService userRoleService;
 
     @Override
     public R<Page<StudentVo>> selectStudents(Integer pageSize, Integer page) {
@@ -36,6 +48,46 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         StudentVo student = studentMapper.getStudentInfoByUsername(username);
         log.info("用户名为{}的学生的信息为{}",username, student);
         return student;
+    }
+
+    /**
+     * 添加学生的同时，添加用户以及用户角色
+     * @param studentVo
+     */
+    @Transactional
+    @Override
+    public void saveWithUserAndRole(StudentVo studentVo) {
+        // 设置密码盐值
+        Map<String,String> map = DigestsUtils.encrypt("123456");
+        String password = map.get("password");
+        String salt = map.get("salt");
+        studentVo.setPassword(password);
+        studentVo.setSalt(salt);
+
+        // 添加至学生表
+        studentMapper.saveStudent(studentVo);
+
+        // 添加至用户表
+        userService.save(studentVo);
+
+        // 添加至角色表
+        // 获取userId
+        User userInfo = userService.getUserInfoByName(studentVo.getUsername());
+        Long userId = userInfo.getId();
+        // 判断是否设置为管理员
+        int flag = studentVo.getIsSetManager();
+        // 如果为1，设为管理员
+        if(flag == 1) {
+            UserRole userRole = new UserRole();
+            userRole.setUserId(userId);
+            userRole.setRoleId(1L);
+            userRoleService.save(userRole);
+        }
+        // 添加学生角色记录
+        UserRole userRole = new UserRole();
+        userRole.setUserId(userId);
+        userRole.setRoleId(3L);
+        userRoleService.save(userRole);
     }
 }
 
