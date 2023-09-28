@@ -51,4 +51,5 @@ public class User {
     @ApiModelProperty("更新时间")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date updateTime;
+
 }
