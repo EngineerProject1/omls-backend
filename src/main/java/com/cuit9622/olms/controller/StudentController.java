@@ -100,4 +100,10 @@ public class StudentController {
         studentService.saveWithUserAndRole(studentVo);
         return R.ok("添加学生信息成功");
     }
+    @PutMapping("/student")
+    @DateAutoFill(DateAutoFill.Type.UPDATE)
+    public R<String> update(@RequestBody StudentVo studentVo) {
+        studentService.updateWithUserAndRole(studentVo);
+        return R.ok("修改学生信息成功");
+    }
 }

@@ -15,4 +15,5 @@ public interface UserRoleService extends IService<UserRole> {
      */
     UserRole getManagerByUserId(Long userId);
 
+    void removeUserRoleByUserId(Long userId);
 }

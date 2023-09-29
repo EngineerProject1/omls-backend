@@ -28,6 +28,15 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole>
         UserRole userRole = userRoleMapper.getManagerByUserId(userId);
         return userRole;
     }
+
+    /**
+     * 通过userId删除管理员角色
+     * @param userId
+     */
+    @Override
+    public void removeUserRoleByUserId(Long userId) {
+        userRoleMapper.removeUserRoleByUserId(userId);
+    }
 }
 
 

@@ -28,4 +28,6 @@ public interface StudentService extends IService<Student> {
      StudentVo getStudentInfoByUsername(String username);
 
      void saveWithUserAndRole(StudentVo studentVo);
+
+    void updateWithUserAndRole(StudentVo studentVo);
 }
