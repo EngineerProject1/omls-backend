@@ -122,7 +122,7 @@ public class AuthController {
      * @Description 根据请求头中token信息获取用户信息
      * @return 用户信息
      */
-    @GetMapping("/token")
+    @GetMapping("/auth/token")
     @ApiOperation("根据token获取用户信息")
     public R<User> getUserInfoByToken(HttpServletRequest request) {
         String token = request.getHeader("token");

@@ -26,4 +26,5 @@ public interface UserService extends IService<User> {
      */
     User getUserInfoByName(String username);
     Boolean updateUserContactInformationByUserName(String username, String phone, String email,String avatar);
+    Integer updatePassword(String oldPassword,String newPassword);
 }
