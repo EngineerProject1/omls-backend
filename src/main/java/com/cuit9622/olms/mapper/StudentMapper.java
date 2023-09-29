@@ -32,6 +32,8 @@ public interface StudentMapper extends BaseMapper<Student> {
     void saveStudent(@Param("studentVo") StudentVo studentVo);
 
     void updateStudent(@Param("studentVo") StudentVo studentVo);
+
+    void removeStudentBySid(Long sid);
 }
 
 

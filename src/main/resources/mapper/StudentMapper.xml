@@ -29,6 +29,9 @@
                 class_number = #{studentVo.classNumber}
                 where sid = #{studentVo.sid}
     </update>
+    <delete id="removeStudentBySid">
+        delete from sys_user_student where sid = #{sid}
+    </delete>
     <select id="page" resultType="com.cuit9622.olms.vo.StudentVo">
         select sid,
                student_name,

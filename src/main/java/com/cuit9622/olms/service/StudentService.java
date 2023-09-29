@@ -30,4 +30,6 @@ public interface StudentService extends IService<Student> {
      void saveWithUserAndRole(StudentVo studentVo);
 
     void updateWithUserAndRole(StudentVo studentVo);
+
+    void deleteWithUserAndRole(StudentVo studentVo);
 }

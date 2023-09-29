@@ -36,7 +36,12 @@ public class StudentController {
     @Resource
     private UserService userService;
 
-
+    /**
+     * 分页查询
+     * @param pageSize
+     * @param page
+     * @return
+     */
     @GetMapping("/student")
     @ApiOperation("学生信息分页查询的接口")
     @ApiImplicitParams({
@@ -89,21 +94,58 @@ public class StudentController {
         }
         return R.ok("查询专业信息成功",majors);
     }
+
+    /**
+     * 查询用户角色
+     * @param id
+     * @return
+     */
     @GetMapping("/student/role/{id}")
     public R<List<String>> getRoleId(@PathVariable Long id) {
         List<String> roles = userService.getUserRoleByName(id.toString());
         return R.ok("查询角色信息成功",roles);
     }
+
+    /**
+     * 添加学生信息至学生表、用户表、角色表
+     * @param studentVo
+     * @return
+     */
     @PostMapping("/student")
     @DateAutoFill(DateAutoFill.Type.INSERT)
     public R<String> addStudent(@RequestBody StudentVo studentVo) {
         studentService.saveWithUserAndRole(studentVo);
         return R.ok("添加学生信息成功");
     }
+
+    /**
+     * 在学生表、用户表、角色表中修改学生信息
+     * @param studentVo
+     * @return
+     */
     @PutMapping("/student")
     @DateAutoFill(DateAutoFill.Type.UPDATE)
-    public R<String> update(@RequestBody StudentVo studentVo) {
+    public R<String> updateStudent(@RequestBody StudentVo studentVo) {
         studentService.updateWithUserAndRole(studentVo);
         return R.ok("修改学生信息成功");
+    }
+
+    /**
+     * 在学生表、用户表、角色表中删除学生信息
+     * @param studentVo
+     * @return
+     */
+    @DeleteMapping("/student")
+    @DateAutoFill(DateAutoFill.Type.UPDATE)
+    public R<String> deleteStudent(@RequestBody StudentVo studentVo) {
+        studentService.deleteWithUserAndRole(studentVo);
+        return R.ok("删除学生信息成功");
+    }
+
+    @DeleteMapping("/students")
+    @DateAutoFill(DateAutoFill.Type.UPDATE)
+    public R<String> deleteStudentsByids(@RequestBody List<StudentVo> studentVos) {
+        System.out.println(studentVos);
+        return null;
     }
 }

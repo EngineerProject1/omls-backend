@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -122,8 +123,20 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         }
         // 取消管理员
         if(manager != null && studentVo.getIsSetManager() == 0) {
-            userRoleMapper.removeUserRoleByUserId(studentVo.getId());
+            userRoleMapper.removeManagerByUserId(studentVo.getId());
         }
+    }
+
+    @Override
+    public void deleteWithUserAndRole(StudentVo studentVo) {
+        // 在学生表中删除
+        studentMapper.removeStudentBySid(studentVo.getSid());
+
+        // 在用户表中删除
+        userService.removeById((User) studentVo);
+
+        // 在角色表中删除
+        userRoleMapper.removeUserRoleByUserId(studentVo.getId());
     }
 }
 
