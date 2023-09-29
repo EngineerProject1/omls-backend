@@ -21,4 +21,5 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
     List<String> getUserRoleInfoByUsername(@Param("username") String username);
+    Boolean updateByUserName(@Param("username") String username,@Param("phone")String phone,@Param("email")String email,@Param("avatar")String avatar);
 }
