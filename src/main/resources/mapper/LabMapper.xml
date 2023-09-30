@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cuit9622.olms.mapper.LabMapper">
+
+    <resultMap id="BaseResultMap" type="com.cuit9622.olms.entity.Lab">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="flag" column="flag" jdbcType="TINYINT"/>
+            <result property="masterId" column="master_id" jdbcType="BIGINT"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="capacity" column="capacity" jdbcType="BIGINT"/>
+            <result property="location" column="location" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
+            <result property="images" column="images" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,flag,
+        master_id,description,capacity,
+        location,type,images
+    </sql>
+    <select id="page" resultType="com.cuit9622.olms.vo.LabVo">
+        SELECT sl.id,
+               `name`,
+               master_id,
+               description,
+               capacity,
+               location,
+               type,
+               images,
+               real_name master_name
+        FROM sys_lab sl
+                 left join sys_user su on su.id = sl.master_id
+        <where>
+            <if test="model.name != null and model.name !='' ">
+                `name` like concat('%',#{model.title},'%')
+            </if>
+        </where>
+        <if test="(model.capacity != null and model.capacity != '') and (model.capacity == 'asc' or model.capacity =='desc' )">
+            order by capacity ${model.capacity}
+        </if>
+    </select>
+</mapper>
