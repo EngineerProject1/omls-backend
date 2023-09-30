@@ -1,21 +1,18 @@
 package com.cuit9622.olms.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.cuit9622.auth.util.JWTUtils;
 import com.cuit9622.common.exception.BizException;
 import com.cuit9622.common.model.R;
 import com.cuit9622.olms.annotation.DateAutoFill;
 import com.cuit9622.olms.entity.*;
 import com.cuit9622.olms.model.DeleteModel;
-import com.cuit9622.olms.model.StudentSelectModel;
+import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.service.CollegeService;
 import com.cuit9622.olms.service.MajorService;
 import com.cuit9622.olms.service.StudentService;
 import com.cuit9622.olms.service.UserService;
 import com.cuit9622.olms.vo.StudentVo;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +44,7 @@ public class StudentController {
      */
     @GetMapping("/student")
     @ApiOperation("学生信息分页查询的接口")
-    public R<Page<StudentVo>> getStudents (StudentSelectModel model) {
+    public R<Page<StudentVo>> getStudents (UserSelectModel model) {
         Page<StudentVo> info = studentService.selectStudents(model.getPageSize(),model.getPage(),model);
         return R.ok("查询学生信息成功", info);
     }

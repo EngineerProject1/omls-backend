@@ -2,27 +2,23 @@ package com.cuit9622.olms.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cuit9622.common.model.R;
 import com.cuit9622.common.utils.DigestsUtils;
 import com.cuit9622.olms.entity.Student;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.entity.UserRole;
 import com.cuit9622.olms.mapper.UserMapper;
 import com.cuit9622.olms.mapper.UserRoleMapper;
-import com.cuit9622.olms.model.StudentSelectModel;
+import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.service.StudentService;
 import com.cuit9622.olms.mapper.StudentMapper;
 import com.cuit9622.olms.service.UserRoleService;
 import com.cuit9622.olms.service.UserService;
-import com.cuit9622.olms.vo.NoticeVo;
 import com.cuit9622.olms.vo.StudentVo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +43,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     private UserMapper userMapper;
 
     @Override
-    public Page<StudentVo> selectStudents(Integer pageSize, Integer page, StudentSelectModel model) {
+    public Page<StudentVo> selectStudents(Integer pageSize, Integer page, UserSelectModel model) {
         Page<StudentVo> pageInfo = new Page<>(page,pageSize);
         pageInfo = studentMapper.page(pageInfo,model);
         return pageInfo;
