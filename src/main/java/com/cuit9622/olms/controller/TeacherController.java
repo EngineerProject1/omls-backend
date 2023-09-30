@@ -7,6 +7,7 @@ import com.cuit9622.olms.annotation.DateAutoFill;
 import com.cuit9622.olms.entity.Student;
 import com.cuit9622.olms.entity.Teacher;
 import com.cuit9622.olms.entity.User;
+import com.cuit9622.olms.model.DeleteModel;
 import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.service.TeacherService;
 import com.cuit9622.olms.service.UserService;
@@ -77,5 +78,29 @@ public class TeacherController {
     public R<String> updateStudent(@RequestBody TeacherVo teacherVo) {
         teacherService.updateWithUserAndRole(teacherVo);
         return R.ok("修改教师信息成功");
+    }
+
+    /**
+     * 在教师表、用户表、角色表中删除教师信息
+     * @param teacherVo
+     * @return
+     */
+    @DeleteMapping("/teacher")
+    @DateAutoFill(DateAutoFill.Type.UPDATE)
+    public R<String> deleteTeacher(@RequestBody TeacherVo teacherVo) {
+        teacherService.deleteWithUserAndRole(teacherVo);
+        return R.ok("删除教师信息成功");
+    }
+
+    /**
+     * 在教师表、用户表、角色表中批量删除教师信息
+     * @param model
+     * @return
+     */
+    @DeleteMapping("/teachers")
+    @DateAutoFill(DateAutoFill.Type.UPDATE)
+    public R<String> deleteTeachersByids(@RequestBody DeleteModel model) {
+        teacherService.deleteBatchWithUserAndRole(model.getIds());
+        return R.ok("批量删除教师信息成功");
     }
 }

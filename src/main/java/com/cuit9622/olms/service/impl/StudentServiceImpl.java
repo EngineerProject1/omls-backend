@@ -131,6 +131,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             UserRole userRole = new UserRole();
             userRole.setUserId(studentVo.getId());
             userRole.setRoleId(1L);
+            userRoleService.save(userRole);
         }
         // 取消管理员
         if(manager != null && studentVo.getIsSetManager() == 0) {
@@ -165,7 +166,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             // 在角色表中删除
             userRoleMapper.removeUserRoleByUserId(id);
 
-            // 在学生表中批量删除
+            // 在学生表中删除
             studentMapper.removeStudentBySid(sid);
         }
 

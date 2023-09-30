@@ -26,6 +26,9 @@
             college_id = #{teacherVo.collegeId}
         where tid = #{teacherVo.tid}
     </update>
+    <delete id="removeTeacherByTid">
+        delete from sys_user_teacher where tid = #{tid}
+    </delete>
     <select id="getTeacherInfoByUsername" resultType="com.cuit9622.olms.vo.TeacherVo">
         SELECT USER
                    .id,

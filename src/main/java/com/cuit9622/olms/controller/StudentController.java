@@ -145,6 +145,11 @@ public class StudentController {
         return R.ok("删除学生信息成功");
     }
 
+    /**
+     * 在学生表、用户表、角色表中批量删除学生信息
+     * @param model
+     * @return
+     */
     @DeleteMapping("/students")
     @DateAutoFill(DateAutoFill.Type.UPDATE)
     public R<String> deleteStudentsByids(@RequestBody DeleteModel model) {

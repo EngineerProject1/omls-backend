@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.vo.TeacherVo;
 
+import java.util.List;
+
 /**
  * @Description 教师接口
  * @return
@@ -24,4 +26,8 @@ public interface TeacherService extends IService<Teacher> {
     void saveWithUserAndRole(TeacherVo teacherVo);
 
     void updateWithUserAndRole(TeacherVo teacherVo);
+
+    void deleteWithUserAndRole(TeacherVo teacherVo);
+
+    void deleteBatchWithUserAndRole(List<Integer> ids);
 }

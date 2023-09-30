@@ -6,6 +6,7 @@ import com.cuit9622.common.utils.DigestsUtils;
 import com.cuit9622.olms.entity.Teacher;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.entity.UserRole;
+import com.cuit9622.olms.mapper.UserMapper;
 import com.cuit9622.olms.mapper.UserRoleMapper;
 import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.service.TeacherService;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,6 +40,8 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
     private UserService userService;
     @Resource
     private UserRoleService userRoleService;
+    @Resource
+    private UserMapper userMapper;
 
     @Override
     public TeacherVo getTeacherInfoByUsername(String username) {
@@ -127,11 +132,47 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
             UserRole userRole = new UserRole();
             userRole.setUserId(teacherVo.getId());
             userRole.setRoleId(1L);
+            userRoleService.save(userRole);
         }
         // 取消管理员
         if(manager != null && teacherVo.getIsSetManager() == 0) {
             userRoleMapper.removeManagerByUserId(teacherVo.getId());
         }
+    }
+
+    @Override
+    @Transactional
+    public void deleteWithUserAndRole(TeacherVo teacherVo) {
+        // 在教师表中删除
+        teacherMapper.removeTeacherByTid(teacherVo.getTid());
+
+        // 在用户表中删除
+        userService.removeById((User) teacherVo);
+
+        // 在角色表中删除
+        userRoleMapper.removeUserRoleByUserId(teacherVo.getId());
+    }
+
+    @Override
+    @Transactional
+    public void deleteBatchWithUserAndRole(List<Integer> tids) {
+        List<Long> ids = new ArrayList<>();
+
+        for(int i = 0; i < tids.size(); i++) {
+            long tid = tids.get(i);
+            // 通过教师tid获取对应的用户id
+            long id = userMapper.getUserIdBySid(tid);
+            ids.add(id);
+
+            // 在角色表中删除
+            userRoleMapper.removeUserRoleByUserId(id);
+
+            // 在教师表中删除
+            teacherMapper.removeTeacherByTid(tid);
+        }
+
+        // 在用户表中批量删除
+        userService.removeBatchByIds(ids);
     }
 }
 

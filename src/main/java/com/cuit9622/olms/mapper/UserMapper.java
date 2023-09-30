@@ -34,6 +34,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 通过学号sid获取用户id
+     * 教师tid 学生sid都可用
      * @param sid
      * @return
      */
