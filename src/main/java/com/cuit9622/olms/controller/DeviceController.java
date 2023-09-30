@@ -35,7 +35,7 @@ public class DeviceController {
             @ApiImplicitParam(name = "pageSize", value = "每页的条数", defaultValue = "5", required = true),
             @ApiImplicitParam(name = "page", value = "页码", defaultValue = "1", required = true),
             @ApiImplicitParam(name = "name", value = "name", defaultValue = ""),
-            @ApiImplicitParam(value = "status", defaultValue = "1")
+            @ApiImplicitParam(name = "status", value = "状态", defaultValue = "1")
     })
     public R<Page<DeviceVo>> getDeviceByPage(
             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
@@ -48,13 +48,13 @@ public class DeviceController {
     }
 
     /**
-     * @Description 通过id获取设备信息
      * @param id 设备的id
      * @return
+     * @Description 通过id获取设备信息
      */
     @GetMapping("/device/{id}")
     @ApiOperation("通过id获取某个设备")
-    public R<DeviceVo> getDeviceById(@PathVariable("id") Long id){
+    public R<DeviceVo> getDeviceById(@PathVariable("id") Long id) {
 
         DeviceVo deviceDto = deviceService.getById(id);
         System.out.println(deviceDto);
@@ -62,18 +62,18 @@ public class DeviceController {
     }
 
     /**
-     * @Description 根据id修改设备信息
      * @param deviceVo 需要修改的设备信息
      * @return
+     * @Description 根据id修改设备信息
      */
     @PutMapping("/auth/device")
     @ApiOperation("修改某个设备")
     @RequiresRoles("admin")
-    public R<String> updateDevice(@RequestBody DeviceVo deviceVo){
+    public R<String> updateDevice(@RequestBody DeviceVo deviceVo) {
         Integer count = deviceService.updateById(deviceVo);
-        if(count > 0){
+        if (count > 0) {
             return R.ok("修改成功");
-        }else{
+        } else {
             return R.ok("修改失败");
         }
     }
@@ -82,11 +82,11 @@ public class DeviceController {
     @PostMapping("/auth/device")
     @ApiOperation("添加设备")
     @RequiresRoles("admin")
-    public R<String> addDevice(@RequestBody DeviceVo deviceVo){
+    public R<String> addDevice(@RequestBody DeviceVo deviceVo) {
         Integer count = deviceService.insertOne(deviceVo);
-        if(count > 0){
+        if (count > 0) {
             return R.ok("添加成功");
-        }else{
+        } else {
             return R.ok("添加失败");
         }
     }
