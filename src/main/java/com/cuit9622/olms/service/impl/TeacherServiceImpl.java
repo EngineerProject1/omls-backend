@@ -3,6 +3,8 @@ package com.cuit9622.olms.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cuit9622.olms.entity.Teacher;
+import com.cuit9622.olms.entity.UserRole;
+import com.cuit9622.olms.mapper.UserRoleMapper;
 import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.service.TeacherService;
 import com.cuit9622.olms.mapper.TeacherMapper;
@@ -23,10 +25,23 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
 
     @Resource
     private TeacherMapper teacherMapper;
+    @Resource
+    private UserRoleMapper userRoleMapper;
 
     @Override
     public TeacherVo getTeacherInfoByUsername(String username) {
         TeacherVo teacher = teacherMapper.getTeacherInfoByUsername(username);
+        // 如果存在该教师
+        if(teacher != null) {
+            Long userId = teacher.getId();
+            // 查询该教师是否为管理员
+            UserRole userRole = userRoleMapper.getManagerByUserId(userId);
+            // 如果是管理员，管理员标志设为1
+            if(userRole != null) {
+                teacher.setIsSetManager(1);
+            }
+            else teacher.setIsSetManager(0);
+        }
         log.info("用户名为{}的教师的信息为{}",username, teacher);
         return teacher;
     }
