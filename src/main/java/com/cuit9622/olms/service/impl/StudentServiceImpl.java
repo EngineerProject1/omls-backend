@@ -73,7 +73,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     @Override
     public void saveWithUserAndRole(StudentVo studentVo) {
         // 设置密码盐值
-        Map<String,String> map = DigestsUtils.encrypt("123456");
+        Map<String,String> map = DigestsUtils.encrypt("olms123456");
         String password = map.get("password");
         String salt = map.get("salt");
         studentVo.setPassword(password);
@@ -111,6 +111,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         studentMapper.updateStudent(studentVo);
 
         // 修改用户表信息
+        // 重置密码
+        if(studentVo.getIsResetPwd() == 1) {
+            Map<String,String> map = DigestsUtils.encrypt("olms123456");
+            String password = map.get("password");
+            String salt = map.get("salt");
+            studentVo.setPassword(password);
+            studentVo.setSalt(salt);
+        }
         userService.updateById(studentVo);
 
         //修改角色表信息

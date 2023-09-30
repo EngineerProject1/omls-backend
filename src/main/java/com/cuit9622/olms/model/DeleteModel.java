@@ -14,7 +14,6 @@ import java.util.List;
 @Data
 @ApiModel("删除数据时用来接收数据的实体类，通用的")
 public class DeleteModel {
-
     @ApiModelProperty("id数组")
     private List<Integer> ids;
 }
