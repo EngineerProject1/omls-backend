@@ -12,6 +12,9 @@
                      where user_id in (select id from sys_user where username = #{username}))
         order by sys_role.id
     </select>
+    <select id="getUserIdBySid" resultType="java.lang.Long">
+        select id from sys_user where username = #{sid}
+    </select>
     <update id="updateContactByUserName">
         UPDATE olms.sys_user
         SET phone=#{phone}, email=#{email},avatar=#{avatar}

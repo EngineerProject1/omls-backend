@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.cuit9622.olms.vo.NoticeVo;
 import com.cuit9622.olms.vo.StudentVo;
 
+import java.util.List;
+
 /**
 * @author Zxin
 * @description 针对表【sys_user_student(学生表)】的数据库操作Service
@@ -32,4 +34,6 @@ public interface StudentService extends IService<Student> {
     void updateWithUserAndRole(StudentVo studentVo);
 
     void deleteWithUserAndRole(StudentVo studentVo);
+
+    void deleteBatchWithUserAndRole(List<Integer> sids);
 }

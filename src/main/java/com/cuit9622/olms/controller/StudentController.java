@@ -6,6 +6,7 @@ import com.cuit9622.common.exception.BizException;
 import com.cuit9622.common.model.R;
 import com.cuit9622.olms.annotation.DateAutoFill;
 import com.cuit9622.olms.entity.*;
+import com.cuit9622.olms.model.DeleteModel;
 import com.cuit9622.olms.service.CollegeService;
 import com.cuit9622.olms.service.MajorService;
 import com.cuit9622.olms.service.StudentService;
@@ -145,8 +146,8 @@ public class StudentController {
 
     @DeleteMapping("/students")
     @DateAutoFill(DateAutoFill.Type.UPDATE)
-    public R<String> deleteStudentsByids(@RequestBody List<StudentVo> studentVos) {
-        System.out.println(studentVos);
-        return null;
+    public R<String> deleteStudentsByids(@RequestBody DeleteModel model) {
+        studentService.deleteBatchWithUserAndRole(model.getIds());
+        return R.ok("批量删除学生信息成功");
     }
 }
