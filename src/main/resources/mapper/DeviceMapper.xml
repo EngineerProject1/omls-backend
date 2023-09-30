@@ -11,7 +11,7 @@
         <result property="labId" column="lab_id" jdbcType="BIGINT"/>
         <result property="model" column="model" jdbcType="VARCHAR"/>
         <result property="images" column="images" jdbcType="VARCHAR"/>
-        <result property="status" column="status" jdbcType="INTEGER"></result>
+        <result property="status" column="status" jdbcType="VARCHAR"></result>
     </resultMap>
 
     <insert id="insertOne">
@@ -40,7 +40,11 @@
                model,
                sys_device.images images,
                status
-        from sys_device, sys_lab where sys_lab.id = sys_device.lab_id
+        from sys_device, sys_lab where sys_lab.id = sys_device.lab_id and sys_device.name like concat('%',#{name},'%') and
+                                    (case
+                                        when #{status} != 1 then (sys_device.status = #{status})
+                                        else 1 = 1
+                                        end)
     </select>
 
     <select id="getOne" resultType="com.cuit9622.olms.vo.DeviceVo">

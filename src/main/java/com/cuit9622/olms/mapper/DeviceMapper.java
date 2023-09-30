@@ -18,7 +18,7 @@ public interface DeviceMapper extends BaseMapper<Device> {
      * @param page 分页数据
      * @return
      */
-    Page<DeviceVo> page(@Param("page") Page<DeviceVo> page);
+    Page<DeviceVo> page(@Param("page") Page<DeviceVo> page, @Param("name") String name, @Param("status") String status);
 
     /**
      * @Description 通过id获取设备信息
@@ -40,4 +40,5 @@ public interface DeviceMapper extends BaseMapper<Device> {
      * @return
      */
     Integer insertOne(@Param("deviceVo") DeviceVo deviceVo);
+
 }

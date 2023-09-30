@@ -19,9 +19,9 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     private DeviceMapper deviceMapper;
 
     @Override
-    public Page<DeviceVo> selectDevice(Integer pageSize, Integer page) {
+    public Page<DeviceVo> selectDevice(Integer pageSize, Integer page, String name, String status) {
         Page<DeviceVo> pageInfo = new Page<>(page, pageSize);
-        pageInfo = deviceMapper.page(pageInfo);
+        pageInfo = deviceMapper.page(pageInfo, name, status);
         return pageInfo;
     }
 
