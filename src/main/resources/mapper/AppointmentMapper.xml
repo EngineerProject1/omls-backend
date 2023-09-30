@@ -30,10 +30,29 @@
                     sys_appointment
                 where
                     sys_appointment.lab_id = sys_lab.id
-                  and sys_appointment.time_slot_id = #{slotId}
-                  and sys_appointment.book_time=DATE_ADD(CURRENT_DATE(), INTERVAL #{offsetDay} DAY)) cur
+                  and sys_appointment.time_slot_id = #{timeSlotId}
+                  and sys_appointment.book_time = DATE_ADD(CURRENT_DATE(), interval #{offsetDay} day)) cur
         from
             sys_lab
-        where `type`=#{type}
+        where
+            `type` like concat('%',#{type}, '%')
+          and exists (
+                select
+                    *
+                from
+                    sys_lab_schedule
+                where
+                    sys_lab_schedule.lab_id = sys_lab.id
+                  and sys_lab_schedule.weekday =(DAYOFWEEK(DATE_ADD(CURRENT_DATE(), interval #{offsetDay} day))))
+          and not exists (
+                select
+                    *
+                from
+                    sys_appointment
+                where
+                    book_time = DATE_ADD(CURRENT_DATE(), interval #{offsetDay} day)
+                  and time_slot_id = #{timeSlotId}
+                  and (`type` = '1' or user_id=#{userId})
+                  and lab_id = sys_lab.id)
     </select>
 </mapper>

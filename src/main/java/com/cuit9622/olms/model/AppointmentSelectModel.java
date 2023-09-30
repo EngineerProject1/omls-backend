@@ -10,7 +10,7 @@ public class AppointmentSelectModel {
     @ApiModelProperty("条数")
     Integer pageSize;
     @ApiModelProperty("开放时间段")
-    Integer slotId;
+    Integer timeSlotId;
     @ApiModelProperty("偏移天数")
     Integer offSetDay;
     @ApiModelProperty("实验室类型")
