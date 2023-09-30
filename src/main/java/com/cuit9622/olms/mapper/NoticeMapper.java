@@ -23,8 +23,6 @@ public interface NoticeMapper extends BaseMapper<Notice> {
      * @return
      */
     Page<NoticeVo> page(@Param("page") Page<NoticeVo> page, @Param("model") NoticeSelectModel model);
-
-
 }
 
 
