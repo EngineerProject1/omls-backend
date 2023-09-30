@@ -24,6 +24,8 @@ public interface TeacherMapper extends BaseMapper<Teacher> {
     Page<TeacherVo> page(@Param("page") Page<TeacherVo> pageInfo, @Param("model") UserSelectModel model);
 
     void saveTeacher(@Param("teacherVo") TeacherVo teacherVo);
+
+    void updateTeacher(@Param("teacherVo") TeacherVo teacherVo);
 }
 
 
