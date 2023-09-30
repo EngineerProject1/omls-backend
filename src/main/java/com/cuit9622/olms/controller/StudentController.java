@@ -7,6 +7,7 @@ import com.cuit9622.common.model.R;
 import com.cuit9622.olms.annotation.DateAutoFill;
 import com.cuit9622.olms.entity.*;
 import com.cuit9622.olms.model.DeleteModel;
+import com.cuit9622.olms.model.StudentSelectModel;
 import com.cuit9622.olms.service.CollegeService;
 import com.cuit9622.olms.service.MajorService;
 import com.cuit9622.olms.service.StudentService;
@@ -46,16 +47,9 @@ public class StudentController {
      */
     @GetMapping("/student")
     @ApiOperation("学生信息分页查询的接口")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageSize", value = "每页的条数", defaultValue = "5", required = true),
-            @ApiImplicitParam(name = "page", value = "页码", defaultValue = "1", required = true)
-    })
-    public R<Page<StudentVo>> getStudents
-            ( @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
-              @RequestParam(value = "page", defaultValue = "1") Integer page) {
-        R<Page<StudentVo>> info = studentService.selectStudents(pageSize,page);
-        log.info(info.getMsg());
-        return info;
+    public R<Page<StudentVo>> getStudents (StudentSelectModel model) {
+        Page<StudentVo> info = studentService.selectStudents(model.getPageSize(),model.getPage(),model);
+        return R.ok("查询学生信息成功", info);
     }
 
     /**

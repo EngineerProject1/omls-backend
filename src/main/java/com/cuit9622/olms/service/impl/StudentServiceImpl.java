@@ -9,6 +9,7 @@ import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.entity.UserRole;
 import com.cuit9622.olms.mapper.UserMapper;
 import com.cuit9622.olms.mapper.UserRoleMapper;
+import com.cuit9622.olms.model.StudentSelectModel;
 import com.cuit9622.olms.service.StudentService;
 import com.cuit9622.olms.mapper.StudentMapper;
 import com.cuit9622.olms.service.UserRoleService;
@@ -46,10 +47,10 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     private UserMapper userMapper;
 
     @Override
-    public R<Page<StudentVo>> selectStudents(Integer pageSize, Integer page) {
+    public Page<StudentVo> selectStudents(Integer pageSize, Integer page, StudentSelectModel model) {
         Page<StudentVo> pageInfo = new Page<>(page,pageSize);
-        pageInfo = studentMapper.page(pageInfo);
-        return R.ok("查询学生信息成功", pageInfo);
+        pageInfo = studentMapper.page(pageInfo,model);
+        return pageInfo;
     }
 
     @Override
