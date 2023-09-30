@@ -15,6 +15,10 @@
         tid,teacher_name,
         college_id
     </sql>
+    <insert id="saveTeacher">
+        insert into sys_user_teacher(tid, teacher_name, college_id)
+        values(#{teacherVo.tid},#{teacherVo.teacherName},#{teacherVo.collegeId})
+    </insert>
     <select id="getTeacherInfoByUsername" resultType="com.cuit9622.olms.vo.TeacherVo">
         SELECT USER
                    .id,

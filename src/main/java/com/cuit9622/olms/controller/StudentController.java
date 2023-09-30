@@ -1,10 +1,12 @@
 package com.cuit9622.olms.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.common.exception.BizException;
 import com.cuit9622.common.model.R;
 import com.cuit9622.olms.annotation.DateAutoFill;
 import com.cuit9622.olms.entity.*;
+import com.cuit9622.olms.mapper.UserMapper;
 import com.cuit9622.olms.model.DeleteModel;
 import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.service.CollegeService;
@@ -15,6 +17,7 @@ import com.cuit9622.olms.vo.StudentVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jsqlparser.statement.select.Wait;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -35,6 +38,8 @@ public class StudentController {
 
     @Resource
     private UserService userService;
+    @Resource
+    private UserMapper userMapper;
 
     /**
      * 分页查询
@@ -51,17 +56,22 @@ public class StudentController {
 
     /**
      * 查询指定id学生信息
-     * @param id
+     * @param sid
      * @return
      */
-    @GetMapping("/student/{id}")
+    @GetMapping("/student/{sid}")
     @ApiOperation("通过id获取学生信息")
-    public R<Student> getStudent(@PathVariable String id) {
-        StudentVo student = studentService.getStudentInfoByUsername(id);
-        if(student == null) {
-            return R.ok("未查找到对应学号学生信息");
+    public R<Student> getStudent(@PathVariable String sid) {
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getUsername, sid);
+        User user = userService.getOne(wrapper);
+        if(user == null) {
+            return R.ok("未查询到该学生");
         }
-        return R.ok("查询学生信息成功",student);
+        else {
+            StudentVo student = studentService.getStudentInfoByUsername(sid);
+            return R.ok("查询学生信息成功",student);
+        }
     }
 
     /**
