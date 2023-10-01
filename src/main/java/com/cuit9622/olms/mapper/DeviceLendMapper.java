@@ -33,6 +33,15 @@ public interface DeviceLendMapper extends BaseMapper<DeviceLend> {
      * @return
      */
     Page<DeviceVo> page(@Param("page") Page<DeviceVo> page, @Param("name") String name, @Param("labId") Long labId);
+
+    /**
+     * @Description 设备信息的分页查找
+     * @param page 分页信息
+     * @param  name 设备名称
+     * @param  userId 用户id
+     * @return
+     */
+    Page<DeviceVo> pageInLend(@Param("page") Page<DeviceVo> page, @Param("name") String name, @Param("userId") Long userId);
 }
 
 
