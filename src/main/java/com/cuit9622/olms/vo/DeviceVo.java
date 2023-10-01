@@ -13,4 +13,7 @@ public class DeviceVo extends Device {
 
     @ApiModelProperty("所属实验室名称")
     private String labName;
+
+    @ApiModelProperty("设备数量")
+    private int count;
 }

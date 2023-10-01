@@ -55,7 +55,6 @@ public class NoticeController {
     @ApiImplicitParam(name = "id", value = "要删除的id", required = true)
     public R<String> deleteNoticeById(@PathVariable("id") Integer id) {
         noticeService.removeById(id);
-        log.info("删除id为{}的公告成功", id);
         return R.ok("删除成功");
     }
 
@@ -70,7 +69,6 @@ public class NoticeController {
     @ApiImplicitParam(name = "model", value = "要删除的id数组", required = true)
     public R<String> deleteNoticeByIds(@RequestBody DeleteModel model) {
         noticeService.removeBatchByIds(model.getIds());
-        log.info("删除id为{}的公告成功", model.getIds().toString());
         return R.ok("删除成功");
     }
 
@@ -85,7 +83,6 @@ public class NoticeController {
     @DateAutoFill(DateAutoFill.Type.INSERT)
     public R<String> addNotice(@RequestBody Notice notice){
         noticeService.save(notice);
-        log.info("新增的公告为{}",notice);
         return R.ok("新增公告成功");
     }
 
@@ -100,7 +97,6 @@ public class NoticeController {
         LambdaQueryWrapper<Notice> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Notice::getId,id);
         Notice notice = noticeService.getOne(wrapper);
-        log.info("获取的公告信息:{}",notice);
         return R.ok("获取公告信息成功", notice);
     }
 
@@ -114,7 +110,6 @@ public class NoticeController {
     @RequiresRoles("admin")
     @DateAutoFill(DateAutoFill.Type.UPDATE)
     public R<String> updateNotice(@RequestBody Notice notice){
-        log.info("将要修改的公告信息为:{}",notice);
         noticeService.updateById(notice);
         return R.ok("修改成功");
     }
