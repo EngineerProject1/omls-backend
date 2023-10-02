@@ -8,6 +8,8 @@ import com.cuit9622.olms.vo.StudentVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
 * @author Zxin
 * @description 针对表【sys_user_student(学生表)】的数据库操作Mapper
@@ -35,6 +37,10 @@ public interface StudentMapper extends BaseMapper<Student> {
     void updateStudent(@Param("studentVo") StudentVo studentVo);
 
     void removeStudentBySid(Long sid);
+
+    List<Student> getStudents();
+
+    List<StudentVo> getStudentVos();
 }
 
 

@@ -1,11 +1,14 @@
 package com.cuit9622.olms.controller;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.common.exception.BizException;
 import com.cuit9622.common.model.R;
 import com.cuit9622.olms.annotation.DateAutoFill;
 import com.cuit9622.olms.entity.*;
+import com.cuit9622.olms.mapper.StudentMapper;
 import com.cuit9622.olms.mapper.UserMapper;
 import com.cuit9622.olms.model.DeleteModel;
 import com.cuit9622.olms.model.UserSelectModel;
@@ -21,6 +24,10 @@ import net.sf.jsqlparser.statement.select.Wait;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 @RestController
@@ -40,6 +47,8 @@ public class StudentController {
     private UserService userService;
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private StudentMapper studentMapper;
 
     /**
      * 分页查询
@@ -155,5 +164,26 @@ public class StudentController {
     public R<String> deleteStudentsByids(@RequestBody DeleteModel model) {
         studentService.deleteBatchWithUserAndRole(model.getIds());
         return R.ok("批量删除学生信息成功");
+    }
+    @GetMapping("/import")
+    public R<String> importExcel() throws FileNotFoundException {
+        studentService.importExcel();
+        return R.ok("导入学生信息成功");
+    }
+
+    @GetMapping ("/export")
+    public R<String> exportExcel(HttpServletResponse response) throws IOException {
+        List<StudentVo> list = studentMapper.getStudentVos();
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setCharacterEncoding("utf-8");
+        String fileName = URLEncoder.encode("学生信息表","UTF-8").replaceAll("\\+","%20");
+        response.setHeader("Content-disposition","attachment;filename="+fileName+".xlsx");
+
+        EasyExcel.write(response.getOutputStream())
+                .head(StudentVo.class)
+                .excelType(ExcelTypeEnum.XLSX)
+                .sheet("学生信息表")
+                .doWrite(list);
+        return R.ok("导出学生信息成功");
     }
 }

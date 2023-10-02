@@ -5,7 +5,13 @@ import com.cuit9622.olms.entity.Student;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.vo.StudentVo;
+import org.apache.poi.ss.usermodel.Workbook;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,4 +41,10 @@ public interface StudentService extends IService<Student> {
     void deleteWithUserAndRole(StudentVo studentVo);
 
     void deleteBatchWithUserAndRole(List<Integer> sids);
+
+
+    void exportExcel(HttpServletResponse response) throws IOException;
+
+
+    void importExcel() throws FileNotFoundException;
 }
