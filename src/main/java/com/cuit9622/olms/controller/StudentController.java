@@ -45,8 +45,7 @@ public class StudentController {
 
     @Resource
     private UserService userService;
-    @Resource
-    private UserMapper userMapper;
+
     @Resource
     private StudentMapper studentMapper;
 

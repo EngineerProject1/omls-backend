@@ -9,10 +9,10 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
-* @author 刘世浩
-* @description 针对表【sys_lab(实验室表)】的数据库操作Mapper
-* @Entity com.cuit9622.olms.entity.Lab
-*/
+ * @author 刘世浩
+ * @description 针对表【sys_lab(实验室表)】的数据库操作Mapper
+ * @Entity com.cuit9622.olms.entity.Lab
+ */
 @Mapper
 public interface LabMapper extends BaseMapper<Lab> {
 
@@ -22,7 +22,7 @@ public interface LabMapper extends BaseMapper<Lab> {
      * @param model
      * @return
      */
-    Page<LabVo> page(@Param("page")Page<LabVo> page, @Param("model")LabSelectModel model);
+    Page<LabVo> page(@Param("page") Page<LabVo> page, @Param("model") LabSelectModel model);
 
 }
 
