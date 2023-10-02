@@ -39,7 +39,7 @@
                price,
                model,
                sys_device.images images,
-               status
+               sys_device.status status
         from sys_device, sys_lab where sys_lab.id = sys_device.lab_id and sys_device.name like concat('%',#{name},'%') and
                                     (case
                                         when #{status} != 1 then (sys_device.status = #{status})
@@ -55,7 +55,7 @@
                price,
                model,
                sys_device.images images,
-               status
+               sys_device.status status
         from sys_device, sys_lab where sys_lab.id = sys_device.lab_id and sys_device.id = #{id};
     </select>
 

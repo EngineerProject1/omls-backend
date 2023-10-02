@@ -24,4 +24,7 @@ public class LabSelectModel {
 
     @ApiModelProperty("条数")
     private Integer pageSize;
+
+    @ApiModelProperty("实验室状态")
+    private String status;
 }

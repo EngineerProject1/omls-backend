@@ -65,4 +65,10 @@ public class Lab implements Serializable {
      */
     @ApiModelProperty("图片")
     private String images;
+
+    /**
+     * 实验室状态(0:可用,1:暂不可用,2:维修中)
+     */
+    @ApiModelProperty("实验室状态(0:可用,1:暂不可用,2:维修中)")
+    private Integer status;
 }
