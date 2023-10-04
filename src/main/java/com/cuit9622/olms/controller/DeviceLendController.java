@@ -79,15 +79,16 @@ public class DeviceLendController {
     }
 
     /**
-     * @Description 根据id修改设备信息
+     * @Description 逐一归还设备
      * @param deviceVo 需要修改的设备信息
      * @return
      */
     @PutMapping("/auth/deviceReturn")
-    @ApiOperation("修改某个设备")
-    @RequiresRoles("admin")
+    @ApiOperation("归还设备（单一）")
+    @RequiresRoles("teacher")
     public R<String> returnDevice(@RequestBody DeviceVo deviceVo) {
         Integer count = deviceLendService.returnDeviceByModel(deviceVo);
+
         if (count == 2) {
             return R.ok("归还成功");
         } else {
