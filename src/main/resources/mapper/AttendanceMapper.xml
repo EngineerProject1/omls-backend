@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cuit9622.olms.mapper.AttendanceMapper">
+
+    <resultMap id="BaseResultMap" type="com.cuit9622.olms.entity.Attendance">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="appointmentId" column="appointment_id" jdbcType="BIGINT"/>
+            <result property="status" column="status" jdbcType="OTHER"/>
+            <result property="absenceReason" column="absence_reason" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="ResultMap" type="com.cuit9622.olms.vo.AttendanceVo">
+        <result property="labName" column="name" jdbcType="VARCHAR"/>
+        <result property="experimentName" column="experiment_name" jdbcType="VARCHAR"/>
+        <result property="bookTime" column="book_time" jdbcType="DATE"/>
+        <result property="startTime" column="start_time" jdbcType="TIME"/>
+        <result property="endTime" column="end_time" jdbcType="TIME"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,appointment_id,
+        status,absence_reason,create_time,
+        update_time
+    </sql>
+    <select id="getTargetAttendance" resultType="com.cuit9622.olms.vo.AttendanceVo">
+        select sys_attendance.id,name lab_name,sys_attendance.status,absence_reason,experiment_name,book_time,start_time,end_time
+        from sys_attendance
+                 left join sys_appointment on sys_attendance.appointment_id  = sys_appointment.id
+                 left join sys_time_slot on sys_time_slot.id=sys_appointment.time_slot_id
+                 left join sys_lab on sys_lab.id=sys_appointment.lab_id
+        where sys_attendance.user_id=#{userId}
+    </select>
+</mapper>
