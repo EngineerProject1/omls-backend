@@ -169,7 +169,14 @@ public class StudentController {
         studentService.deleteBatchWithUserAndRole(model.getIds());
         return R.ok("批量删除学生信息成功");
     }
-    @PostMapping("/import")
+
+    /**
+     * 从用户上传的Excel文件导入学生信息
+     * @param file excel文件
+     * @return
+     * @throws IOException
+     */
+    @PostMapping("/student/import")
     public R<List<String>> importExcel(MultipartFile file) throws IOException {
         // 创建监听器
         StudentReadListener listener = new StudentReadListener(studentService,studentMapper,majorMapper,majorService);
@@ -182,7 +189,12 @@ public class StudentController {
         else return R.ok("校验通过");
     }
 
-    @GetMapping ("/export")
+    /**
+     * 导出学生信息为excel供用户下载
+     * @param response
+     * @throws IOException
+     */
+    @GetMapping ("/student/export")
     public void exportExcel(HttpServletResponse response) throws IOException {
         List<StudentVo> list = studentMapper.getStudentVos();
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");

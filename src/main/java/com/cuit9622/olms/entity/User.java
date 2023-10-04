@@ -1,5 +1,6 @@
 package com.cuit9622.olms.entity;
 
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -16,6 +17,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel("用户表对应的实体类")
+@ExcelIgnoreUnannotated
 public class User {
     @TableId
     @ApiModelProperty("主键")

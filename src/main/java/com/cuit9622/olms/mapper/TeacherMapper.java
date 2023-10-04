@@ -8,6 +8,8 @@ import com.cuit9622.olms.vo.TeacherVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @Description 教师Mapper
  */
@@ -28,6 +30,8 @@ public interface TeacherMapper extends BaseMapper<Teacher> {
     void updateTeacher(@Param("teacherVo") TeacherVo teacherVo);
 
     void removeTeacherByTid(Long tid);
+
+    List<TeacherVo> getTeacherVos();
 }
 
 
