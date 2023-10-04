@@ -184,12 +184,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     @Transactional
     @Override
     public void importExcel(MultipartFile file,StudentReadListener listener) throws IOException {
-        // 1.读取文件的流
+        // 读取文件的流
         InputStream is = file.getInputStream();
-
-        // 2.创建一个读取监听器
-//        StudentReadListener listener = new StudentReadListener(studentMapper);
-
         EasyExcel.read(is,
                 StudentVo.class,
                 listener).sheet(0) // 读第几个工作表

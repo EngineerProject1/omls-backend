@@ -1,9 +1,11 @@
 package com.cuit9622.olms.service.impl;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cuit9622.common.utils.DigestsUtils;
 import com.cuit9622.olms.entity.Teacher;
+import com.cuit9622.olms.entity.TeacherReadListener;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.entity.UserRole;
 import com.cuit9622.olms.mapper.UserMapper;
@@ -18,8 +20,11 @@ import com.cuit9622.olms.vo.TeacherVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -174,6 +179,16 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
         // 在用户表中批量删除
         userService.removeBatchByIds(ids);
     }
+    @Transactional
+    @Override
+    public void importExcel(MultipartFile file, TeacherReadListener listener) throws IOException {
+        // 读取文件的流
+        InputStream is = file.getInputStream();
+        EasyExcel.read(is, TeacherVo.class, listener).sheet(0) // 读第几个工作表
+                .headRowNumber(1) // 列头占几行
+                .doRead();
+    }
+
 }
 
 
