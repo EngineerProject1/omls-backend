@@ -8,6 +8,7 @@ import com.cuit9622.common.exception.BizException;
 import com.cuit9622.common.model.R;
 import com.cuit9622.olms.annotation.DateAutoFill;
 import com.cuit9622.olms.entity.*;
+import com.cuit9622.olms.mapper.MajorMapper;
 import com.cuit9622.olms.mapper.StudentMapper;
 import com.cuit9622.olms.mapper.UserMapper;
 import com.cuit9622.olms.model.DeleteModel;
@@ -22,12 +23,14 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.statement.select.Wait;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -48,11 +51,13 @@ public class StudentController {
 
     @Resource
     private StudentMapper studentMapper;
+    @Resource
+    private MajorMapper majorMapper;
 
     /**
      * 分页查询
-     * @param pageSize
-     * @param page
+     * @param
+     * @param
      * @return
      */
     @GetMapping("/student")
@@ -164,14 +169,21 @@ public class StudentController {
         studentService.deleteBatchWithUserAndRole(model.getIds());
         return R.ok("批量删除学生信息成功");
     }
-    @GetMapping("/import")
-    public R<String> importExcel() throws FileNotFoundException {
-        studentService.importExcel();
-        return R.ok("导入学生信息成功");
+    @PostMapping("/import")
+    public R<List<String>> importExcel(MultipartFile file) throws IOException {
+        // 创建监听器
+        StudentReadListener listener = new StudentReadListener(studentService,studentMapper,majorMapper,majorService);
+        studentService.importExcel(file,listener);
+        // 如果有错误信息
+        if(listener.isFlag() == false) {
+            return R.ok("校验错误",listener.getInfo());
+        }
+        // 无错误信息
+        else return R.ok("校验通过");
     }
 
     @GetMapping ("/export")
-    public R<String> exportExcel(HttpServletResponse response) throws IOException {
+    public void exportExcel(HttpServletResponse response) throws IOException {
         List<StudentVo> list = studentMapper.getStudentVos();
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setCharacterEncoding("utf-8");
@@ -183,6 +195,5 @@ public class StudentController {
                 .excelType(ExcelTypeEnum.XLSX)
                 .sheet("学生信息表")
                 .doWrite(list);
-        return R.ok("导出学生信息成功");
     }
 }

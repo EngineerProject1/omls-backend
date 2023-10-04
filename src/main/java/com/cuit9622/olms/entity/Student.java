@@ -47,14 +47,14 @@ public class Student extends User implements Serializable {
      * 年级
      */
     @ApiModelProperty("年级")
-    @ExcelProperty(value = "年级",index = 4)
+    @ExcelProperty(value = "年级",index = 5)
     private Integer grade;
 
     /**
      * 班级
      */
     @ApiModelProperty("班级")
-    @ExcelProperty(value="班级",index = 5)
+    @ExcelProperty(value="班级",index = 6)
     private Integer classNumber;
 
 //    @ExcelProperty("专业")
