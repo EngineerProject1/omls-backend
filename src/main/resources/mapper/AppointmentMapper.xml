@@ -48,7 +48,7 @@
             concat((select start_time from sys_time_slot where sys_time_slot.id=#{data.timeSlotId}),' ~ ',(select end_time from sys_time_slot where sys_time_slot.id=#{data.timeSlotId})),
             now(),
             now(),
-            '0'
+            '1'
         where
             exists (
             select
@@ -68,6 +68,7 @@
             and time_slot_id = #{data.timeSlotId}
             and (`type` = '1' or user_id = #{data.userId} )
             and lab_id = #{data.labId})
+          and exists(select * from sys_lab where id=#{data.labId} and status="0")
     </insert>
     <insert id="addAppointmentForClass">
         insert
@@ -125,6 +126,7 @@
                 where book_time = DATE_ADD(CURRENT_DATE(), interval #{data.offsetDay} day)
                 and time_slot_id = #{data.timeSlotId}
                 and lab_id = #{data.labId})=0
+            and exists(select * from sys_lab where id=#{data.labId} and status="0")
     </insert>
     <select id="getTargetTypeAppointment" resultType="com.cuit9622.olms.vo.AppointVo">
         select
@@ -145,7 +147,8 @@
         from
             sys_lab
         where
-            `type` like concat('%',#{type}, '%')
+          `type` like concat('%',#{type}, '%')
+          and status="0"
           and exists (
                 select
                     *
