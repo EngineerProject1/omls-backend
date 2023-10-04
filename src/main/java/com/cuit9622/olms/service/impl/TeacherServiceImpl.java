@@ -189,6 +189,11 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
                 .doRead();
     }
 
+
+    @Override
+    public List<Map<Long, String>> getStudentNameAndId() {
+        return teacherMapper.selectTeacherNameAndId();
+    }
 }
 
 

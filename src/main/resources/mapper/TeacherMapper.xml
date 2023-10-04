@@ -79,4 +79,10 @@
         FROM sys_user USER
                  INNER JOIN sys_user_teacher teacher ON teacher.tid = USER.username
     </select>
+
+    <select id="selectTeacherNameAndId" resultType="map">
+        select id, real_name
+        from sys_user
+        where username in (select tid from sys_user_teacher)
+    </select>
 </mapper>
