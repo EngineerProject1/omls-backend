@@ -14,7 +14,7 @@
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <resultMap id="ResultMap" type="com.cuit9622.olms.vo.AttendanceVo">
+    <resultMap id="ResultMap" type="com.cuit9622.olms.vo.AttendanceForPersonVo">
         <result property="labName" column="name" jdbcType="VARCHAR"/>
         <result property="experimentName" column="experiment_name" jdbcType="VARCHAR"/>
         <result property="bookTime" column="book_time" jdbcType="DATE"/>
@@ -27,12 +27,29 @@
         status,absence_reason,create_time,
         update_time
     </sql>
-    <select id="getTargetAttendance" resultType="com.cuit9622.olms.vo.AttendanceVo">
+    <select id="getTargetAttendanceForPerson" resultType="com.cuit9622.olms.vo.AttendanceForPersonVo">
         select sys_attendance.id,name lab_name,sys_attendance.status,absence_reason,experiment_name,book_time,start_time,end_time
         from sys_attendance
                  left join sys_appointment on sys_attendance.appointment_id  = sys_appointment.id
                  left join sys_time_slot on sys_time_slot.id=sys_appointment.time_slot_id
                  left join sys_lab on sys_lab.id=sys_appointment.lab_id
         where sys_attendance.user_id=#{userId}
+    </select>
+    <select id="getTargetAttendanceForClass" resultType="com.cuit9622.olms.vo.AttendanceForClassVo">
+        select sys_appointment.id,name lab_name,sys_appointment.class_number,experiment_name,book_time,start_time,end_time
+        from sys_appointment
+                 left join sys_time_slot on sys_time_slot.id=sys_appointment.time_slot_id
+                 left join sys_lab on sys_lab.id=sys_appointment.lab_id
+        where (sys_appointment.user_id=#{userId}
+            or sys_lab.master_id=#{userId})
+          and sys_appointment.type=1
+        order by book_time desc
+    </select>
+    <select id="getAttendanceForTargetAppointment"
+            resultType="com.cuit9622.olms.vo.AttendanceForAppointmentVo">
+        select status,real_name,username,sys_attendance.update_time
+        from sys_attendance
+                 left join sys_user on sys_user.id=sys_attendance.user_id
+        where appointment_id=#{appointmentId}
     </select>
 </mapper>
