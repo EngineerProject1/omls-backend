@@ -54,8 +54,9 @@ public class LabController {
     @RequiresRoles("admin")
     @ApiOperation("根据id删除实验室")
     public R<String> deleteLab(@PathVariable("id") Integer id) {
-        boolean isTrue = labService.removeById(id);
-        if (!isTrue) {
+        try{
+            labService.deleteLab(id);
+        }catch (Exception e){
             throw new BizException("删除失败");
         }
         return R.ok("删除成功");
@@ -70,9 +71,10 @@ public class LabController {
     @RequiresRoles("admin")
     @ApiOperation("批量删除实验室")
     public R<String> deleteLabs(@RequestBody DeleteModel model) {
-        boolean isTrue = labService.removeBatchByIds(model.getIds());
-        if (!isTrue) {
-            throw new BizException("批量删除失败");
+        try{
+            labService.deleteLabs(model.getIds());
+        }catch (Exception e){
+            throw new BizException("删除失败");
         }
         return R.ok("批量删除成功");
     }
@@ -98,6 +100,7 @@ public class LabController {
      * @return
      */
     @PostMapping("/auth/lab")
+    @RequiresRoles("admin")
     @ApiOperation("增加实验室")
     public R<String> addLab(@RequestBody Lab lab) {
         log.info(String.valueOf(lab));
@@ -111,6 +114,7 @@ public class LabController {
      * @return
      */
     @PutMapping("/auth/lab")
+    @RequiresRoles("admin")
     @ApiOperation("修改实验室")
     public R<String> updateLab(@RequestBody Lab lab) {
         labService.updateById(lab);
