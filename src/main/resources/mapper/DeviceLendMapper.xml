@@ -48,6 +48,6 @@
         group by model
     </select>
     <select id="getDeviceIdLong" resultType="java.lang.Long">
-        select id from sys_device where model = #{deviceVo.model} and name = #{deviceVo.name} and `status` = '2' limit 1;
+        select id from sys_device where model = #{deviceVo.model} and `status` = '2' limit 1;
     </select>
 </mapper>

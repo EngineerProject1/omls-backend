@@ -2,6 +2,7 @@ package com.cuit9622.olms.controller;
 
 import com.cuit9622.common.model.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cuit9622.olms.entity.Device;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.service.DeviceLendService;
 import com.cuit9622.olms.vo.DeviceVo;
@@ -108,15 +109,14 @@ public class DeviceLendController {
     public R<String> returnDeviceAll(@RequestBody List<DeviceVo> deviceVos) {
 
         for (int i = 0; i < deviceVos.size(); i++) {
-            System.out.println(deviceVos.get(i));
+            for (int j = 0; j < deviceVos.get(i).getCount(); j++) {
+                DeviceVo deviceVo = new DeviceVo();
+                deviceVo.setModel(deviceVos.get(i).getModel());
+                deviceVo.setName(deviceVos.get(i).getName());
+                deviceVo.setImages(deviceVos.get(i).getImages());
+                deviceLendService.returnDeviceByModel(deviceVo);
+            }
         }
-//        Integer count = deviceLendService.returnDeviceByModel(deviceVo);
-//
-//        if (count == 2) {
-//            return R.ok("归还成功");
-//        } else {
-//            return R.ok("归还失败");
-//        }
-        return null;
+        return R.ok("归还成功");
     }
 }

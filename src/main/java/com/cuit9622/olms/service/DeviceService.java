@@ -33,7 +33,7 @@ public interface DeviceService extends IService<Device> {
 
     /**
      * @Description 新增设备信息
-     * @param deviceVo
+     * @param device
      * @return
      */
     Integer insertOne(Device device);
