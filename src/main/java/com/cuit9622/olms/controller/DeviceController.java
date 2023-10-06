@@ -2,6 +2,7 @@ package com.cuit9622.olms.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.common.model.R;
+import com.cuit9622.olms.entity.Device;
 import com.cuit9622.olms.model.DeleteModel;
 import com.cuit9622.olms.vo.DeviceVo;
 import com.cuit9622.olms.service.DeviceService;
@@ -81,8 +82,8 @@ public class DeviceController {
     @PostMapping("/auth/device")
     @ApiOperation("添加设备")
     @RequiresRoles("admin")
-    public R<String> addDevice(@RequestBody DeviceVo deviceVo) {
-        Integer count = deviceService.insertOne(deviceVo);
+    public R<String> addDevice(@RequestBody Device device) {
+        Integer count = deviceService.insertOne(device);
         if (count > 0) {
             return R.ok("添加成功");
         } else {
