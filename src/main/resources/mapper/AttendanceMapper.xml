@@ -27,6 +27,17 @@
         status,absence_reason,create_time,
         update_time
     </sql>
+    <insert id="autoAttendance">
+        INSERT INTO olms.sys_attendance
+        (user_id, appointment_id, status, absence_reason, create_time, update_time)
+        select sys_user.id,sys_appointment.id,'0',null,now(),now() from sys_appointment
+                                                                            inner join sys_user_student on sys_appointment.class_number=sys_user_student.class_number
+                                                                            inner join sys_time_slot on sys_appointment.time_slot_id=sys_time_slot.id
+                                                                            inner join sys_user on sys_user_student.sid=sys_user.username
+        where current_date()=sys_appointment.book_time
+          and current_time() between start_time and end_time
+          and not exists(select * from sys_attendance where sys_appointment.id=sys_attendance.appointment_id and sys_user.id=sys_attendance.user_id)
+    </insert>
     <select id="getTargetAttendanceForPerson" resultType="com.cuit9622.olms.vo.AttendanceForPersonVo">
         select sys_attendance.id,name lab_name,sys_attendance.status,absence_reason,experiment_name,book_time,start_time,end_time
         from sys_attendance
