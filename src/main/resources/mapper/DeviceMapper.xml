@@ -40,11 +40,16 @@
                model,
                sys_device.images images,
                sys_device.status status
-        from sys_device, sys_lab where sys_lab.id = sys_device.lab_id and sys_device.name like concat('%',#{name},'%') and
-                                    (case
-                                        when #{status} != 1 then (sys_device.status = #{status})
-                                        else 1 = 1
-                                        end)
+        from sys_device
+        left join
+                sys_lab
+        on
+            sys_device.lab_id = sys_lab.id
+        where sys_device.name like concat('%',#{name},'%') and
+            (case
+                 when #{status} != 1 then (sys_device.status = #{status})
+                 else 1 = 1
+                end)
     </select>
 
     <select id="getOne" resultType="com.cuit9622.olms.vo.DeviceVo">
@@ -56,7 +61,13 @@
                model,
                sys_device.images images,
                sys_device.status status
-        from sys_device, sys_lab where sys_lab.id = sys_device.lab_id and sys_device.id = #{id};
+        from sys_device
+        left join
+            sys_lab
+        on
+            sys_lab.id = sys_device.lab_id
+        where
+             sys_device.id = #{id};
     </select>
 
 </mapper>
