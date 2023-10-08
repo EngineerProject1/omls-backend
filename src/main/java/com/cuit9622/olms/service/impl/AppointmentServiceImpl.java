@@ -1,20 +1,33 @@
 package com.cuit9622.olms.service.impl;
 
+import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cuit9622.common.exception.BizException;
+import com.cuit9622.olms.entity.Lab;
 import com.cuit9622.olms.entity.Student;
+import com.cuit9622.olms.entity.TimeSlot;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.mapper.AppointmentMapper;
 import com.cuit9622.olms.mapper.StudentMapper;
 import com.cuit9622.olms.mapper.TeacherMapper;
 import com.cuit9622.olms.mapper.UserMapper;
 import com.cuit9622.olms.model.AppointmentUpdateModel;
+import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.service.AppointmentService;
+import com.cuit9622.olms.service.LabService;
+import com.cuit9622.olms.service.TimeSlotService;
 import com.cuit9622.olms.vo.AppointVo;
+import com.cuit9622.olms.vo.AttendanceManagerVo;
+import com.cuit9622.olms.vo.StudentVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, AppointVo> implements AppointmentService {
@@ -26,6 +39,10 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
     TeacherMapper teacherMapper;
     @Resource
     StudentMapper studentMapper;
+    @Resource
+    private LabService labService;
+    @Resource
+    private TimeSlotService timeSlotService;
 
     @Override
     public Page<AppointVo> getTargetTypeAppointment(Integer page, Integer pageSize, Long userId, Integer slotId, String type, Integer offsetDay) {
@@ -64,5 +81,31 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
             throw new BizException("服务器内部错误");
         }
         return true;
+    }
+
+    @Override
+    public Page<AttendanceManagerVo> selectAppointmentUser(User user, Integer pageSize, Integer page, UserSelectModel model) throws ParseException {
+        Page<AttendanceManagerVo> pageInfo = new Page<>(page,pageSize);
+        // 获取当前用户管理的实验室id
+        LambdaQueryWrapper<Lab> queryWrapper = new LambdaQueryWrapper<>();
+        Lab lab = labService.getOne(queryWrapper.eq(Lab::getMasterId,user.getId()));
+
+        // 获取需要查询的时间段
+        Integer slotId = null;
+        // 判定当前时间范围
+        List<TimeSlot> timeSlots = timeSlotService.getAllTimeSlots();
+        String format = "HH:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        for(TimeSlot timeSlot:timeSlots) {
+            if(DateUtil.isIn(sdf.parse(DateUtil.now().substring(11)),timeSlot.getStartTime(),timeSlot.getEndTime())) {
+                // 得到当前时间段
+                slotId = timeSlot.getId();
+                break;
+            }
+        }
+
+        pageInfo = appointmentMapper.selectAppointmentUser(lab.getId(), slotId, DateUtil.now().substring(0,10), pageInfo, model);
+
+        return pageInfo;
     }
 }

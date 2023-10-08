@@ -120,6 +120,12 @@
             <artifactId>easyexcel-core</artifactId>
             <version>3.2.1</version>
         </dependency>
+<!--        判断日期范围用的库-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>5.6.5</version>
+        </dependency>
     </dependencies>
 
     <build>

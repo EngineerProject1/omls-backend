@@ -4,11 +4,17 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.model.AppointmentUpdateModel;
+import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.vo.AppointVo;
+import com.cuit9622.olms.vo.AttendanceManagerVo;
+
+import java.text.ParseException;
 
 
 public interface AppointmentService extends IService<AppointVo> {
     Page<AppointVo> getTargetTypeAppointment(Integer page, Integer pageSize, Long userId, Integer slotId, String type, Integer offsetDay);
 
     Boolean addAppointment(User user, AppointmentUpdateModel data);
+
+    Page<AttendanceManagerVo> selectAppointmentUser(User user, Integer pageSize, Integer page, UserSelectModel model) throws ParseException;
 }
