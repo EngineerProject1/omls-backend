@@ -11,4 +11,6 @@ public class AttendanceManagerVo extends Appointment {
     private String realName;
     @ApiModelProperty("学号/职工号")
     private String userName;
+    @ApiModelProperty("考勤状态")
+    private Integer status;
 }

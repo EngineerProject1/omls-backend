@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.models.auth.In;
 import lombok.Data;
 
 /**
@@ -27,21 +28,19 @@ public class Attendance implements Serializable {
      * 考勤人员
      */
     @TableField(value = "user_id")
-    @JsonIgnore
     private Long userId;
 
     /**
      * 预约记录id
      */
     @TableField(value = "appointment_id")
-    @JsonIgnore
     private Long appointmentId;
 
     /**
      * 考勤状态，1正常，0缺勤，2迟到，3早退
      */
     @TableField(value = "status")
-    private Object status;
+    private String status;
 
     /**
      * 原因
@@ -53,13 +52,11 @@ public class Attendance implements Serializable {
      * 考勤创建时间
      */
     @TableField(value = "create_time")
-    @JsonIgnore
     private Date createTime;
 
     /**
      * 考勤修改时间
      */
     @TableField(value = "update_time")
-    @JsonIgnore
     private Date updateTime;
 }

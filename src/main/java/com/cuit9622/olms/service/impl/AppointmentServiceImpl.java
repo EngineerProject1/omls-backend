@@ -84,12 +84,8 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
     }
 
     @Override
-    public Page<AttendanceManagerVo> selectAppointmentUser(User user, Integer pageSize, Integer page, UserSelectModel model) throws ParseException {
+    public Page<AttendanceManagerVo> selectAppointmentUser(Long id,Integer pageSize, Integer page, UserSelectModel model) throws ParseException {
         Page<AttendanceManagerVo> pageInfo = new Page<>(page,pageSize);
-        // 获取当前用户管理的实验室id
-        LambdaQueryWrapper<Lab> queryWrapper = new LambdaQueryWrapper<>();
-        Lab lab = labService.getOne(queryWrapper.eq(Lab::getMasterId,user.getId()));
-
         // 获取需要查询的时间段
         Integer slotId = null;
         // 判定当前时间范围
@@ -104,8 +100,9 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
             }
         }
 
-        pageInfo = appointmentMapper.selectAppointmentUser(lab.getId(), slotId, DateUtil.now().substring(0,10), pageInfo, model);
-
+//        pageInfo = appointmentMapper.selectAppointmentUser(id, slotId, DateUtil.now().substring(0,10), pageInfo, model);
+        // 测试
+        pageInfo = appointmentMapper.selectAppointmentUser(id, 1, "2023-05-17", pageInfo, model);
         return pageInfo;
     }
 }
