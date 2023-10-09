@@ -26,7 +26,7 @@
                               price = #{deviceVo.price},
                               model = #{deviceVo.model},
                               images = #{deviceVo.images},
-                              lab_id = (select id from sys_lab where name = #{deviceVo.labName})
+                              lab_id = #{deviceVo.labId}
         where id = #{deviceVo.id};
     </update>
 
