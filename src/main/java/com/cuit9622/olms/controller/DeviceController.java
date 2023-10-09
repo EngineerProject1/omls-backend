@@ -15,6 +15,7 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -109,5 +110,17 @@ public class DeviceController {
         deviceService.removeBatchByIds(model.getIds());
         log.info("删除id为{}的公告成功", model.getIds().toString());
         return R.ok("删除成功");
+    }
+
+    /**
+     * @Description 得到所有设备
+     * @param
+     * @return
+     */
+    @GetMapping("/device/all")
+    @ApiOperation("得到所有设备")
+    public R<List<DeviceVo>> getAllDevice(){
+        List<DeviceVo> devices = deviceService.getAllDevice();
+        return R.ok("获取设备成功", devices);
     }
 }

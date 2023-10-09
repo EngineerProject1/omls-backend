@@ -69,5 +69,17 @@
         where
              sys_device.id = #{id};
     </select>
+    <select id="getDevices" resultType="com.cuit9622.olms.vo.DeviceVo">
+        select sd.id,
+               sd.name,
+               sd.price,
+               sd.lab_id,
+               sl.name labName,
+               sd.model,
+               sd.images,
+               sd.status
+        from sys_device sd
+                 left join sys_lab sl on sl.id = sd.lab_id
+    </select>
 
 </mapper>

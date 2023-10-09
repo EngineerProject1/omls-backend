@@ -7,6 +7,8 @@ import com.cuit9622.olms.vo.DeviceVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @description 针对表【sys_device(设备表)】的数据库操作Mapper
  * @Entity com.cuit9622.olms.entity.Device
@@ -40,5 +42,12 @@ public interface DeviceMapper extends BaseMapper<Device> {
      * @return
      */
     Integer insertOne(@Param("device") Device device);
+
+    /**
+     * @Description 得到所有设备
+     * @param
+     * @return
+     */
+    List<DeviceVo> getDevices();
 
 }
