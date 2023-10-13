@@ -79,15 +79,6 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
         return true;
     }
 
-    /**
-     * 获取当前实验室需要考勤用户的信息
-     * @param id
-     * @param pageSize
-     * @param page
-     * @param model
-     * @return
-     * @throws ParseException
-     */
     @Override
     public Page<AttendanceManagerVo> selectAppointmentUser(Long id,Integer pageSize, Integer page, UserSelectModel model) throws ParseException {
         Page<AttendanceManagerVo> pageInfo = new Page<>(page,pageSize);
@@ -105,11 +96,7 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
             }
         }
 
-
-
         pageInfo = appointmentMapper.selectAppointmentUser(id, slotId, DateUtil.now().substring(0,10), pageInfo, model);
-        // 测试
-//        pageInfo = appointmentMapper.selectAppointmentUser(id, 1, "2023-05-17", pageInfo, model);
         return pageInfo;
     }
 }
