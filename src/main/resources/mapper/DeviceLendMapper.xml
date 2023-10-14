@@ -17,11 +17,19 @@
         lend_time,
         return_time
     </sql>
+    <insert id="insertDeviceLend">
+        insert sys_device_lend
+            (user_id, device_id, lend_time)
+        values(#{userId}, #{deviceId}, now());
+    </insert>
     <update id="returnDeviceById">
         update sys_device set status = '0' where id = #{id};
     </update>
     <update id="updateReturnTime">
         update sys_device_lend set return_time = now() where device_id = #{id};
+    </update>
+    <update id="updateDeviceStatus">
+        update sys_device set status = '2' where id = #{deviceId}
     </update>
     <select id="getAppointmentLab" resultType="map">
         select distinct(id), name from sys_lab where id in
@@ -32,7 +40,7 @@
 
     </select>
     <select id="page" resultType="com.cuit9622.olms.vo.DeviceVo">
-        select name, images, model, price, count(*) count
+        select name, images, model, price, count(*) count, lab_id labId
         from sys_device
         where
             status = '0'
@@ -49,5 +57,30 @@
     </select>
     <select id="getDeviceIdLong" resultType="java.lang.Long">
         select id from sys_device where model = #{deviceVo.model} and `status` = '2' limit 1;
+    </select>
+
+    <select id="checkTime" resultType="java.lang.Long">
+        select id from sys_appointment
+        where status = '1'
+          and user_id = #{userId}
+          and lab_id = #{deviceVo.labId}
+          and now() &lt;= concat(book_time, ' ', (select end_time from sys_time_slot where id = time_slot_id))
+          and now() >= concat(book_time, ' ', (select start_time from sys_time_slot where id = time_slot_id));
+    </select>
+
+    <select id="cheekAttendance" resultType="java.lang.Integer">
+        select status from sys_attendance
+        where
+            appointment_id = #{appointmentId} and
+            user_id = #{userId};
+    </select>
+
+    <select id="getDeviceId" resultType="java.lang.Long">
+        select id from sys_device
+        where
+            lab_id = #{deviceVo.labId} and
+            model = #{deviceVo.model} and
+            status = '0'
+        limit 1;
     </select>
 </mapper>

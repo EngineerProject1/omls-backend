@@ -55,6 +55,33 @@ public class DeviceLendServiceImpl extends ServiceImpl<DeviceLendMapper, DeviceL
 
         return count;
     }
+
+    @Override
+    public Integer lendDeviceByModel(DeviceVo deviceVo, Long userId) {
+        //先查询当前时间是否在该实验室进行阶段 若是就返回预约id
+        Long appointmentId = deviceLendMapper.checkTime(deviceVo, userId);
+
+        // 不在当前实验时间直接返回0
+        if(appointmentId == null){
+            return 0;
+        }
+
+        //再查询当前用户考勤状态是否正常
+        Integer flag = deviceLendMapper.cheekAttendance(appointmentId, userId);
+
+        Integer count = 0;
+        // 用户考勤状态为 '正常' 或者 '迟到' 可以进行借用设备
+        if(flag == 1 || flag == 2){
+            // 在此条件下用户才可以进行设备借用
+            //拿到设备编号
+            Long deviceId = deviceLendMapper.getDeviceId(deviceVo);
+            //更新设备表
+            count += deviceLendMapper.updateDeviceStatus(deviceId);
+            //更新设备借用表
+            count += deviceLendMapper.insertDeviceLend(deviceId, userId);
+        }
+        return count;
+    }
 }
 
 

@@ -64,6 +64,44 @@ public interface DeviceLendMapper extends BaseMapper<DeviceLend> {
      * @return
      */
     Long getDeviceIdLong(@Param("deviceVo") DeviceVo deviceVo);
+
+    /**
+     * @Description 检查当前时间是否在实验进行时间内
+     * @param deviceVo 设备信息
+     * @Param userId 用户id
+     * @return
+     */
+    Long checkTime(@Param("deviceVo") DeviceVo deviceVo, @Param("userId") Long userId);
+
+    /**
+     * @Description 查询考勤状态
+     * @param appointmentId 预约id
+     * @Param userId 用户id
+     * @return
+     */
+    Integer cheekAttendance(@Param("appointmentId") Long appointmentId, @Param("userId") Long userId);
+
+    /**
+     * @Description 拿到要借用的设备id
+     * @param deviceVo 设备信息
+     * @return
+     */
+    Long getDeviceId(@Param("deviceVo") DeviceVo deviceVo);
+
+    /**
+     * @Description 更新要借用的设备的status
+     * @param deviceId 设备id
+     * @return
+     */
+    Integer updateDeviceStatus(@Param("deviceId") Long deviceId);
+
+    /**
+     * @Description 添加设备借用记录
+     * @param deviceId 设备id
+     * @param userId 用户id
+     * @return
+     */
+    Integer insertDeviceLend(@Param("deviceId") Long deviceId, @Param("userId") Long userId);
 }
 
 
