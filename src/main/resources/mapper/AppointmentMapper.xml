@@ -250,9 +250,12 @@
         </if>
     </select>
     <select id="getAppointLabs" resultType="java.util.Map">
-        select sl.id, sl.name
+        select sl.id,
+               sl.name
         from sys_lab sl
-        where id in (select lab_id from sys_appointment)
+        where sl.id in (select sa.lab_id
+                        from sys_appointment sa
+                        where sa.type = #{type})
     </select>
     <select id="testIsBookedOnTargetTime" resultType="com.cuit9622.olms.model.Count">
         select
