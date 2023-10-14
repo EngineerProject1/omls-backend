@@ -11,6 +11,8 @@ import com.cuit9622.olms.vo.AppointVo;
 import com.cuit9622.olms.vo.AttendanceManagerVo;
 
 import java.text.ParseException;
+import java.util.List;
+import java.util.Map;
 
 
 public interface AppointmentService extends IService<AppointVo> {
@@ -26,4 +28,11 @@ public interface AppointmentService extends IService<AppointVo> {
      * @return
      */
     Page<AppointRecordVo> pageAppointRecord(AppointmentModel model);
+
+    /**
+     * @Description 得到有预约记录的实验室
+     * @param
+     * @return
+     */
+    List<Map<String, String>> getAppointLabs();
 }

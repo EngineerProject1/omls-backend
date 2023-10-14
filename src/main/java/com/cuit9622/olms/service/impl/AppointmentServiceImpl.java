@@ -24,8 +24,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -128,5 +128,10 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
         }).collect(Collectors.toList());
         page.setRecords(newRecords);
         return page;
+    }
+
+    @Override
+    public List<Map<String, String>> getAppointLabs() {
+        return appointmentMapper.getAppointLabs();
     }
 }

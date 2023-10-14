@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j(topic = "AppointmentController")
@@ -58,5 +60,18 @@ public class AppointmentController {
     public R<Page<AppointRecordVo>> pageAppointment(AppointmentModel model){
         Page<AppointRecordVo> appointRecordVoPage = appointmentService.pageAppointRecord(model);
         return R.ok("查询预约记录成功", appointRecordVoPage);
+    }
+
+    /**
+     * @Description 查询有预约记录的实验室
+     * @param
+     * @return
+     */
+    @GetMapping("/auth/appointment/lab")
+    @ApiOperation("查询有预约记录的实验室")
+    public R<List<Map<String, String>>> getAppointLabs(){
+        List<Map<String, String>> appointLabs = appointmentService.getAppointLabs();
+        log.info("有预约记录的实验室{}", appointLabs.toString());
+        return R.ok("查询实验室成功", appointLabs);
     }
 }

@@ -231,4 +231,10 @@
             and sa.lab_id = #{labId}
         </if>
     </select>
+    <select id="getAppointLabs" resultType="java.util.Map">
+        select sl.id, sl.name
+        from sys_lab sl
+        where id in (select lab_id from sys_appointment)
+    </select>
+
 </mapper>
