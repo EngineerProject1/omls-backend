@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -92,7 +93,6 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
             if(DateUtil.isIn(sdf.parse(DateUtil.now().substring(11)),timeSlot.getStartTime(),timeSlot.getEndTime())) {
                 // 得到当前时间段
                 slotId = timeSlot.getId();
-                break;
             }
         }
 
