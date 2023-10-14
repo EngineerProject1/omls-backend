@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,6 +57,7 @@ public class AppointmentController {
      * @return
      */
     @GetMapping("/auth/appointment")
+    @RequiresRoles("admin")
     @ApiOperation("查询预约记录")
     public R<Page<AppointRecordVo>> pageAppointment(AppointmentModel model){
         Page<AppointRecordVo> appointRecordVoPage = appointmentService.pageAppointRecord(model);
@@ -68,6 +70,7 @@ public class AppointmentController {
      * @return
      */
     @GetMapping("/auth/appointment/lab")
+    @RequiresRoles("admin")
     @ApiOperation("查询有预约记录的实验室")
     public R<List<Map<String, String>>> getAppointLabs(){
         List<Map<String, String>> appointLabs = appointmentService.getAppointLabs();

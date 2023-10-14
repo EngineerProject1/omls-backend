@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,6 @@ public class DeviceLendController {
 
     @GetMapping("/auth/appointmentLab")
     @ApiOperation("获取当前用户预约的实验室")
-    @RequiresRoles("teacher")
     public R<List<Map<Long, String>>> getAppointmentLab(){
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         List<Map<Long, String>> labNames = deviceLendService.getAppointmentLab(user.getId());
@@ -43,7 +43,6 @@ public class DeviceLendController {
 
     @GetMapping("/auth/deviceByLab")
     @ApiOperation("根据实验室id和设备名称查询设备信息")
-    @RequiresRoles("teacher")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageSize", value = "每页的条数", defaultValue = "5", required = true),
             @ApiImplicitParam(name = "page", value = "页码", defaultValue = "1", required = true),
@@ -63,7 +62,6 @@ public class DeviceLendController {
 
     @GetMapping("/auth/deviceLend")
     @ApiOperation("根据用户id和设备名称查询借用设备信息")
-    @RequiresRoles("teacher")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageSize", value = "每页的条数", defaultValue = "5", required = true),
             @ApiImplicitParam(name = "page", value = "页码", defaultValue = "1", required = true),
@@ -86,7 +84,6 @@ public class DeviceLendController {
      */
     @PutMapping("/auth/deviceLend")
     @ApiOperation("借用设备")
-    @RequiresRoles("teacher")
     public R<String> lendDevice(@RequestBody DeviceVo deviceVo) {
         // 获取当前用户信息
         User user = (User) SecurityUtils.getSubject().getPrincipal();
@@ -106,7 +103,6 @@ public class DeviceLendController {
      */
     @PutMapping("/auth/deviceReturn")
     @ApiOperation("归还设备（单一）")
-    @RequiresRoles("teacher")
     public R<String> returnDevice(@RequestBody DeviceVo deviceVo) {
 
         Integer count = deviceLendService.returnDeviceByModel(deviceVo);
@@ -125,7 +121,6 @@ public class DeviceLendController {
      */
     @PutMapping("/auth/deviceReturnAll")
     @ApiOperation("一键归还")
-    @RequiresRoles("teacher")
     public R<String> returnDeviceAll(@RequestBody List<DeviceVo> deviceVos) {
 
         for (int i = 0; i < deviceVos.size(); i++) {
