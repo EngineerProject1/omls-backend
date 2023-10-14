@@ -206,6 +206,8 @@
         from
         sys_appointment app
         inner join sys_user_student student on student.class_number = app.class_number
+            and app.major_id = app.major_id
+            and app.grade = app.grade
         inner join sys_user on sys_user.username = sid
         where
         app.lab_id = #{labId}

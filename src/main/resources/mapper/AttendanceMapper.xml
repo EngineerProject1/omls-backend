@@ -45,13 +45,16 @@
                     sys_appointment
                         inner join sys_user_student on
                         sys_appointment.class_number = sys_user_student.class_number
+                        and sys_appointment.major_id = sys_user_student.major_id
+                        and sys_appointment.grade = sys_user_student.grade
                         inner join sys_time_slot on
                         sys_appointment.time_slot_id = sys_time_slot.id
                         inner join sys_user on
                         sys_user_student.sid = sys_user.username
                 where
-                    current_date()= sys_appointment.book_time
-                  and current_time() between start_time and end_time
+                    sys_appointment.`type` = '1'
+                    and current_date()= sys_appointment.book_time
+                    and current_time() between start_time and end_time
                 union all
                 select
                     sys_user.id uid,
