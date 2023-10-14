@@ -1,10 +1,11 @@
 package com.cuit9622.olms.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cuit9622.common.exception.BizException;
-import com.cuit9622.olms.entity.Student;
+import com.cuit9622.olms.entity.Appointment;
 import com.cuit9622.olms.entity.TimeSlot;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.mapper.AppointmentMapper;
@@ -29,7 +30,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, AppointVo> implements AppointmentService {
+public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appointment> implements AppointmentService {
     @Resource
     AppointmentMapper appointmentMapper;
     @Resource
@@ -55,22 +56,45 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
         }
         List<String> roles = userMapper.getUserRoleInfoByUsername(user.getUsername());
         if (roles.contains("teacher")) {
-            data.setMajorId(null);
             if (data.getType().equals("1")) {
                 count = appointmentMapper.addAppointmentForClass(data);
-            }else {
+                if(count==0) {
+                    if (appointmentMapper.testIsBookedOnTargetTime(data).getCount()>0) {
+                        throw new BizException("同一时间段只能预约一个实验室");
+                    }
+                    if (appointmentMapper.testIsBookedByPerson(data).getCount()>0) {
+                        throw new BizException("该实验室已被个人预约");
+                    }
+                    if(appointmentMapper.testIsBookedByClass(data).getCount()>0) {
+                        throw new BizException("该实验室已被班级预约");
+                    }
+                    if (appointmentMapper.testTargetClassIsBooked(data).getCount()>0) {
+                        throw new BizException("该班级在该时间段已预约实验室");
+                    }
+                    return true;
+                }
+            } else {
                 count = appointmentMapper.addAppointmentForIndividual(data);
             }
         } else if (roles.contains("student")) {
-            Student student = studentMapper.getStudentInfoByUsername(user.getUsername());
             data.setClassNumber(null);
-            data.setMajorId(Integer.parseInt(student.getMajorId().toString()));
+            data.setMajorId(null);
+            data.setGrade(null);
             data.setType("0");
             count = appointmentMapper.addAppointmentForIndividual(data);
         } else {
             throw new BizException("服务器内部错误");
         }
         if (count == 0) {
+            if (appointmentMapper.testIsBookedOnTargetTime(data).getCount()>0) {
+                throw new BizException("同一时间段只能预约一个实验室");
+            }
+            if(appointmentMapper.testIsBookedByClass(data).getCount()>0) {
+                throw new BizException("该实验室已被班级预约");
+            }
+            if(appointmentMapper.testIsFull(data).getCount()>0) {
+                throw new BizException("该实验室可预约人数已满");
+            }
             throw new BizException("预约该时间段的实验室失败");
         } else if (count > 1) {
             throw new BizException("服务器内部错误");
@@ -79,48 +103,49 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
     }
 
     @Override
-    public Page<AttendanceManagerVo> selectAppointmentUser(Long id,Integer pageSize, Integer page, UserSelectModel model) throws ParseException {
-        Page<AttendanceManagerVo> pageInfo = new Page<>(page,pageSize);
+    public Page<AttendanceManagerVo> selectAppointmentUser(Long id, Integer pageSize, Integer page, UserSelectModel model) throws ParseException {
+        Page<AttendanceManagerVo> pageInfo = new Page<>(page, pageSize);
         // 获取需要查询的时间段
         Integer slotId = null;
         // 判定当前时间范围
         List<TimeSlot> timeSlots = timeSlotService.getAllTimeSlots();
         String format = "HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(format);
-        for(TimeSlot timeSlot:timeSlots) {
-            if(DateUtil.isIn(sdf.parse(DateUtil.now().substring(11)),timeSlot.getStartTime(),timeSlot.getEndTime())) {
+        for (TimeSlot timeSlot : timeSlots) {
+            if (DateUtil.isIn(sdf.parse(DateUtil.now().substring(11)), timeSlot.getStartTime(), timeSlot.getEndTime())) {
                 // 得到当前时间段
                 slotId = timeSlot.getId();
             }
         }
 
-        pageInfo = appointmentMapper.selectAppointmentUser(id, slotId, DateUtil.now().substring(0,10), pageInfo, model);
+        pageInfo = appointmentMapper.selectAppointmentUser(id, slotId, DateUtil.now().substring(0, 10), pageInfo, model);
         return pageInfo;
     }
 
     @Override
+
     public Page<AppointRecordVo> pageAppointRecord(AppointmentModel model) {
         // 个人预约
         Page<AppointRecordVo> page = new Page<>(model.getPage(), model.getPageSize());
-        if (model.getType() == 0){
+        if (model.getType() == 0) {
             appointmentMapper.pageAppointRecordForPerson(page, model.getLabId());
-        }else{
+        } else {
             appointmentMapper.pageAppointRecordForClass(page, model.getLabId());
         }
         // 分配角色
         List<AppointRecordVo> records = page.getRecords();
         List<AppointRecordVo> newRecords;
         // 过滤每一条数据修改用户角色
-        newRecords = records.stream().map((item)->{
+        newRecords = records.stream().map((item) -> {
             AppointRecordVo appointRecordVo = new AppointRecordVo();
             // 复制基本属性
-            BeanUtils.copyProperties(item,appointRecordVo);
+            BeanUtils.copyProperties(item, appointRecordVo);
             // 查询角色信息并修改
             String username = item.getUsername();
             List<String> roles = userMapper.getUserRoleInfoByUsername(username);
-            if (roles.contains("teacher")){
+            if (roles.contains("teacher")) {
                 appointRecordVo.setRole("teacher");
-            }else if (roles.contains("student")){
+            } else if (roles.contains("student")) {
                 appointRecordVo.setRole("student");
             }
 
@@ -133,5 +158,20 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
     @Override
     public List<Map<String, String>> getAppointLabs() {
         return appointmentMapper.getAppointLabs();
+    }
+
+    public Integer auditAppointment(Long id, String status) {
+        LambdaUpdateWrapper<Appointment> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.set(Appointment::getStatus, status)
+                .eq(Appointment::getStatus, "0")
+                .eq(Appointment::getId, id);
+        return appointmentMapper.update(null, wrapper);
+    }
+
+    @Override
+    public Page<Appointment> getUnauditedAppointment(Integer current, Integer pageSize) {
+        LambdaUpdateWrapper<Appointment> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(Appointment::getStatus, "0");
+        return appointmentMapper.selectPage(new Page<>(current, pageSize), wrapper);
     }
 }

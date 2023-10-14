@@ -2,6 +2,7 @@ package com.cuit9622.olms.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cuit9622.olms.entity.Appointment;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.model.AppointmentModel;
 import com.cuit9622.olms.model.AppointmentUpdateModel;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public interface AppointmentService extends IService<AppointVo> {
+public interface AppointmentService extends IService<Appointment> {
     Page<AppointVo> getTargetTypeAppointment(Integer page, Integer pageSize, Long userId, Integer slotId, String type, Integer offsetDay);
 
     Boolean addAppointment(User user, AppointmentUpdateModel data);
@@ -35,4 +36,6 @@ public interface AppointmentService extends IService<AppointVo> {
      * @return
      */
     List<Map<String, String>> getAppointLabs();
+    Integer auditAppointment(Long id,String status);
+    Page<Appointment> getUnauditedAppointment(Integer page,Integer pageSize);
 }

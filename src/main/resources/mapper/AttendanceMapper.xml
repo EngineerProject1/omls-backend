@@ -97,6 +97,7 @@
         where (sys_appointment.user_id=#{userId}
             or sys_lab.master_id=#{userId})
           and sys_appointment.type=1
+          and sys_appointment.status='1'
         order by book_time desc
     </select>
     <select id="getAttendanceForTargetAppointment"

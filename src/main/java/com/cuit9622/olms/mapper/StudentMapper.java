@@ -3,6 +3,7 @@ package com.cuit9622.olms.mapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.olms.entity.Student;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.cuit9622.olms.model.StudentClass;
 import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.vo.StudentVo;
 import org.apache.ibatis.annotations.Mapper;
@@ -41,8 +42,5 @@ public interface StudentMapper extends BaseMapper<Student> {
     List<Student> getStudents();
 
     List<StudentVo> getStudentVos();
+    List<StudentClass> getStudentClassVo(@Param("majorId") Integer majorId);
 }
-
-
-
-
