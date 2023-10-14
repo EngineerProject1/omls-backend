@@ -1,34 +1,32 @@
 package com.cuit9622.olms.service.impl;
 
 import cn.hutool.core.date.DateUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cuit9622.common.exception.BizException;
-import com.cuit9622.olms.entity.Lab;
 import com.cuit9622.olms.entity.Student;
 import com.cuit9622.olms.entity.TimeSlot;
 import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.mapper.AppointmentMapper;
 import com.cuit9622.olms.mapper.StudentMapper;
-import com.cuit9622.olms.mapper.TeacherMapper;
 import com.cuit9622.olms.mapper.UserMapper;
+import com.cuit9622.olms.model.AppointmentModel;
 import com.cuit9622.olms.model.AppointmentUpdateModel;
 import com.cuit9622.olms.model.UserSelectModel;
 import com.cuit9622.olms.service.AppointmentService;
-import com.cuit9622.olms.service.LabService;
 import com.cuit9622.olms.service.TimeSlotService;
+import com.cuit9622.olms.vo.AppointRecordVo;
 import com.cuit9622.olms.vo.AppointVo;
 import com.cuit9622.olms.vo.AttendanceManagerVo;
-import com.cuit9622.olms.vo.StudentVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, AppointVo> implements AppointmentService {
@@ -98,5 +96,37 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
 
         pageInfo = appointmentMapper.selectAppointmentUser(id, slotId, DateUtil.now().substring(0,10), pageInfo, model);
         return pageInfo;
+    }
+
+    @Override
+    public Page<AppointRecordVo> pageAppointRecord(AppointmentModel model) {
+        // 个人预约
+        Page<AppointRecordVo> page = new Page<>(model.getPage(), model.getPageSize());
+        if (model.getType() == 0){
+            appointmentMapper.pageAppointRecordForPerson(page, model.getLabId());
+        }else{
+            appointmentMapper.pageAppointRecordForClass(page, model.getLabId());
+        }
+        // 分配角色
+        List<AppointRecordVo> records = page.getRecords();
+        List<AppointRecordVo> newRecords;
+        // 过滤每一条数据修改用户角色
+        newRecords = records.stream().map((item)->{
+            AppointRecordVo appointRecordVo = new AppointRecordVo();
+            // 复制基本属性
+            BeanUtils.copyProperties(item,appointRecordVo);
+            // 查询角色信息并修改
+            String username = item.getUsername();
+            List<String> roles = userMapper.getUserRoleInfoByUsername(username);
+            if (roles.contains("teacher")){
+                appointRecordVo.setRole("teacher");
+            }else if (roles.contains("student")){
+                appointRecordVo.setRole("student");
+            }
+
+            return appointRecordVo;
+        }).collect(Collectors.toList());
+        page.setRecords(newRecords);
+        return page;
     }
 }

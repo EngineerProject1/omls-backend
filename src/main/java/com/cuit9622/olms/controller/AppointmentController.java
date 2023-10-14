@@ -3,9 +3,11 @@ package com.cuit9622.olms.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cuit9622.common.model.R;
 import com.cuit9622.olms.entity.User;
+import com.cuit9622.olms.model.AppointmentModel;
 import com.cuit9622.olms.model.AppointmentSelectModel;
 import com.cuit9622.olms.model.AppointmentUpdateModel;
 import com.cuit9622.olms.service.AppointmentService;
+import com.cuit9622.olms.vo.AppointRecordVo;
 import com.cuit9622.olms.vo.AppointVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,11 +39,24 @@ public class AppointmentController {
                 appointmentSelectModel.getOffSetDay());
         return R.ok("成功获取预约",targetTypeAppointment);
     }
+
     @PostMapping("/auth/addAppointment")
     @ApiOperation("新增预约")
     public R<String> addAppointment(@RequestBody AppointmentUpdateModel appointmentUpdateModel){
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         appointmentService.addAppointment(user,appointmentUpdateModel);
         return R.ok("成功预约实验室");
+    }
+
+    /**
+     * @Description 根据model查询预约记录
+     * @param model
+     * @return
+     */
+    @GetMapping("/auth/appointment")
+    @ApiOperation("查询预约记录")
+    public R<Page<AppointRecordVo>> pageAppointment(AppointmentModel model){
+        Page<AppointRecordVo> appointRecordVoPage = appointmentService.pageAppointRecord(model);
+        return R.ok("查询预约记录成功", appointRecordVoPage);
     }
 }

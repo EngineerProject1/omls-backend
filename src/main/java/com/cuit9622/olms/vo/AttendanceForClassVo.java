@@ -3,10 +3,12 @@ package com.cuit9622.olms.vo;
 import com.cuit9622.olms.entity.Attendance;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.sql.Date;
 import java.sql.Time;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class AttendanceForClassVo extends Attendance {
     private String experimentName;
