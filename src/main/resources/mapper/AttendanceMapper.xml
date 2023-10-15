@@ -87,12 +87,12 @@
                       and sys_attendance.user_id = T.uid)
     </insert>
     <select id="getTargetAttendanceForPerson" resultType="com.cuit9622.olms.vo.AttendanceForPersonVo">
-        select sys_attendance.id,name lab_name,sys_attendance.status,absence_reason,experiment_name,book_time,start_time,end_time
-        from sys_attendance
-                 left join sys_appointment on sys_attendance.appointment_id  = sys_appointment.id
+        select sys_appointment.id,name lab_name,sys_attendance.status,absence_reason,experiment_name,book_time,start_time,end_time
+        from sys_appointment
+        left join sys_attendance on sys_attendance.appointment_id  = sys_appointment.id
                  left join sys_time_slot on sys_time_slot.id=sys_appointment.time_slot_id
                  left join sys_lab on sys_lab.id=sys_appointment.lab_id
-        where sys_attendance.user_id=#{userId}
+        where sys_appointment.user_id=#{userId} and sys_appointment.`type`='0'
     </select>
     <select id="getTargetAttendanceForClass" resultType="com.cuit9622.olms.vo.AttendanceForClassVo">
         select sys_appointment.id,name lab_name,sys_appointment.class_number,experiment_name,book_time,start_time,end_time
