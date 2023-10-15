@@ -31,7 +31,7 @@ public interface LabMapper extends BaseMapper<Lab> {
      * @param labId
      * @return
      */
-    List<Long> getWeekday(@Param("labId") Long labId);
+    List<Integer> getWeekday(@Param("labId") Long labId);
 }
 
 

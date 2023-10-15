@@ -36,4 +36,25 @@ public interface LabService extends IService<Lab> {
      * @return
      */
     void deleteLabs(List<Integer> id);
+
+    /**
+     * @Description 查询该实验室对应的开放时间段
+     * @param id
+     * @return
+     */
+    List<Integer> getLabSchedule(Long id);
+
+    /**
+     * @Description 修改实验室
+     * @param labVo
+     * @return
+     */
+    Boolean updateLab(LabVo labVo);
+
+    /**
+     * @Description 新增实验室
+     * @param labVo
+     * @return
+     */
+    Boolean addLab(LabVo labVo);
 }

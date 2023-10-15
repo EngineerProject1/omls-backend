@@ -21,5 +21,5 @@ public class LabVo extends Lab {
     @ApiModelProperty("负责人姓名")
     public String masterName;
     @ApiModelProperty("开放时间段")
-    public List<Long> weekdays;
+    public List<Integer> weekdays;
 }

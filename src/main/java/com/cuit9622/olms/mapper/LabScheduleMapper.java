@@ -3,6 +3,9 @@ package com.cuit9622.olms.mapper;
 import com.cuit9622.olms.entity.LabSchedule;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author 刘世浩
@@ -12,6 +15,13 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface LabScheduleMapper extends BaseMapper<LabSchedule> {
 
+    /**
+     * @Description 插入开放时间
+     * @param labId
+     * @param weekdays
+     * @return
+     */
+    Integer insertSchedule(@Param("labId") Long labId, @Param("weekdays")List<Integer> weekdays);
 }
 
 

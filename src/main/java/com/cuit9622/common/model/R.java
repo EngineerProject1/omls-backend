@@ -41,6 +41,12 @@ public class R<T> {
         this.data = data;
     }
 
+    public R(Integer code, String msg, T data) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
+    }
+
     public static <T> R<T> ok() {
         return new R<>(200, null, "success", null);
     }

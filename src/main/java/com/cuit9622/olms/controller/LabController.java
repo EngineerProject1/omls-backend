@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -97,12 +98,17 @@ public class LabController {
      */
     @GetMapping("/lab/{id}")
     @ApiOperation("根据id获取实验室")
-    public R<Lab> getLabById(@PathVariable("id") Integer id) {
+    public R<LabVo> getLabById(@PathVariable("id") Long id) {
         Lab lab = labService.getById(id);
+        // 查询该实验室对应的开放时间段
         if (lab == null) {
             throw new BizException("根据id获取实验室失败");
         }
-        return R.ok("根据id获取实验室成功", lab);
+        List<Integer> labSchedule = labService.getLabSchedule(id);
+        LabVo labVo = new LabVo();
+        BeanUtils.copyProperties(lab,labVo);
+        labVo.setWeekdays(labSchedule);
+        return R.ok("获取实验室数据成功", labVo);
     }
 
     /**
@@ -113,10 +119,12 @@ public class LabController {
     @PostMapping("/auth/lab")
     @RequiresRoles("admin")
     @ApiOperation("增加实验室")
-    public R<String> addLab(@RequestBody Lab lab) {
-        log.info(String.valueOf(lab));
-        labService.save(lab);
-        return R.ok("实验室添加成功");
+    public R<String> addLab(@RequestBody LabVo lab) {
+        Boolean isSuccess = labService.addLab(lab);
+        if (isSuccess){
+            return R.ok("实验室添加成功");
+        }
+        return R.error(500,"实验室添加失败");
     }
 
     /**
@@ -127,14 +135,17 @@ public class LabController {
     @PutMapping("/auth/lab")
     @RequiresRoles("admin")
     @ApiOperation("修改实验室")
-    public R<String> updateLab(@RequestBody Lab lab) {
-        labService.updateById(lab);
-        return R.ok("实验室修改成功");
+    public R<String> updateLab(@RequestBody LabVo lab) {
+        Boolean isSuccess = labService.updateLab(lab);
+        if (isSuccess){
+            return R.ok("实验室修改成功");
+        }
+        return R.error(500,"实验室修改失败");
     }
 
     /**
      * @Description 根据地址查询实验室
-     * @param address
+     * @param location
      * @return
      */
     @GetMapping("/lab/location")
