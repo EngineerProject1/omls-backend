@@ -34,9 +34,6 @@ public class LabServiceImpl extends ServiceImpl<LabMapper, Lab>
     private LabMapper labMapper;
 
     @Resource
-    private DeviceMapper deviceMapper;
-
-    @Resource
     private LabScheduleMapper labScheduleMapper;
 
     @Override
@@ -54,29 +51,23 @@ public class LabServiceImpl extends ServiceImpl<LabMapper, Lab>
     @Override
     @Transactional
     public void deleteLab(Integer id) {
-        labMapper.deleteById(id);
-        LambdaUpdateWrapper<Device> wrapper = new LambdaUpdateWrapper<>();
         // 删除实验室
-        wrapper.eq(Device::getLabId, id);
+        labMapper.deleteById(id);
         // 删除实验室对应的时间段
-        LambdaQueryWrapper<LabSchedule> labScheduleLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        labScheduleLambdaQueryWrapper.eq(LabSchedule::getLabId, id);
-        labScheduleMapper.delete(labScheduleLambdaQueryWrapper);
-        deviceMapper.delete(wrapper);
+        LambdaQueryWrapper<LabSchedule> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(LabSchedule::getLabId, id);
+        labScheduleMapper.delete(wrapper);
     }
 
     @Override
     @Transactional
     public void deleteLabs(List<Integer> id) {
-        labMapper.deleteBatchIds(id);
-        LambdaUpdateWrapper<Device> wrapper = new LambdaUpdateWrapper<>();
         // 删除实验室
-        wrapper.in(Device::getLabId, id);
-        deviceMapper.delete(wrapper);
+        labMapper.deleteBatchIds(id);
         // 删除实验室对应的时间段
-        LambdaQueryWrapper<LabSchedule> labScheduleLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        labScheduleLambdaQueryWrapper.in(LabSchedule::getLabId, id);
-        labScheduleMapper.delete(labScheduleLambdaQueryWrapper);
+        LambdaQueryWrapper<LabSchedule> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(LabSchedule::getLabId, id);
+        labScheduleMapper.delete(wrapper);
     }
 }
 
