@@ -8,6 +8,8 @@ import com.cuit9622.olms.vo.LabVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author 刘世浩
  * @description 针对表【sys_lab(实验室表)】的数据库操作Mapper
@@ -24,6 +26,12 @@ public interface LabMapper extends BaseMapper<Lab> {
      */
     Page<LabVo> page(@Param("page") Page<LabVo> page, @Param("model") LabSelectModel model);
 
+    /**
+     * @Description 得到该实验室的开放时间段
+     * @param labId
+     * @return
+     */
+    List<Long> getWeekday(@Param("labId") Long labId);
 }
 
 

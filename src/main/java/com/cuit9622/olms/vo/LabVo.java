@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 /**
  * Author: lsh
  * Version: 1.0
@@ -18,4 +20,6 @@ public class LabVo extends Lab {
 
     @ApiModelProperty("负责人姓名")
     public String masterName;
+    @ApiModelProperty("开放时间段")
+    public List<Long> weekdays;
 }

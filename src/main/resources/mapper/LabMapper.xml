@@ -46,4 +46,7 @@
             order by capacity ${model.capacity}
         </if>
     </select>
+    <select id="getWeekday" resultType="java.lang.Long">
+        select weekday from sys_lab_schedule where lab_id = #{labId}
+    </select>
 </mapper>
