@@ -21,6 +21,15 @@ public interface AppointmentService extends IService<Appointment> {
 
     Boolean addAppointment(User user, AppointmentUpdateModel data);
 
+    /**
+     * 通过实验室id查询考勤信息
+     * @param labId 实验室id
+     * @param pageSize 页面大小
+     * @param page 页数
+     * @param model Model
+     * @return
+     * @throws ParseException
+     */
     Page<AttendanceManagerVo> selectAppointmentUser(Long labId,Integer pageSize, Integer page, UserSelectModel model) throws ParseException;
 
     /**

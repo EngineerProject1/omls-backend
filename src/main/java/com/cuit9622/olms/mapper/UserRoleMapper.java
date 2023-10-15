@@ -14,13 +14,21 @@ import org.apache.ibatis.annotations.Param;
 public interface UserRoleMapper extends BaseMapper<UserRole> {
     /**
      * 通过userId查询该用户是否是管理员
-     * @param userId
-     * @return
+     * @param userId 用户id
+     * @return 角色实体
      */
     UserRole getManagerByUserId(Long userId);
 
+    /**
+     * 通过用户id移除管理员身份
+     * @param userId 用户id
+     */
     void removeManagerByUserId(Long userId);
 
+    /**
+     * 通过用户id删除角色信息
+     * @param id 用户id
+     */
     void removeUserRoleByUserId(Long id);
 }
 

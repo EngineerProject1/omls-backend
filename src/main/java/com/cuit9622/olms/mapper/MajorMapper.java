@@ -18,14 +18,14 @@ public interface MajorMapper extends BaseMapper<Major> {
     /**
      * 通过学院id获取该学院所对应的所有专业列表
      * @param id 学院id
-     * @return
+     * @return 学院列表
      */
     List<Major> selectListByCollegeId(@Param("id") Long id);
 
     /**
      * 通过专业名称获取学院对象
      * @param majorName 专业名
-     * @return
+     * @return 学院
      */
     College selectCollegeByMajorName(String majorName);
 }

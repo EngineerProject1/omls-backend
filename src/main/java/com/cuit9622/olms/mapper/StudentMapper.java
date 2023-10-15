@@ -21,8 +21,8 @@ public interface StudentMapper extends BaseMapper<Student> {
 
     /**
      * @Description 学生的分页查找
-     * @param page
-     * @return
+     * @param page 第几页
+     * @return 学生信息
      */
     Page<StudentVo> page(@Param("page") Page<StudentVo> page, @Param("model") UserSelectModel model);
 
@@ -33,14 +33,35 @@ public interface StudentMapper extends BaseMapper<Student> {
      */
     StudentVo getStudentInfoByUsername(String username);
 
+    /**
+     * 在学生表、用户表和角色表中增添学生信息
+     * @param studentVo 学生完整信息
+     */
     void saveStudent(@Param("studentVo") StudentVo studentVo);
 
+    /**
+     * 在学生表、用户表和角色表中修改学生信息
+     * @param studentVo 学生完整信息
+     */
     void updateStudent(@Param("studentVo") StudentVo studentVo);
 
+    /**
+     * 通过学号在学生表、用户表和角色表中删除学生信息
+     * @param sid 学号
+     */
     void removeStudentBySid(Long sid);
 
+    /**
+     * 获取所有学生信息
+     * @return 学生信息
+     */
     List<Student> getStudents();
 
+    /**
+     * 获取学生完整信息
+     * @return 学生在用户表与学生表中的信息
+     */
     List<StudentVo> getStudentVos();
+
     List<StudentClass> getStudentClassVo(@Param("majorId") Integer majorId);
 }

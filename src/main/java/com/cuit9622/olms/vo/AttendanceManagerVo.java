@@ -2,10 +2,12 @@ package com.cuit9622.olms.vo;
 
 import com.cuit9622.olms.entity.Appointment;
 import com.cuit9622.olms.entity.Attendance;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
+@ApiModel("考勤管理Vo")
 public class AttendanceManagerVo extends Appointment {
     @ApiModelProperty("用户姓名")
     private String realName;

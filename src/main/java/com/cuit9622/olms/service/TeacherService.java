@@ -30,7 +30,7 @@ public interface TeacherService extends IService<Teacher> {
      * @param pageSize 条数
      * @param page 第几页
      * @param model 搜索条件
-     * @return
+     * @return 教师分页信息
      */
     Page<TeacherVo> selectTeachers(Integer pageSize, Integer page, UserSelectModel model);
 
@@ -58,6 +58,12 @@ public interface TeacherService extends IService<Teacher> {
      */
     void deleteBatchWithUserAndRole(List<Integer> tids);
 
+    /**
+     * 从用户传入的excel表中导入教师信息
+     * @param file excel文件
+     * @param listener 教师监听器
+     * @throws IOException
+     */
     void importExcel(MultipartFile file, TeacherReadListener listener) throws IOException;
 
 
