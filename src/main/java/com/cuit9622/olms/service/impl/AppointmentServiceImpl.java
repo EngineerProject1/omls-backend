@@ -36,8 +36,6 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
     @Resource
     UserMapper userMapper;
     @Resource
-    StudentMapper studentMapper;
-    @Resource
     private TimeSlotService timeSlotService;
 
     @Override

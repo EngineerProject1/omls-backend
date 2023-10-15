@@ -1,6 +1,6 @@
 package com.cuit9622.olms.model;
 
-import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -10,6 +10,7 @@ import lombok.Data;
  * @Description: 预约记录查询模型
  */
 @Data
+@ApiModel("预约数据模型")
 public class AppointmentModel {
     @ApiModelProperty("页码")
     Integer page;
