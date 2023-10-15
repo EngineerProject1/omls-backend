@@ -52,7 +52,7 @@ public interface AppointmentMapper extends BaseMapper<Appointment> {
      * @param labId 要查询那个实验室的预约情况
      * @return
      */
-    Page<AppointRecordVo> pageAppointRecordForClass(@Param("page") Page<AppointRecordVo> page, @Param("labId") Integer labId);
+    Page<AppointRecordVo> pageAppointRecordForClass(@Param("page") Page<AppointRecordVo> page, @Param("labId") Integer labId,@Param("only")Integer only);
 
     /**
      * @Description 得到有预约记录的实验室

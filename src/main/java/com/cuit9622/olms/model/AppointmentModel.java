@@ -1,5 +1,6 @@
 package com.cuit9622.olms.model;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -18,4 +19,6 @@ public class AppointmentModel {
     Integer type;
     @ApiModelProperty("实验室id")
     Integer labId;
+    @ApiModelProperty("是否只查询未审核预约")
+    Integer only;
 }

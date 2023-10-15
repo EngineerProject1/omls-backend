@@ -248,6 +248,9 @@
         <if test="labId != null and labId != -1">
             and sa.lab_id = #{labId}
         </if>
+        <if test="only != null and only == 1">
+            and sa.`status`='0'
+        </if>
     </select>
     <select id="getAppointLabs" resultType="java.util.Map">
         select sl.id,
