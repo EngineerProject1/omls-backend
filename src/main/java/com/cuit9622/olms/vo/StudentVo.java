@@ -34,4 +34,13 @@ public class StudentVo extends Student{
      */
     @ApiModelProperty("是否重置密码")
     private int isResetPwd;
+    @ApiModelProperty("电话")
+    @ExcelProperty(value="电话",index = 7)
+    @ColumnWidth(15)
+    private String phone;
+    @ApiModelProperty("邮箱")
+    @ExcelProperty(value="邮箱",index = 8)
+    @ColumnWidth(25)
+    private String email;
+
 }
