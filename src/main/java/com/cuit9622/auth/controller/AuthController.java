@@ -1,7 +1,9 @@
 package com.cuit9622.auth.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.cuit9622.auth.util.CloudFlareResult;
 import com.cuit9622.auth.util.JWTUtils;
+import com.cuit9622.auth.util.RestClient;
 import com.cuit9622.common.exception.BizException;
 import com.cuit9622.common.model.R;
 import com.cuit9622.common.utils.DigestsUtils;
@@ -10,6 +12,7 @@ import com.cuit9622.olms.entity.User;
 import com.cuit9622.olms.service.StudentService;
 import com.cuit9622.olms.service.TeacherService;
 import com.cuit9622.olms.service.UserService;
+import com.cuit9622.olms.vo.UserVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -26,12 +29,12 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 
 /**
  * Author: lsh
  * Version: 1.0
+ *
  * @Description: 认证控制器
  */
 @RestController
@@ -53,19 +56,26 @@ public class AuthController {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
+    @Resource
+    private RestClient restClient;
+
     /**
-     * @Description 执行登录操作
      * @param user 用户对象
      * @return R
+     * @Description 执行登录操作
      */
     @PostMapping("/login")
     @ApiOperation("用户登录的接口")
-    public R<Map<String, Object>> auth(@RequestBody User user) {
+    public R<Map<String, Object>> auth(@RequestBody UserVo user) {
         User userOne = userService.getUserInfoByName(user.getUsername());
         if (userOne == null) {
             throw new BizException(401, "用户名或密码错误");
         }
-
+        String body = "{\"secret\":\"0x4AAAAAAAGHnUIytvWD2FxF5TiLTX0kVWg\",\"response\":\"" + user.getToken() + "\"}";
+        CloudFlareResult result = restClient.post("/turnstile/v0/siteverify/", body);
+        if (!result.getSuccess()) {
+            throw new BizException(401, "未通过人机验证");
+        }
         String passwordByDigests = DigestsUtils.sha1(user.getPassword(), userOne.getSalt());
         if (!userOne.getPassword().equals(passwordByDigests)) {
             throw new BizException(401, "用户名或密码错误");
@@ -89,22 +99,22 @@ public class AuthController {
     /**
      * @Description 用户登出
      */
-    @GetMapping ("/auth/logout")
+    @GetMapping("/auth/logout")
     @ApiOperation("用户登出的接口")
-    public R<String> logout(){
+    public R<String> logout() {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         redisTemplate.delete(RedisUtils.JWT_TOKEN + user.getUsername());
         return R.ok("退出登录成功");
     }
 
     /**
-     * @Description 根据用户选择的用户，重新签发token
      * @param role
      * @return
+     * @Description 根据用户选择的用户，重新签发token
      */
     @PostMapping("/auth/roleToken")
     @ApiOperation("根据用户选择的用户，重新签发token")
-    public R<String> selectRole(String role){
+    public R<String> selectRole(String role) {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         // 加入用户选择的角色
         Map<String, Object> map = new HashMap<>();
@@ -112,7 +122,7 @@ public class AuthController {
         Calendar instance = Calendar.getInstance();
         instance.add(Calendar.DATE, expireDate);
 
-        String token = JWTUtils.creatToken(map,user.getUsername(), instance.getTime());
+        String token = JWTUtils.creatToken(map, user.getUsername(), instance.getTime());
         // 将token存到redis中
         redisTemplate.opsForValue().set(RedisUtils.JWT_TOKEN + user.getUsername(), token);
         redisTemplate.expireAt(RedisUtils.JWT_TOKEN, instance.getTime());
@@ -120,8 +130,8 @@ public class AuthController {
     }
 
     /**
-     * @Description 根据请求头中token信息获取用户信息
      * @return 用户信息
+     * @Description 根据请求头中token信息获取用户信息
      */
     @GetMapping("/auth/token")
     @ApiOperation("根据token获取用户信息")
