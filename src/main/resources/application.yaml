@@ -3,16 +3,16 @@ spring:
   # mysql数据源
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://101.43.182.254:3306/olms?serverTimezone=GMT%2B8
-    username: lsh
-    password: wL2002s26H.q
+    url: jdbc:mysql://localhost/olms?serverTimezone=GMT%2B8
+    username: root
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
   # redis配置
   redis:
     database: 0
-    host: 101.43.182.254
+    host: localhost
     port: 6379
-    password: wL2002s26H.q
+#    password: wL2002s26H.q
   servlet:
     multipart:
       max-file-size: 4MB
